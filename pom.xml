@@ -16,5 +16,7 @@
         <module>services/discovery</module>
         <module>services/config</module>
         <module>services/uaa</module>
+        <module>spring-boot-parent</module>
+        <module>support/punchat-ms-starter</module>
     </modules>
 </project>
