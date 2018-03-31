@@ -13,5 +13,7 @@
 
     <modules>
         <module>services/ms-parent</module>
+        <module>services/discovery</module>
+        <module>services/config</module>
     </modules>
 </project>
