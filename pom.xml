@@ -13,5 +13,7 @@
 
     <modules>
         <module>services/ms-parent</module>
+        <module>spring-boot-parent</module>
+        <module>support/punchat-ms-starter</module>
     </modules>
 </project>
