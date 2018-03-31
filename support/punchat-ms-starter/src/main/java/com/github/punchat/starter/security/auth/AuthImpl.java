@@ -1,7 +1,5 @@
 package com.github.punchat.starter.security.auth;
 
-import com.github.punchat.starter.ClientInfo;
-import com.github.punchat.starter.UserInfo;
 import lombok.ToString;
 
 import java.util.Collections;

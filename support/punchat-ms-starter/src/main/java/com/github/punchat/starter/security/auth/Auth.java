@@ -1,7 +1,5 @@
 package com.github.punchat.starter.security.auth;
 
-import com.github.punchat.starter.UserInfo;
-
 import java.util.Optional;
 import java.util.Set;
 
