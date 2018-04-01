@@ -1,0 +1,21 @@
+version: '3.6'
+services:
+  config:
+    image: config
+    container_name: punchat_config
+    build: ./services/config
+    restart: always
+  uaa:
+    image: uaa
+    container_name: punchat_uaa
+    build: ./services/uaa
+    restart: always
+    ports:
+      - 9999:9999
+  discovery:
+    image: discovery
+    container_name: punchat_discovery
+    build: ./services/discovery
+    restart: always
+    ports:
+      - 8761:8761
