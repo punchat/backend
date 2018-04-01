@@ -19,5 +19,6 @@
         <module>spring-boot-parent</module>
         <module>support/punchat-ms-starter</module>
         <module>support/punchat-web-starter</module>
+        <module>support/punchat-uaa-client-starter</module>
     </modules>
 </project>
