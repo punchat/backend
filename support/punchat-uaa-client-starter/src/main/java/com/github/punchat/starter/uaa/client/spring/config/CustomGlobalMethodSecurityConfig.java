@@ -1,7 +1,7 @@
-package com.github.punchat.punchat.starter.uaa.client.spring.config;
+package com.github.punchat.starter.uaa.client.spring.config;
 
-import com.github.punchat.punchat.starter.uaa.client.context.AuthContext;
-import com.github.punchat.punchat.starter.uaa.client.spring.support.expressions.CustomMethodSecurityExpressionHandler;
+import com.github.punchat.starter.uaa.client.context.AuthContext;
+import com.github.punchat.starter.uaa.client.spring.support.expressions.CustomMethodSecurityExpressionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

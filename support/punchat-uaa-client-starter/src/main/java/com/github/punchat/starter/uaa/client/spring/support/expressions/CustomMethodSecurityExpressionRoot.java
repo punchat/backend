@@ -1,6 +1,6 @@
-package com.github.punchat.punchat.starter.uaa.client.spring.support.expressions;
+package com.github.punchat.starter.uaa.client.spring.support.expressions;
 
-import com.github.punchat.punchat.starter.uaa.client.context.AuthContext;
+import com.github.punchat.starter.uaa.client.context.AuthContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;

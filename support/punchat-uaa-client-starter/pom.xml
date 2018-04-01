@@ -20,12 +20,7 @@
         <dependency>
             <groupId>com.github.alexivchenko</groupId>
             <artifactId>spring-uaa-client-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>0.0.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>

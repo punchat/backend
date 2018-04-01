@@ -1,10 +1,10 @@
-package com.github.punchat.punchat.starter.uaa.client.context;
+package com.github.punchat.starter.uaa.client.context;
 
-import com.github.punchat.punchat.starter.uaa.client.auth.UserPayload;
-import com.github.punchat.punchat.starter.uaa.client.auth.Auth;
-import com.github.punchat.punchat.starter.uaa.client.auth.AuthImpl;
-import com.github.punchat.punchat.starter.uaa.client.auth.ClientInfo;
-import com.github.punchat.punchat.starter.uaa.client.auth.UserInfo;
+import com.github.punchat.starter.uaa.client.auth.UserPayload;
+import com.github.punchat.starter.uaa.client.auth.Auth;
+import com.github.punchat.starter.uaa.client.auth.AuthImpl;
+import com.github.punchat.starter.uaa.client.auth.ClientInfo;
+import com.github.punchat.starter.uaa.client.auth.UserInfo;
 import lombok.extern.slf4j.Slf4j;
 
 /**

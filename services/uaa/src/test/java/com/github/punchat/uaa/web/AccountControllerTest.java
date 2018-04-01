@@ -25,7 +25,7 @@ import static org.hamcrest.Matchers.containsString;
 @ActiveProfiles("test")
 @Import(ValidationErrorHandlingConfiguration.class)
 @MockBean(classes = AccountService.class)
-public class UserControllerTest {
+public class AccountControllerTest {
     @Autowired
     private MockMvc mvc;
 

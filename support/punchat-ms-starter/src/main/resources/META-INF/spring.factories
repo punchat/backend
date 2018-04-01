@@ -1,5 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   com.github.punchat.starter.ms.json.JacksonConfig,\
-  com.github.punchat.starter.ms.enable.EnableConfig,\
-  com.github.punchat.starter.ms.MSConfig,\
   com.github.punchat.starter.ms.DiscoveryConfig

@@ -1,12 +1,12 @@
 package com.github.punchat.starter.ms;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author Alex Ivchenko
  */
+@Configuration
 @EnableDiscoveryClient
-@ConditionalOnProperty(value = "punchat.discovery.client.enabled", havingValue = "true")
 public class DiscoveryConfig {
 }

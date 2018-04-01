@@ -1,6 +1,6 @@
-package com.github.punchat.punchat.starter.uaa.client.spring.support.expressions;
+package com.github.punchat.starter.uaa.client.spring.support.expressions;
 
-import com.github.punchat.punchat.starter.uaa.client.context.AuthContext;
+import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;

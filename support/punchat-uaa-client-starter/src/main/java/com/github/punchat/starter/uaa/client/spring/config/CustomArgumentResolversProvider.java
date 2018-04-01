@@ -1,7 +1,7 @@
-package com.github.punchat.punchat.starter.uaa.client.spring.config;
+package com.github.punchat.starter.uaa.client.spring.config;
 
-import com.github.punchat.punchat.starter.uaa.client.context.AuthContext;
-import com.github.punchat.punchat.starter.uaa.client.spring.support.args.AuthMethodArgumentResolver;
+import com.github.punchat.starter.uaa.client.context.AuthContext;
+import com.github.punchat.starter.uaa.client.spring.support.args.AuthMethodArgumentResolver;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Configuration;

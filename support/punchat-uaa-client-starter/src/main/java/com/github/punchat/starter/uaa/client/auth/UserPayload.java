@@ -1,4 +1,4 @@
-package com.github.punchat.punchat.starter.uaa.client.auth;
+package com.github.punchat.starter.uaa.client.auth;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

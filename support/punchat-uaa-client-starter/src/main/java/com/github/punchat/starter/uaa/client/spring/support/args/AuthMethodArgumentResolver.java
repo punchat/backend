@@ -1,7 +1,7 @@
-package com.github.punchat.punchat.starter.uaa.client.spring.support.args;
+package com.github.punchat.starter.uaa.client.spring.support.args;
 
-import com.github.punchat.punchat.starter.uaa.client.auth.Auth;
-import com.github.punchat.punchat.starter.uaa.client.context.AuthContext;
+import com.github.punchat.starter.uaa.client.auth.Auth;
+import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
