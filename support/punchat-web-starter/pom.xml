@@ -13,7 +13,7 @@
         <groupId>com.github.punchat</groupId>
         <artifactId>spring-boot-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../../spring-boot-parent/pom.xml</relativePath>
     </parent>
 
     <dependencies>
