@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.github.punchat.starter.uaa.client.spring.config.CustomArgumentResolversProvider,\
+  com.github.punchat.starter.uaa.client.spring.config.OAuth2ResourceServerConfig,\
+  com.github.punchat.starter.uaa.client.spring.config.CustomGlobalMethodSecurityConfig

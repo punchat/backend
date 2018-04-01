@@ -1,4 +1,3 @@
-punchat:
-  validation:
-    handling:
-      enabled: true
+spring:
+  application:
+    name: uaa
