@@ -18,5 +18,6 @@
         <module>services/uaa</module>
         <module>spring-boot-parent</module>
         <module>support/punchat-ms-starter</module>
+        <module>support/punchat-web-starter</module>
     </modules>
 </project>

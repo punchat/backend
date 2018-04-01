@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.github.punchat.starter.web.WebConfiguration,\
+  com.github.punchat.starter.web.ValidationErrorHandlingConfiguration,\
+  com.github.punchat.starter.web.error.MessageSourceConfig
