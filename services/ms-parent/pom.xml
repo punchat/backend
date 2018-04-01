@@ -9,6 +9,10 @@
     <name>ms-parent</name>
     <description>Parent pom for microservices</description>
 
+    <properties>
+      <docker.image.prefix>punchat</docker.image.prefix>
+    </properties>
+
     <parent>
         <groupId>com.github.punchat</groupId>
         <artifactId>spring-boot-parent</artifactId>
