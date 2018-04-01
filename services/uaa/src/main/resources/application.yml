@@ -1,0 +1,4 @@
+punchat:
+  validation:
+    handling:
+      enabled: true

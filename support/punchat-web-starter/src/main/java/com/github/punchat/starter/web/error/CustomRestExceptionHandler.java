@@ -1,5 +1,6 @@
-package com.github.punchat.uaa.web;
+package com.github.punchat.starter.web.error;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,13 @@ import java.util.Locale;
 /**
  * @author Alex Ivchenko
  */
+@Slf4j
 @ControllerAdvice
 public class CustomRestExceptionHandler {
     private final MessageSource messages;
 
     public CustomRestExceptionHandler(MessageSource messages) {
+        log.info("creating custom rest exception handler");
         this.messages = messages;
     }
 

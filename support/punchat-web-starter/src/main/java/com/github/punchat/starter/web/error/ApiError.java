@@ -1,4 +1,4 @@
-package com.github.punchat.uaa.web;
+package com.github.punchat.starter.web.error;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package com.github.punchat.uaa.web;
+package com.github.punchat.starter.web.error;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
