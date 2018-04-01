@@ -1,7 +1,8 @@
-FROM openjdk:8-jre
+FROM openjdk:8-jre-alpine
 MAINTAINER Aleksey Kobzev <a.kobzev@aol.com>
 
-ADD ./target/discovery.jar /app/
-CMD ["java", "-Xmx200m", "-jar", "/app/discovery.jar"]
+ARG JAR_FILE
+ADD ${JAR_FILE} app.jar
+ENTRYPOINT ["/usr/bin/java", "-Djava.security.egd=file:/dev/./urandom", "-Xmx200m", "-jar", "app.jar"]
 
 EXPOSE 8761
