@@ -4,15 +4,21 @@ services:
     image: punchat/config
     container_name: punchat_config
     restart: always
+    environment:
+      PORT: 8888
   uaa:
     image: punchat/uaa
     container_name: punchat_uaa
     restart: always
+    environment:
+      PORT: 9999
     ports:
       - 9999:9999
   discovery:
     image: punchat/discovery
     container_name: punchat_discovery
     restart: always
+    environment:
+      PORT: 8761
     ports:
       - 8761:8761
