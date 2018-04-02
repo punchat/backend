@@ -3,7 +3,6 @@ package com.github.punchat.uaa.account;
 import com.github.punchat.uaa.id.IdService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,7 +44,7 @@ public class DaoAccountService implements AccountService {
             account.setPassword(passwordEncoder.encode(newPassword));
             return repository.save(account);
         } else {
-            throw new BadCredentialsException("passwords doesn't match");
+            throw new PasswordsDoNotMatchException();
         }
     }
 }
