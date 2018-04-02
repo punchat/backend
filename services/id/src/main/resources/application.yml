@@ -1,6 +1,3 @@
 spring:
   application:
     name: id
-#    access-token-uri: http://uaa:9999/oauth/token
-#    id: id
-#    secret: secret
