@@ -1,5 +1,6 @@
 package com.github.punchat.uaa.account;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.punchat.uaa.account.jsr303.Password;
 import lombok.*;
 
@@ -23,10 +24,17 @@ public class Account {
     @Id
     @Column(name = "id")
     private Long id;
+
     @Column(name = "username")
     @NotNull(message = "{User.username.required}")
     private String username;
+
     @Column(name = "password")
     @Password(message = "{User.password.required}")
     private String password;
+
+    @JsonIgnore
+    public String getPassword() {
+        return password;
+    }
 }
