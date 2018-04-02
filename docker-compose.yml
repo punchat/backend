@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.3'
 services:
   config:
     image: punchat/config
@@ -22,3 +22,11 @@ services:
       PORT: 8761
     ports:
       - 8761:8761
+  id:
+    image: punchat/id
+    container_name: punchat_id
+    restart: always
+    environment:
+      PORT: 8881
+    ports:
+      - 8881:8881

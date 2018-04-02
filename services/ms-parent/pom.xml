@@ -10,7 +10,8 @@
     <description>Parent pom for microservices</description>
 
     <properties>
-      <docker.image.prefix>punchat</docker.image.prefix>
+        <punchat.ms.version>0.0.1-SNAPSHOT</punchat.ms.version>
+        <docker.image.prefix>punchat</docker.image.prefix>
     </properties>
 
     <parent>
