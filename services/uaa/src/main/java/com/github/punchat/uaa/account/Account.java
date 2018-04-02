@@ -1,6 +1,7 @@
 package com.github.punchat.uaa.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.punchat.uaa.account.jsr303.Password;
 import lombok.*;
 
@@ -36,5 +37,10 @@ public class Account {
     @JsonIgnore
     public String getPassword() {
         return password;
+    }
+
+    @JsonProperty
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
