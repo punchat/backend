@@ -5,20 +5,26 @@ services:
     container_name: punchat_config
     restart: always
     environment:
-      PORT: 8888
+      PORT: ${CONFIG_PORT}
+    expose:
+      - "${CONFIG_PORT}"
   uaa:
     image: punchat/uaa
     container_name: punchat_uaa
     restart: always
     environment:
-      PORT: 9999
+      PORT: ${UAA_PORT}
+    expose:
+      - "${UAA_PORT}"
     ports:
-      - 9999:9999
+      - 9999:${UAA_PORT}
   discovery:
     image: punchat/discovery
     container_name: punchat_discovery
     restart: always
     environment:
-      PORT: 8761
+      PORT: ${DISCOVERY_PORT}
+    expose:
+      - "${DISCOVERY_PORT}"
     ports:
-      - 8761:8761
+      - 8761:${DISCOVERY_PORT}
