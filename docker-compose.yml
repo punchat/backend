@@ -1,4 +1,4 @@
-version: '3.6'
+version: '3.3'
 services:
   config:
     image: punchat/config
@@ -28,3 +28,13 @@ services:
       - "${DISCOVERY_PORT}"
     ports:
       - 8761:${DISCOVERY_PORT}
+  id:
+    image: punchat/id
+    container_name: punchat_id
+    restart: always
+    environment:
+      PORT: ${ID_PORT}
+    expose:
+      - "${ID_PORT}"
+    ports:
+      - 8881:${ID_PORT}
