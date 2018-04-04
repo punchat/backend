@@ -1,4 +1,4 @@
-package com.github.punchat.messaging.dao;
+package com.github.punchat.messaging.abstractentity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Getter
 @Setter
 @Entity
-abstract class AbstractIdentifiableObject {
+public abstract class AbstractIdentifiableObject {
 
     @Column(name = "id")
     private Long id;

@@ -1,5 +1,7 @@
-package com.github.punchat.messaging.dao;
+package com.github.punchat.messaging.user;
 
+import com.github.punchat.messaging.channel.Channel;
+import com.github.punchat.messaging.abstractentity.AbstractIdentifiableObject;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(of = {"id"})
+@EqualsAndHashCode(of = {"id"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -20,6 +23,4 @@ public class User extends AbstractIdentifiableObject {
         inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private List<Channel> channels;
 
-    @OneToOne(mappedBy = "user_id")
-    private Message message;
 }

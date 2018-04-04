@@ -1,0 +1,10 @@
+package com.github.punchat.messaging.channel;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class ChannelController {
+    @Autowired
+    private ChannelService channelService;
+}
