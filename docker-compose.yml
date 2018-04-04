@@ -30,3 +30,11 @@ services:
       PORT: 8881
     ports:
       - 8881:8881
+  messaging:
+    image: punchat/messaging
+    container_name: punchat_messaging
+    restart: always
+    environment:
+      PORT: 8787
+    ports:
+      - 8787:8787
