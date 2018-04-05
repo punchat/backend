@@ -1,6 +1,5 @@
 server:
   port: ${PORT}
-
 spring:
   cloud:
     bus:
