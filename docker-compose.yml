@@ -30,3 +30,9 @@ services:
       PORT: 8881
     ports:
       - 8881:8881
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq_server
+    ports:
+      - 5672:5672
+      - 15672:15672
