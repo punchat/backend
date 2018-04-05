@@ -1,5 +1,17 @@
 spring:
+  profiles:
+    active: registered-config-server
+---
+spring:
+  profiles: known-config-server
   cloud:
     config:
       uri: http://config:8888/
-      fail-fast: true
+---
+spring:
+  profiles: registered-config-server
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: config

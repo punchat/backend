@@ -5,28 +5,48 @@ services:
     container_name: punchat_config
     restart: always
     environment:
-      PORT: 8888
+      PORT: ${CONFIG_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+    expose:
+      - "${CONFIG_PORT}"
   uaa:
     image: punchat/uaa
     container_name: punchat_uaa
     restart: always
     environment:
-      PORT: 9999
+      PORT: ${UAA_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+    expose:
+      - "${UAA_PORT}"
     ports:
-      - 9999:9999
+      - 9999:${UAA_PORT}
   discovery:
     image: punchat/discovery
     container_name: punchat_discovery
     restart: always
     environment:
-      PORT: 8761
+      PORT: ${DISCOVERY_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+    expose:
+      - "${DISCOVERY_PORT}"
     ports:
-      - 8761:8761
+      - 8761:${DISCOVERY_PORT}
   id:
     image: punchat/id
     container_name: punchat_id
     restart: always
     environment:
-      PORT: 8881
+      PORT: ${ID_PORT}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+    expose:
+      - "${ID_PORT}"
     ports:
-      - 8881:8881
+      - 8881:${ID_PORT}
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq_server
+    environment:
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+    ports:
+      - 5672:5672
+      - 15672:15672

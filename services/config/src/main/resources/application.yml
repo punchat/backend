@@ -1,0 +1,33 @@
+server:
+  port: ${PORT}
+
+spring:
+  cloud:
+    bus:
+      enabled: false
+    config:
+      server:
+        git:
+          uri: https://github.com/punchat/config.git
+---
+spring:
+  profiles: registration-first
+eureka:
+   client:
+     registerWithEureka: true
+     fetchRegistry: true
+     serviceUrl:
+       defaultZone: http://discovery:8761/eureka/
+   instance:
+     preferIpAddress: true
+---
+spring:
+  profiles: config-monitor
+  cloud:
+    bus:
+      enabled: true
+  rabbitmq:
+    host: ${RABBITMQ_HOST}
+    port: 5672
+    username: guest
+    password: guest
