@@ -1,5 +1,5 @@
 spring:
-  profiles:
-    active: config-monitor, registration-first
   application:
-    name: config
+    name: ${appName:config}
+  profiles:
+    active: registration-first

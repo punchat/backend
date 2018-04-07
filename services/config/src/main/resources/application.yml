@@ -1,5 +1,5 @@
 server:
-  port: ${PORT}
+  port: ${port}
 spring:
   cloud:
     bus:
@@ -7,7 +7,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/punchat/config.git
+          uri: ${configServerGitUri:https://github.com/punchat/config.git}
 ---
 spring:
   profiles: registration-first
@@ -16,9 +16,7 @@ eureka:
      registerWithEureka: true
      fetchRegistry: true
      serviceUrl:
-       defaultZone: http://discovery:8761/eureka/
-   instance:
-     preferIpAddress: true
+       defaultZone: ${serviceUrlDefaultZone:http://discovery:8761/eureka/}
 ---
 spring:
   profiles: config-monitor
@@ -26,7 +24,7 @@ spring:
     bus:
       enabled: true
   rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: 5672
-    username: guest
-    password: guest
+    host: ${rabbitmqHost:rabbitmq}
+    port: ${rabbitmqPort:5672}
+    username: ${rabbitmqUsername:guest}
+    password: ${rabbitmqPassword:guest}
