@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.cloud.config.server.EnableConfigServer;
 
 @EnableConfigServer
-@SpringBootApplication(exclude = { RabbitAutoConfiguration.class })
+@SpringBootApplication
 public class ConfigApplication {
 
     public static void main(String[] args) {

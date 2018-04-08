@@ -1,9 +1,6 @@
 server:
   port: ${port}
 spring:
-  cloud:
-    bus:
-      enabled: false
     config:
       server:
         git:
@@ -17,14 +14,3 @@ eureka:
      fetchRegistry: true
      serviceUrl:
        defaultZone: ${serviceUrlDefaultZone:http://discovery:8761/eureka/}
----
-spring:
-  profiles: config-monitor
-  cloud:
-    bus:
-      enabled: true
-  rabbitmq:
-    host: ${rabbitmqHost:rabbitmq}
-    port: ${rabbitmqPort:5672}
-    username: ${rabbitmqUsername:guest}
-    password: ${rabbitmqPassword:guest}

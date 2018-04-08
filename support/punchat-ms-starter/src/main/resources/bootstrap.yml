@@ -1,9 +1,7 @@
 spring:
-  profiles:
-    active: registered-config-server
   cloud:
     config:
-      label: dev
+      label: ${configLabel:dev}
       fail-fast: true
       retry:
         max-attempts: 5
@@ -13,7 +11,7 @@ spring:
   profiles: known-config-server
   cloud:
     config:
-      uri: http://config:8888/
+      uri: ${configUri:http://config:8888/}
 ---
 spring:
   profiles: registered-config-server
@@ -21,8 +19,8 @@ spring:
     config:
       discovery:
         enabled: true
-        serviceId: config
+        serviceId: ${configServiceId:config}
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://discovery:8761/eureka/
+      defaultZone: ${serviceUrlDefaultZone:http://discovery:8761/eureka/}
