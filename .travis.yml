@@ -9,7 +9,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 install:
-  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true
+  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
 script:
   - mvn test -B
   - docker-compose up -d discovery config
