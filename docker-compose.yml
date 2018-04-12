@@ -8,6 +8,8 @@ services:
       PORT: ${CONFIG_PORT}
     expose:
       - "${CONFIG_PORT}"
+    ports:
+      - 8888:${CONFIG_PORT}
   uaa:
     image: punchat/uaa
     container_name: punchat_uaa
@@ -38,3 +40,9 @@ services:
       - "${ID_PORT}"
     ports:
       - 8881:${ID_PORT}
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq_server
+    ports:
+      - 5672:${RABBITMQ_AMQP_PORT}
+      - 15672:${RABBITMQ_UI_PORT}
