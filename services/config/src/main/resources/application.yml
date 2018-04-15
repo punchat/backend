@@ -1,0 +1,17 @@
+server:
+  port: ${PORT}
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/punchat/config.git
+---
+spring:
+  profiles: registration-first
+eureka:
+   client:
+     registerWithEureka: true
+     fetchRegistry: true
+     serviceUrl:
+       defaultZone: http://discovery:8761/eureka/

@@ -1,7 +1,3 @@
 spring:
   application:
-    name: discovery
-  cloud:
-    config:
-      uri: http://config:8888/
-      fail-fast: true
+    name: ${appName:discovery}
