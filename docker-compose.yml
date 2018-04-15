@@ -46,7 +46,6 @@ services:
     ports:
       - 5672:${RABBITMQ_AMQP_PORT}
       - 15672:${RABBITMQ_UI_PORT}
-      - 8881:8881
   messaging:
     image: punchat/messaging
     container_name: punchat_messaging
