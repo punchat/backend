@@ -1,8 +1,6 @@
 package com.github.punchat.messaging.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -12,6 +10,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @MappedSuperclass
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(of = "id")
 public abstract class AbstractIdentifiableObject {
 
