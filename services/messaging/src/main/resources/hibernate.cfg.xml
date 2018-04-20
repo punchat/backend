@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.github.punchat.messaging.domain.user.User"/>
+        <mapping class="com.github.punchat.messaging.domain.resource.Resource"/>
+        <mapping class="com.github.punchat.messaging.domain.channel.Channel"/>
+        <mapping class="com.github.punchat.messaging.domain.channel.DirectChannel"/>
+        <mapping class="com.github.punchat.messaging.domain.channel.BroadcastChannel"/>
+        <mapping class="com.github.punchat.messaging.domain.message.Message"/>
+        <mapping class="com.github.punchat.messaging.domain.message.DirectMessage"/>
+        <mapping class="com.github.punchat.messaging.domain.message.BroadcastMessage"/>
+    </session-factory>
+</hibernate-configuration>
