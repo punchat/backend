@@ -1,9 +1,11 @@
 package com.github.punchat.messaging.domain.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.DirectChannel;
+import com.github.punchat.messaging.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,13 +20,6 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User extends AbstractIdentifiableObject {
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(name = "members",
-        joinColumns = @JoinColumn(name = "user_id"),
-        inverseJoinColumns = @JoinColumn(name = "channel_id"))
-    private List<BroadcastChannel> channels;
-
     @JsonIgnore
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private DirectChannel channel;

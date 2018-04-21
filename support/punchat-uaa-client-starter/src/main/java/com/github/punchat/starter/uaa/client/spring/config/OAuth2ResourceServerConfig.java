@@ -17,6 +17,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableFeignClients("com.github.punchat")
 public class OAuth2ResourceServerConfig {
+    public OAuth2ResourceServerConfig() {
+        log.info("configure oauth2 resource server");
+    }
+
     @Bean
     public AuthContext authContext(com.github.alexivchenko.spring.uaa.client.AuthContext<UserPayload> delegate) {
         return new AuthContextImpl(delegate);

@@ -95,6 +95,13 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
                 .secret(encoder.encode("pass"))
                 .scopes("server")
                 .autoApprove(true)
+                .authorizedGrantTypes("client_credentials")
+
+                .and()
+                .withClient("messaging")
+                .secret(encoder.encode("pass"))
+                .scopes("server")
+                .autoApprove(true)
                 .authorizedGrantTypes("client_credentials");
     }
 }

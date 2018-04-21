@@ -15,6 +15,6 @@ import javax.persistence.OneToOne;
 @NoArgsConstructor
 @DiscriminatorValue("direct")
 public class DirectChannel extends Channel {
-    @OneToOne(optional = false)
+    @OneToOne
     private User user;
 }

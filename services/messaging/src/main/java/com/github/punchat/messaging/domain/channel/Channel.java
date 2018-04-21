@@ -16,7 +16,5 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 public class Channel extends AbstractIdentifiableObject {
-    public Channel(Long id) {
-        super(id);
-    }
+
 }

@@ -51,11 +51,6 @@ public class CustomRestExceptionHandler {
         return errors;
     }
 
-    private String resolveErrorMessage(String key, Object[] args) {
-        Locale locale = LocaleContextHolder.getLocale();
-        return messages.getMessage(key, args, locale);
-    }
-
     private String resolveErrorMessage(FieldError error) {
         Locale locale = LocaleContextHolder.getLocale();
         return messages.getMessage(error, locale);

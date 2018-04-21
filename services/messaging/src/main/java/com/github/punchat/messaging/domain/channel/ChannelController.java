@@ -1,9 +1,7 @@
 package com.github.punchat.messaging.domain.channel;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -14,10 +12,13 @@ public class ChannelController {
         this.service = service;
     }
 
-    @GetMapping("/users/{userId}/channels/direct")
-    public DirectChannel getUserChannel(@PathVariable Long userId) {
-        DirectChannel channel = service.getDirectChannel(userId);
-        log.info(channel.toString());
-        return channel;
+    @PostMapping("/channels")
+    public BroadcastChannel create(@RequestBody BroadcastChannel channel) {
+        return service.createBroadcastChannel(channel);
+    }
+
+    @GetMapping("/channels/{id}")
+    public BroadcastChannel get(@PathVariable Long id) {
+        return service.get(id);
     }
 }
