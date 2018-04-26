@@ -1,10 +1,8 @@
 package com.github.punchat.messaging.domain.member;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
@@ -15,8 +13,8 @@ public class MemberController {
         this.service = service;
     }
 
-    @PutMapping("/channels/{channelId}/members/{userId}")
-    public void inviteUser(@PathVariable("channelId") Long channelId, @PathVariable("userId") Long userId) {
+    @PutMapping("/channels/{channelId}/members")
+    public void inviteUser(@PathVariable("channelId") Long channelId, @Valid @RequestBody Invitation invitation) {
 
     }
 

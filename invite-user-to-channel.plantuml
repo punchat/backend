@@ -1,0 +1,39 @@
+@startuml
+
+actor AdminOfChannel
+actor Members
+actor NewMember
+
+AdminOfChannel -> Messaging: invite user
+Messaging -> Broker: create "user to channel invited event"
+Broker -> Notifications: read "user to channel invited event"
+
+alt email notifications enabled
+    Notifications -> Notifications: generate email
+    Notifications -> Broker: create "new email event"
+    Broker -> EmailSender: read "new email event"
+    EmailSender -> NewMember: send email
+end
+
+alt ws notifications enabled
+    Notifications -> Notifications: generate event message
+    Notifications -> Broker: create "new notification event"
+    Broker -> Messaging: read "new notification event(invitation)"
+    Messaging -> NewMember: send message
+    note right: via stomp broker
+end
+
+alt user accepts invitation
+    NewMember -> Messaging: accept invitation
+    Messaging -> Broker: create "user invited event"
+    Broker -> Notifications: read "user invited event"
+    Notifications -> Broker: create "new notification event(new member)"
+    note right
+        for every subscribed member
+    end note
+    Broker -> Messaging: read "new notification event(new member)"
+    Messaging -> Members: send events
+    note right: via stomp broker
+end
+
+@enduml
