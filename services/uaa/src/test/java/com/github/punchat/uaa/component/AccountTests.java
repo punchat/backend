@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.punchat.uaa.account.AccountService;
 import com.github.punchat.uaa.account.ChangePasswordPayload;
 import com.github.punchat.uaa.utils.OAuthUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,6 +28,7 @@ import static org.hamcrest.core.StringContains.containsString;
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 @SpringBootTest
+@Slf4j
 @ContextConfiguration(classes = ComponentTestConfig.class)
 public class AccountTests {
     @Autowired
@@ -45,6 +47,7 @@ public class AccountTests {
         ChangePasswordPayload payload = new ChangePasswordPayload("wrong", "new");
         ObjectMapper mapper = new ObjectMapper();
         String token = OAuthUtils.obtainAccessToken(mvc, "user", "pass");
+        log.info("token {}", token);
         mvc
                 .perform(MockMvcRequestBuilders.put("/accounts/@me/password")
                         .header("Authorization", "Bearer " + token)

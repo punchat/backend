@@ -28,9 +28,8 @@ public class Member extends AbstractIdentifiableObject {
     @JsonIgnore
     private BroadcastChannel channel;
 
-    @Embedded
-    @AttributeOverrides(
-            @AttributeOverride(name = "name", column = @Column(name = "role_name"))
-    )
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "role_id")
+    @JsonUnwrapped
     private Role role;
 }

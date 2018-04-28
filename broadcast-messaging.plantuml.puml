@@ -1,0 +1,23 @@
+@startuml
+actor User1
+actor User2
+actor User3
+User1 -> Messaging: subscribe to channel
+...
+User2 -> Messaging: subscribe to channel
+...
+User3 -> Messaging: subscribe to channel
+User1 -> Messaging: send message to channel
+Messaging -> AccountManagement: check user's grants
+alt user can send messages
+    Messaging -> Messaging: save message to db
+    Messaging -> Messaging: create channel event
+    Messaging -> Broker: publish event
+    group send event to subscribes
+        Broker -> User1: event
+        Broker -> User2: event
+        Broker -> User3: event
+    end
+end
+
+@enduml

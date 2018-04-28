@@ -1,0 +1,22 @@
+@startuml
+
+actor User1
+actor User2
+
+User1 -> Messaging : send message
+Messaging -> Messaging: save message to db
+Messaging -> Messaging: generate "new message event" for User1
+Messaging -> Messaging: generate "new message event" for User2
+Messaging -> Broker: publish event to User1 topic
+Messaging -> Broker: publish event to User2 topic
+Broker -> User1: event1
+note right: via stomp
+Broker -> User2: event2
+User1 -> Messaging: fetch message via rest
+User2 -> Messaging: fetch message via rest
+Messaging --> User1: message
+Messaging --> User2: message
+
+
+
+@enduml

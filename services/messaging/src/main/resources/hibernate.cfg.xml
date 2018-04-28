@@ -13,5 +13,6 @@
         <mapping class="com.github.punchat.messaging.domain.message.DirectMessage"/>
         <mapping class="com.github.punchat.messaging.domain.message.BroadcastMessage"/>
         <mapping class="com.github.punchat.messaging.domain.member.Member"/>
+        <mapping class="com.github.punchat.messaging.domain.member.Role"/>
     </session-factory>
 </hibernate-configuration>
