@@ -22,6 +22,7 @@ public class OAuthUtils {
         params.add("client_id", "client");
         params.add("username", username);
         params.add("password", password);
+        params.add("scope", "openid");
 
         ResultActions result
                 = mvc.perform(post("/oauth/token")

@@ -1,12 +1,17 @@
 package com.github.punchat.uaa.security;
 
 import com.github.punchat.uaa.account.AccountRepository;
+import com.github.punchat.uaa.security.properties.Client;
+import com.github.punchat.uaa.security.properties.MicroservicesRegistrationProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.builders.ClientDetailsServiceBuilder;
+import org.springframework.security.oauth2.config.annotation.builders.InMemoryClientDetailsServiceBuilder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -24,17 +29,26 @@ import java.util.Arrays;
 /**
  * @author Alex Ivchenko
  */
+@Slf4j
 @Configuration
 @EnableAuthorizationServer
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     private final AuthenticationManager authenticationManager;
     private final AccountRepository accountRepository;
     private final PasswordEncoder encoder;
+    private final MicroservicesRegistrationProperties microservices;
+    private final Client client;
 
-    public AuthServerConfig(AuthenticationManager authenticationManager, AccountRepository accountRepository, PasswordEncoder encoder) {
+    public AuthServerConfig(AuthenticationManager authenticationManager, AccountRepository accountRepository, PasswordEncoder encoder, MicroservicesRegistrationProperties microservices, Client client) {
         this.authenticationManager = authenticationManager;
         this.accountRepository = accountRepository;
         this.encoder = encoder;
+        if (microservices == null) {
+            log.info("there is no initial clients configuration");
+            microservices = new MicroservicesRegistrationProperties();
+        }
+        this.microservices = microservices;
+        this.client = client;
     }
 
     @Override
@@ -78,23 +92,20 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()
-                .withClient("client")
-                .secret(encoder.encode("secret"))
-                .scopes("openid")
-                .autoApprove(true)
-                .authorizedGrantTypes(
-                        "client_credentials",
-                        "authorization_code",
-                        "refresh_token",
-                        "implicit",
-                        "password")
-
-                .and()
-                .withClient("auth")
-                .secret(encoder.encode("pass"))
+        log.info("signing up {}", client.getClientId());
+        ClientDetailsServiceBuilder<InMemoryClientDetailsServiceBuilder> builder = clients.inMemory()
+                .withClient(client.getClientId())
+                .secret(encoder.encode(client.getClientSecret()))
                 .scopes("server")
                 .autoApprove(true)
-                .authorizedGrantTypes("client_credentials");
+                .authorizedGrantTypes("client_credentials")
+                .and();
+        for (MicroservicesRegistrationProperties.Microservice microservice : microservices.getClients()) {
+            log.info("signing up {}", microservice.getClientId());
+            builder = builder.withClient(microservice.getClientId())
+                    .secret(encoder.encode(microservice.getClientSecret()))
+                    .authorizedGrantTypes(microservice.getGrantTypes().stream().toArray(String[]::new))
+                    .and();
+        }
     }
 }
