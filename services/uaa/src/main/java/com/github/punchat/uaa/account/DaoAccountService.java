@@ -1,5 +1,6 @@
 package com.github.punchat.uaa.account;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.uaa.id.IdService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Alex Ivchenko
  */
 @Slf4j
+@Trace
 @Service
 public class DaoAccountService implements AccountService {
     private final IdService idService;

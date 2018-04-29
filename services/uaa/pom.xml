@@ -45,6 +45,11 @@
             <artifactId>punchat-web-starter</artifactId>
             <version>${punchat.ms.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.punchat</groupId>
+            <artifactId>punchat-logging-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.cloud</groupId>

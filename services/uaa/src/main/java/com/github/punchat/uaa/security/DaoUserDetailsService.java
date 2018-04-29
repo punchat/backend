@@ -1,5 +1,6 @@
 package com.github.punchat.uaa.security;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.uaa.account.Account;
 import com.github.punchat.uaa.account.AccountRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import java.util.Collections;
  * @author Alex Ivchenko
  */
 @Slf4j
+@Trace
 public class DaoUserDetailsService implements UserDetailsService {
     private final AccountRepository accountRepository;
 
