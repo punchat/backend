@@ -27,7 +27,9 @@ public class AuthContextImpl implements AuthContext {
             userInfo = new UserInfo(id, payload.getUsername());
         }
 
-        return new AuthImpl(userInfo, new ClientInfo(payload.getClientId()), payload.getScope());
+        AuthImpl auth = new AuthImpl(userInfo, new ClientInfo(payload.getClientId()), payload.getScope());
+        log.info("auth: {}", auth);
+        return auth;
     }
 
 }

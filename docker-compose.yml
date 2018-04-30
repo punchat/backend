@@ -50,3 +50,17 @@ services:
     ports:
       - 5672:${RABBITMQ_AMQP_PORT}
       - 15672:${RABBITMQ_UI_PORT}
+  messaging:
+    image: punchat/messaging
+    container_name: punchat_messaging
+    restart: always
+    environment:
+      clientId: ${MESSAGING_SERVICE_CLIENT_ID}
+      clientSecret: ${MESSAGING_SERVICE_CLIENT_SECRET}
+      PORT: ${MESSAGING_PORT}
+    expose:
+      - "${MESSAGING_PORT}"
+      - 4000 #debug
+    ports:
+      - 8787:${MESSAGING_PORT}
+      - 4000:4000 #debug
