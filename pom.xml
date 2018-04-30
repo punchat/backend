@@ -23,5 +23,6 @@
         <module>support/punchat-web-starter</module>
         <module>support/punchat-uaa-client-starter</module>
         <module>support/log</module>
+        <module>events</module>
     </modules>
 </project>

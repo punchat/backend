@@ -1,4 +1,4 @@
-package com.github.punchat.uaa.account.events;
+package com.github.punchat.events;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

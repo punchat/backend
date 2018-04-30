@@ -1,5 +1,3 @@
 spring:
   application:
     name: ${appName:messaging}
-  jpa:
-    show-sql: true

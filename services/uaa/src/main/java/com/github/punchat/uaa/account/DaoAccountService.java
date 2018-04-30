@@ -1,13 +1,11 @@
 package com.github.punchat.uaa.account;
 
+import com.github.punchat.events.AccountCreatedEvent;
 import com.github.punchat.log.Trace;
-import com.github.punchat.uaa.account.events.AccountCreatedEvent;
+import com.github.punchat.uaa.events.EventBus;
 import com.github.punchat.uaa.id.IdService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.messaging.Source;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,18 +20,17 @@ import java.time.LocalDateTime;
 @Slf4j
 @Trace
 @Service
-@EnableBinding(Source.class)
 public class DaoAccountService implements AccountService {
     private final IdService idService;
     private final AccountRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final Source source;
+    private final EventBus eventBus;
 
-    public DaoAccountService(IdService idService, AccountRepository repository, PasswordEncoder passwordEncoder, Source source) {
+    public DaoAccountService(IdService idService, AccountRepository repository, PasswordEncoder passwordEncoder, EventBus eventBus) {
         this.idService = idService;
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
-        this.source = source;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -45,7 +42,7 @@ public class DaoAccountService implements AccountService {
         }
         String encodedPassword = passwordEncoder.encode(password);
         Account account = new Account(idService.next(), username, encodedPassword);
-        source.output().send(MessageBuilder.withPayload(new AccountCreatedEvent(account.getId(), LocalDateTime.now(Clock.systemUTC()))).build());
+        eventBus.publish(new AccountCreatedEvent(account.getId(), LocalDateTime.now(Clock.systemUTC())));
         return repository.save(account);
     }
 

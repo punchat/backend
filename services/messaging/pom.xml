@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>messaging</artifactId>
     <version>0.0.1-SNAPSHOT</version>
@@ -16,9 +17,9 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../ms-parent/pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <dependencies>
+        <!-- Message Brokers -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream</artifactId>
@@ -27,7 +28,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-test-support</artifactId>
@@ -60,6 +60,16 @@
         <dependency>
             <groupId>com.github.punchat</groupId>
             <artifactId>punchat-uaa-client-starter</artifactId>
+            <version>${punchat.ms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.punchat</groupId>
+            <artifactId>events</artifactId>
+            <version>${punchat.ms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.punchat</groupId>
+            <artifactId>punchat-logging-starter</artifactId>
             <version>${punchat.ms.version}</version>
         </dependency>
 

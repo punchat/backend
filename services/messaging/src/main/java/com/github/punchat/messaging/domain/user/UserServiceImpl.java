@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.user;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.DirectChannel;
 import com.github.punchat.messaging.domain.channel.DirectChannelRepository;
 import com.github.punchat.messaging.id.IdService;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Trace
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -21,23 +23,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User createUser(Long id) {
+        User user = new User();
+        DirectChannel channel = new DirectChannel();
+
+        channel.setId(idService.next());
+        user.setId(idService.next());
+
+        user.setChannel(channel);
+        channel.setUser(user);
+
+        user = userRepository.save(user);
+        directChannelRepository.save(channel);
+        return user;
+    }
+
+    @Override
     @Transactional
     public User getUser(Long id) {
         Optional<User> found = userRepository.findById(id);
-        if (!found.isPresent()) {
-            User user = new User();
-            DirectChannel channel = new DirectChannel();
-
-            channel.setId(idService.next());
-            user.setId(idService.next());
-
-            user.setChannel(channel);
-            channel.setUser(user);
-
-            user = userRepository.save(user);
-            directChannelRepository.save(channel);
-            return user;
-        }
-        return found.get();
+        return found.orElseGet(() -> createUser(id));
     }
 }
