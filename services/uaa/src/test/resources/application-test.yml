@@ -1,3 +1,17 @@
 eureka:
   client:
     enabled: false
+security:
+  oauth2:
+    client:
+      client-id: auth
+      client-secret: pass
+uaa:
+  clients:
+    -
+      client-id: client
+      client-secret: secret
+      scopes:
+        - openid
+      grant-types:
+        - password

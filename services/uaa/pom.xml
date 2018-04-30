@@ -17,6 +17,28 @@
     </parent>
 
     <dependencies>
+        <!-- Message Brokers -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-stream-test-support</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Utils -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -38,6 +60,11 @@
             <groupId>com.github.punchat</groupId>
             <artifactId>punchat-web-starter</artifactId>
             <version>${punchat.ms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.punchat</groupId>
+            <artifactId>punchat-logging-starter</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

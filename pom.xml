@@ -22,5 +22,6 @@
         <module>support/punchat-ms-starter</module>
         <module>support/punchat-web-starter</module>
         <module>support/punchat-uaa-client-starter</module>
+        <module>support/log</module>
     </modules>
 </project>
