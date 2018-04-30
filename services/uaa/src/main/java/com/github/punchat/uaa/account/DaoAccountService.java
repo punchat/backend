@@ -1,5 +1,6 @@
 package com.github.punchat.uaa.account;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.uaa.account.events.AccountCreatedEvent;
 import com.github.punchat.uaa.id.IdService;
 import lombok.NonNull;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
  * @author Alex Ivchenko
  */
 @Slf4j
+@Trace
 @Service
 @EnableBinding(Source.class)
 public class DaoAccountService implements AccountService {
