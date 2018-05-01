@@ -60,7 +60,17 @@ services:
       PORT: ${MESSAGING_PORT}
     expose:
       - "${MESSAGING_PORT}"
-      - 4000 #debug
     ports:
       - 8787:${MESSAGING_PORT}
-      - 4000:4000 #debug
+  email-sender:
+    image: punchat/email-sender
+    container_name: punchat_email_sender
+    restart: always
+    environment:
+      clientId: ${EMAIL_SENDER_SERVICE_CLIENT_ID}
+      clientSecret: ${EMAIL_SENDER_SERVICE_CLIENT_SECRET}
+      PORT: ${EMAIL_SENDER_PORT}
+    expose:
+      - "${EMAIL_SENDER_PORT}"
+    ports:
+      - 8882:${EMAIL_SENDER_PORT}
