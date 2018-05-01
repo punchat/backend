@@ -18,6 +18,7 @@
         <module>services/uaa</module>
         <module>services/id</module>
         <module>services/messaging</module>
+        <module>services/email-sender</module>
         <module>spring-boot-parent</module>
         <module>support/punchat-ms-starter</module>
         <module>support/punchat-web-starter</module>
