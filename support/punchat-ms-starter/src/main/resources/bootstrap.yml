@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      label: dev
+      label: issue-43-nomad
       fail-fast: true
       retry:
         max-attempts: 5
@@ -20,7 +20,6 @@ spring:
       discovery:
         enabled: true
         serviceId: config
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://discovery:8761/eureka/
+    consul:
+      host: ${serviceUrlDefaultZone:consul}
+      port: ${serviceUrlDefaultPort:8500}
