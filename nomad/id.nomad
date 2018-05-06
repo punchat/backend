@@ -15,8 +15,8 @@ job "id-service" {
         clientSecret = "pass"
       }
       resources {
-        cpu = 500
-        memory = 500
+        cpu = 300
+        memory = 300
         network {
           port "http" {}
         }
