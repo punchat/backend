@@ -16,7 +16,7 @@ job "email-sender-service" {
       }
       resources {
         cpu = 300
-        memory = 300
+        memory = 400
         network {
           port "http" {}
         }

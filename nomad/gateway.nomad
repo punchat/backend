@@ -8,6 +8,7 @@ job "gateway-service" {
       config {
         image = "punchat/gateway"
         network_mode = "punchat"
+        network_aliases = ["gateway"]
       }
       env {
         port = 8080

@@ -8,13 +8,14 @@ job "config-service" {
       config {
         image = "punchat/config"
         network_mode = "punchat"
+        network_aliases = ["config"]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
       }
       resources {
         cpu = 300
-        memory = 300
+        memory = 400
         network {
           port "http" {}
         }
