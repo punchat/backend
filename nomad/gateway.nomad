@@ -16,7 +16,9 @@ job "gateway-service" {
         cpu = 300
         memory = 300
         network {
-          port = 8080
+          port "http" {
+            static = 8080
+          }
         }
       }
     }
