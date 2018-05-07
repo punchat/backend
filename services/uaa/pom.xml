@@ -51,25 +51,17 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-ms-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-web-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-logging-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>events</artifactId>
-            <version>${punchat.ms.version}</version>
+            <artifactId>punchat-all-starter</artifactId>
+            <version>${project.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.punchat</groupId>
+                    <artifactId>punchat-uaa-client-starter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
