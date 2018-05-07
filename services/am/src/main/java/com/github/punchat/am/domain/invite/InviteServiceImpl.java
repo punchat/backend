@@ -1,9 +1,12 @@
 package com.github.punchat.am.domain.invite;
 
+import com.github.punchat.am.domain.access.AccessCode;
 import com.github.punchat.am.domain.access.AccessCodeService;
+import com.github.punchat.am.events.AccessCodesBus;
 import com.github.punchat.am.events.InvitesToChannelBus;
 import com.github.punchat.am.events.InvitesToWorkspaceBus;
 import com.github.punchat.am.events.MembersBus;
+import com.github.punchat.events.AccessCodeGeneratedEvent;
 import com.github.punchat.events.InviteToChannelEvent;
 import com.github.punchat.events.InviteToWorkspaceEvent;
 import com.github.punchat.events.NewMemberInChannelEvent;
@@ -24,15 +27,16 @@ public class InviteServiceImpl implements InviteService {
     private final InvitesToChannelBus invitesToChannelBus;
     private final InvitesToWorkspaceBus invitesToWorkspaceBus;
     private final MembersBus membersBus;
+    private final AccessCodesBus accessCodesBus;
 
-    public InviteServiceImpl(AuthContext authContext,
-                             ChannelInviteRepository channelInviteRepository,
+    public InviteServiceImpl(AuthContext authContext, ChannelInviteRepository channelInviteRepository,
                              WorkspaceInviteRepository workspaceInviteRepository,
                              AccessCodeService accessCodeService,
                              IdService idService,
                              InvitesToChannelBus invitesToChannelBus,
                              InvitesToWorkspaceBus invitesToWorkspaceBus,
-                             MembersBus membersBus) {
+                             MembersBus membersBus,
+                             AccessCodesBus accessCodesBus) {
         this.authContext = authContext;
         this.channelInviteRepository = channelInviteRepository;
         this.workspaceInviteRepository = workspaceInviteRepository;
@@ -41,6 +45,7 @@ public class InviteServiceImpl implements InviteService {
         this.invitesToChannelBus = invitesToChannelBus;
         this.invitesToWorkspaceBus = invitesToWorkspaceBus;
         this.membersBus = membersBus;
+        this.accessCodesBus = accessCodesBus;
     }
 
     private Invite createInvite(Invite invite) {
@@ -51,9 +56,12 @@ public class InviteServiceImpl implements InviteService {
         return invite;
     }
 
-    @Override
     public ChannelInvite getInvite(Long recipientUserId, Long channelId) {
         return channelInviteRepository.findByRecipientUserIdAndChannelId(recipientUserId, channelId);
+    }
+
+    public WorkspaceInvite getInvite(String email) {
+        return workspaceInviteRepository.findByEmail(email);
     }
 
     @Override
@@ -85,11 +93,6 @@ public class InviteServiceImpl implements InviteService {
     }
 
     @Override
-    public WorkspaceInvite getInvite(String email) {
-        return workspaceInviteRepository.findByEmail(email);
-    }
-
-    @Override
     public String getEmailState(String email) {
         if (workspaceInviteRepository.existsByEmail(email)) {
             return workspaceInviteRepository.findByEmail(email).getState().toString();
@@ -112,11 +115,26 @@ public class InviteServiceImpl implements InviteService {
         if (workspaceInviteRepository.existsByEmail(email)) {
             WorkspaceInvite workspaceInvite = getInvite(email);
             workspaceInvite.setState(State.ANSWERED);
-            workspaceInvite.setAccessCode(accessCodeService.generateAccessCode(email));
+            workspaceInvite.setAccessCode(accessCodeService.generateAccessCode());
             workspaceInvite.setState(State.CODE_GENERATED);
             return workspaceInviteRepository.save(workspaceInvite);
         } else {
             throw new InviteDoNotFound(email);
         }
+    }
+
+    @Override
+    public boolean checkAccessCode(String email, String code) {
+        if (workspaceInviteRepository.existsByEmail(email)) {
+            WorkspaceInvite workspaceInvite = getInvite(email);
+            AccessCode accessCode = workspaceInvite.getAccessCode();
+            AccessCode checkCode = new AccessCode(code, LocalDateTime.now(Clock.systemUTC()));
+            if (accessCodeService.checkAccessCode(checkCode, accessCode)) {
+                accessCodesBus.publishAccessCodeGenerated(new AccessCodeGeneratedEvent(
+                        workspaceInvite.getEmail(), accessCode.getCode(), accessCode.getCreationTime()));
+                return true;
+            }
+        }
+        return false;
     }
 }

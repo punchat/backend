@@ -30,14 +30,14 @@ public class InviteController {
         return service.createWorkspaceInvite(invite);
     }
 
-    @GetMapping("/invites/emails/{email}")
-    public Invite get(@PathVariable String email) {
-        return service.getInvite(email);
+    @PostMapping("/invites/{email}/code")
+    public boolean checkAccessCode(@PathVariable String email,
+                                   @RequestBody String code) {
+        return service.checkAccessCode(email, code);
     }
 
-    @GetMapping("/invites/users/{userId}/channels/{channelId}/")
-    public Invite get(@PathVariable("userId") Long recipientUserId,
-                      @PathVariable("channelId") Long channelId) {
-        return service.getInvite(recipientUserId, channelId);
+    @GetMapping("/invites/emails/{email}/state")
+    public String getState(@PathVariable String email) {
+        return service.getEmailState(email);
     }
 }

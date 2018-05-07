@@ -1,7 +1,7 @@
 package com.github.punchat.am.domain.access;
 
 public interface AccessCodeService {
-    AccessCode generateAccessCode(String email);
+    AccessCode generateAccessCode();
 
-    boolean checkAccessCode(String email, String code);
+    boolean checkAccessCode(AccessCode checkCode, AccessCode accessCode);
 }

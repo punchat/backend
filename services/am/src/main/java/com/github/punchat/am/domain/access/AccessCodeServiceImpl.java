@@ -14,19 +14,18 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class AccessCodeServiceImpl implements AccessCodeService {
     private final AccessCodeRepository accessCodeRepository;
-    private final InviteService inviteService;
     private final IdService idService;
-    private final AccessCodesBus accessCodesBus;
 
-    public AccessCodeServiceImpl(AccessCodeRepository accessCodeRepository, InviteService inviteService, IdService idService, AccessCodesBus accessCodesBus) {
+
+    public AccessCodeServiceImpl(AccessCodeRepository accessCodeRepository,
+                                 InviteService inviteService,
+                                 IdService idService) {
         this.accessCodeRepository = accessCodeRepository;
-        this.inviteService = inviteService;
         this.idService = idService;
-        this.accessCodesBus = accessCodesBus;
     }
 
     @Override
-    public AccessCode generateAccessCode(String email) {
+    public AccessCode generateAccessCode() {
         AccessCode accessCode = new AccessCode();
         accessCode.setId(idService.next());
         String generatedNumericString = RandomStringUtils.randomNumeric(4);
@@ -36,18 +35,13 @@ public class AccessCodeServiceImpl implements AccessCodeService {
     }
 
     @Override
-    public boolean checkAccessCode(String email, String code) {
-        WorkspaceInvite workspaceInvite = inviteService.getInvite(email);
-        AccessCode accessCode = workspaceInvite.getAccessCode();
-        if (accessCode.getCode().equals(code) &&
-                ChronoUnit.MINUTES.between(accessCode.getCreationTime(),
-                        LocalDateTime.now(Clock.systemUTC())) < 60) {
-            workspaceInvite.setState(State.ACCEPTED);
-            accessCodesBus.publishAccessCodeGenerated(new AccessCodeGeneratedEvent(
-                    workspaceInvite.getEmail(), accessCode.getCode(), accessCode.getCreationTime()));
-            return true;
-        } else {
-            return false;
+    public boolean checkAccessCode(AccessCode checkCode, AccessCode accessCode) {
+        if (accessCode.getCode().equals(checkCode.getCode())) {
+            if (ChronoUnit.MINUTES.between(accessCode.getCreationTime(),
+                    LocalDateTime.now(Clock.systemUTC())) < 60) {
+                return true;
+            }
         }
+        return false;
     }
 }

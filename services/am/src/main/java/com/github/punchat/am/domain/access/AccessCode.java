@@ -1,6 +1,7 @@
 package com.github.punchat.am.domain.access;
 
 import com.github.punchat.am.domain.AbstractIdentifiableObject;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "access_code")
 @Entity
 public class AccessCode extends AbstractIdentifiableObject {

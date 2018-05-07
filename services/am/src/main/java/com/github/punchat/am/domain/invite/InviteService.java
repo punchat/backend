@@ -6,13 +6,11 @@ public interface InviteService {
 
     ChannelInvite acceptChannelInvite(Long recipientUserId, Long channelId);
 
-    ChannelInvite getInvite(Long recipientUserId, Long channelId);
-
     WorkspaceInvite createWorkspaceInvite(WorkspaceInvite invite);
 
     WorkspaceInvite acceptWorkspaceInvite(String email);
 
-    WorkspaceInvite getInvite(String email);
+    boolean checkAccessCode(String email, String code);
 
     String getEmailState(String email);
 }
