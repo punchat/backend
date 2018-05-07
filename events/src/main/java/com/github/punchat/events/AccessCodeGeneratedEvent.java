@@ -11,7 +11,8 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountCreatedEvent {
-    private long userId;
+public class AccessCodeGeneratedEvent {
+    private String email;
+    private String code;
     private LocalDateTime creationTime;
 }

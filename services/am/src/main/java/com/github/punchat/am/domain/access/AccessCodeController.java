@@ -14,9 +14,4 @@ public class AccessCodeController {
                                    @RequestBody String code) {
         return service.checkAccessCode(email, code);
     }
-
-    @GetMapping("/invites/{email}/code")
-    public String checkAccessCode(@PathVariable String email) {
-        return service.generateAccessCode(email);
-    }
 }

@@ -4,9 +4,15 @@ public interface InviteService {
 
     ChannelInvite createChannelInvite(ChannelInvite invite);
 
-    Invite getInvite(Long recipientUserId, Long channelId);
+    ChannelInvite acceptChannelInvite(Long recipientUserId, Long channelId);
 
-    Invite getInvite(String email);
+    ChannelInvite getInvite(Long recipientUserId, Long channelId);
 
     WorkspaceInvite createWorkspaceInvite(WorkspaceInvite invite);
+
+    WorkspaceInvite acceptWorkspaceInvite(String email);
+
+    WorkspaceInvite getInvite(String email);
+
+    String getEmailState(String email);
 }

@@ -11,7 +11,10 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountCreatedEvent {
-    private long userId;
+public class InviteToChannelEvent {
+    private long senderUserId;
+    private long recipientUserId;
+    private long channelId;
+    private String state;
     private LocalDateTime creationTime;
 }

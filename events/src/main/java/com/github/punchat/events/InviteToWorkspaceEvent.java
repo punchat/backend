@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountCreatedEvent {
-    private long userId;
+public class InviteToWorkspaceEvent {
+    private long senderUserId;
+    private String email;
+    private String state;
     private LocalDateTime creationTime;
 }

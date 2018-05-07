@@ -24,27 +24,23 @@ public class AccessCodeServiceImpl implements AccessCodeService {
     }
 
     @Override
-    public String generateAccessCode(String email) {
+    public AccessCode generateAccessCode(String email) {
         AccessCode accessCode = new AccessCode();
         accessCode.setId(idService.next());
         String generatedNumericString = RandomStringUtils.randomNumeric(4);
         accessCode.setCode(generatedNumericString);
         accessCode.setCreationTime(LocalDateTime.now(Clock.systemUTC()));
-        accessCode = accessCodeRepository.save(accessCode);
-        WorkspaceInvite invite = (WorkspaceInvite) inviteService.getInvite(email);
-        invite.setAccessCode(accessCode);
-        invite.setState(State.SENT);
-        return generatedNumericString;
+        return accessCodeRepository.save(accessCode);
     }
 
     @Override
     public boolean checkAccessCode(String email, String code) {
-        WorkspaceInvite invite = (WorkspaceInvite) inviteService.getInvite(email);
-        AccessCode accessCode = invite.getAccessCode();
+        WorkspaceInvite workspaceInvite = inviteService.getInvite(email);
+        AccessCode accessCode = workspaceInvite.getAccessCode();
         if (accessCode.getCode().equals(code) &&
                 ChronoUnit.MINUTES.between(accessCode.getCreationTime(),
                         LocalDateTime.now(Clock.systemUTC())) < 60) {
-            invite.setState(State.ACCEPTED);
+            workspaceInvite.setState(State.ACCEPTED);
             return true;
         } else {
             return false;

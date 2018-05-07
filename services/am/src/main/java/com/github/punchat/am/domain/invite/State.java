@@ -1,5 +1,5 @@
 package com.github.punchat.am.domain.invite;
 
 public enum State {
-    CREATED, SENT, ACCEPTED
+    CREATED, SENT, ANSWERED, CODE_GENERATED, ACCEPTED
 }

@@ -6,31 +6,38 @@ public class InviteController {
     private final InviteService service;
 
     public InviteController(InviteService service) {
-
         this.service = service;
     }
 
-    @GetMapping("/invites/{userId}/{channelId}/")
-    public Invite get(@PathVariable("userId") Long recipientUserId,
-                      @PathVariable("channelId") Long channelId) {
-        return service.getInvite(recipientUserId, channelId);
+    @PatchMapping("/invites/users/{userId}/channels/{channelId}/accept")
+    public void accept(@PathVariable("userId") Long recipientUserId,
+                       @PathVariable("channelId") Long channelId) {
+        service.acceptChannelInvite(recipientUserId, channelId);
     }
 
-    @GetMapping("/invites/{email}")
-    public Invite get(@PathVariable String email) {
-
-        return service.getInvite(email);
+    @PatchMapping("/invites/emails/{email}/accept")
+    public void accept(@PathVariable String email) {
+        service.acceptWorkspaceInvite(email);
     }
 
-    @PostMapping("/invites/{userId}/{channelId}")
+    @PostMapping("/invites/users/{userId}/channels/{channelId}")
     public ChannelInvite create(@RequestBody ChannelInvite invite) {
-
         return service.createChannelInvite(invite);
     }
 
-    @PostMapping("/invites/{email}")
+    @PostMapping("/invites/emails/{email}")
     public WorkspaceInvite create(@RequestBody WorkspaceInvite invite) {
-
         return service.createWorkspaceInvite(invite);
+    }
+
+    @GetMapping("/invites/emails/{email}")
+    public Invite get(@PathVariable String email) {
+        return service.getInvite(email);
+    }
+
+    @GetMapping("/invites/users/{userId}/channels/{channelId}/")
+    public Invite get(@PathVariable("userId") Long recipientUserId,
+                      @PathVariable("channelId") Long channelId) {
+        return service.getInvite(recipientUserId, channelId);
     }
 }
