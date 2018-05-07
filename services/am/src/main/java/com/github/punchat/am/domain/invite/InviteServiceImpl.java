@@ -1,10 +1,12 @@
 package com.github.punchat.am.domain.invite;
 
 import com.github.punchat.am.domain.access.AccessCodeService;
-import com.github.punchat.am.events.EventBus;
-import com.github.punchat.events.AccessCodeGeneratedEvent;
+import com.github.punchat.am.events.InvitesToChannelBus;
+import com.github.punchat.am.events.InvitesToWorkspaceBus;
+import com.github.punchat.am.events.MembersBus;
 import com.github.punchat.events.InviteToChannelEvent;
 import com.github.punchat.events.InviteToWorkspaceEvent;
+import com.github.punchat.events.NewMemberInChannelEvent;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.stereotype.Service;
 import com.github.punchat.am.id.IdService;
@@ -19,20 +21,26 @@ public class InviteServiceImpl implements InviteService {
     private final WorkspaceInviteRepository workspaceInviteRepository;
     private final AccessCodeService accessCodeService;
     private final IdService idService;
-    private final EventBus eventBus;
+    private final InvitesToChannelBus invitesToChannelBus;
+    private final InvitesToWorkspaceBus invitesToWorkspaceBus;
+    private final MembersBus membersBus;
 
     public InviteServiceImpl(AuthContext authContext,
                              ChannelInviteRepository channelInviteRepository,
                              WorkspaceInviteRepository workspaceInviteRepository,
+                             AccessCodeService accessCodeService,
                              IdService idService,
-                             EventBus eventBus,
-                             AccessCodeService accessCodeService) {
+                             InvitesToChannelBus invitesToChannelBus,
+                             InvitesToWorkspaceBus invitesToWorkspaceBus,
+                             MembersBus membersBus) {
         this.authContext = authContext;
         this.channelInviteRepository = channelInviteRepository;
         this.workspaceInviteRepository = workspaceInviteRepository;
-        this.idService = idService;
-        this.eventBus = eventBus;
         this.accessCodeService = accessCodeService;
+        this.idService = idService;
+        this.invitesToChannelBus = invitesToChannelBus;
+        this.invitesToWorkspaceBus = invitesToWorkspaceBus;
+        this.membersBus = membersBus;
     }
 
     private Invite createInvite(Invite invite) {
@@ -51,9 +59,9 @@ public class InviteServiceImpl implements InviteService {
     @Override
     public ChannelInvite createChannelInvite(ChannelInvite channelInvite) {
         channelInvite = (ChannelInvite) createInvite(channelInvite);
-        eventBus.publishInviteToChannelCreated(new InviteToChannelEvent(channelInvite.getSenderUserId(),
-                channelInvite.getRecipientUserId(), channelInvite.getChannelId(),
-                channelInvite.getState().toString(), LocalDateTime.now(Clock.systemUTC())));
+        invitesToChannelBus.publishInviteToChannel(new InviteToChannelEvent(
+                channelInvite.getSenderUserId(), channelInvite.getRecipientUserId(),
+                channelInvite.getChannelId(), LocalDateTime.now(Clock.systemUTC())));
         return channelInviteRepository.save(channelInvite);
     }
 
@@ -64,9 +72,9 @@ public class InviteServiceImpl implements InviteService {
             if (channelInviteRepository.existsByChannelId(channelId)) {
                 ChannelInvite channelInvite = getInvite(recipientUserId, channelId);
                 channelInvite.setState(State.ACCEPTED);
-                eventBus.publishInviteToChannelAccepted(new InviteToChannelEvent(channelInvite.getSenderUserId(),
-                        recipientUserId, channelId,
-                        channelInvite.getState().toString(), LocalDateTime.now(Clock.systemUTC())));
+                membersBus.publishNewMemberInChannel(new NewMemberInChannelEvent(
+                        channelInvite.getSenderUserId(), recipientUserId,
+                        channelId, channelInvite.getId()));
                 return channelInviteRepository.save(channelInvite);
             } else {
                 throw new ChannelDoNotFound(channelId);
@@ -85,8 +93,7 @@ public class InviteServiceImpl implements InviteService {
     public String getEmailState(String email) {
         if (workspaceInviteRepository.existsByEmail(email)) {
             return workspaceInviteRepository.findByEmail(email).getState().toString();
-        }
-        else {
+        } else {
             return "NOT CREATED";
         }
     }
@@ -94,8 +101,8 @@ public class InviteServiceImpl implements InviteService {
     @Override
     public WorkspaceInvite createWorkspaceInvite(WorkspaceInvite workspaceInvite) {
         workspaceInvite = (WorkspaceInvite) createInvite(workspaceInvite);
-        eventBus.publishInviteToWorkspaceCreated(new InviteToWorkspaceEvent(workspaceInvite.getSenderUserId(),
-                workspaceInvite.getEmail(), workspaceInvite.getState().toString(),
+        invitesToWorkspaceBus.publishInviteToWorkspace(new InviteToWorkspaceEvent(
+                workspaceInvite.getSenderUserId(), workspaceInvite.getEmail(),
                 LocalDateTime.now(Clock.systemUTC())));
         return workspaceInviteRepository.save(workspaceInvite);
     }
@@ -107,8 +114,6 @@ public class InviteServiceImpl implements InviteService {
             workspaceInvite.setState(State.ANSWERED);
             workspaceInvite.setAccessCode(accessCodeService.generateAccessCode(email));
             workspaceInvite.setState(State.CODE_GENERATED);
-            eventBus.publishAccessCodeGenerated(new AccessCodeGeneratedEvent(workspaceInvite.getEmail(),
-                    workspaceInvite.getAccessCode().getCode(), workspaceInvite.getAccessCode().getCreationTime()));
             return workspaceInviteRepository.save(workspaceInvite);
         } else {
             throw new InviteDoNotFound(email);

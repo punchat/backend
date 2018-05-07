@@ -11,8 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InviteToWorkspaceEvent {
-    private long senderUserId;
-    private String email;
-    private LocalDateTime creationTime;
+public class NewMemberInChannelEvent {
+    private long userId;
+    private long recipientUserId;
+    private long channelId;
+    private long invitationId;
 }

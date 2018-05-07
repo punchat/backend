@@ -1,7 +1,9 @@
 package com.github.punchat.am.domain.access;
 
 import com.github.punchat.am.domain.invite.*;
+import com.github.punchat.am.events.AccessCodesBus;
 import com.github.punchat.am.id.IdService;
+import com.github.punchat.events.AccessCodeGeneratedEvent;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +16,13 @@ public class AccessCodeServiceImpl implements AccessCodeService {
     private final AccessCodeRepository accessCodeRepository;
     private final InviteService inviteService;
     private final IdService idService;
+    private final AccessCodesBus accessCodesBus;
 
-    public AccessCodeServiceImpl(AccessCodeRepository accessCodeRepository,
-                                 InviteService inviteService,
-                                 IdService idService) {
+    public AccessCodeServiceImpl(AccessCodeRepository accessCodeRepository, InviteService inviteService, IdService idService, AccessCodesBus accessCodesBus) {
         this.accessCodeRepository = accessCodeRepository;
         this.inviteService = inviteService;
         this.idService = idService;
+        this.accessCodesBus = accessCodesBus;
     }
 
     @Override
@@ -41,6 +43,8 @@ public class AccessCodeServiceImpl implements AccessCodeService {
                 ChronoUnit.MINUTES.between(accessCode.getCreationTime(),
                         LocalDateTime.now(Clock.systemUTC())) < 60) {
             workspaceInvite.setState(State.ACCEPTED);
+            accessCodesBus.publishAccessCodeGenerated(new AccessCodeGeneratedEvent(
+                    workspaceInvite.getEmail(), accessCode.getCode(), accessCode.getCreationTime()));
             return true;
         } else {
             return false;
