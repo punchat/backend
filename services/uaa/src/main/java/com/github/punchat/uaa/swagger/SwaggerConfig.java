@@ -1,6 +1,7 @@
 package com.github.punchat.uaa.swagger;
 
 import com.github.punchat.uaa.UaaApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import java.util.Collections;
 
 @EnableSwagger2
 @Configuration
+@ConditionalOnProperty("swagger.enabled")
 @ComponentScan(basePackageClasses = UaaApplication.class)
 public class SwaggerConfig {
     private final SecurityContext securityContext;
