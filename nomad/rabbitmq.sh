@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker run -h rabbitmq --name rabbitmq --network=punchat --alias=rabbitmq rabbitmq:management
+docker run -h rabbitmq --name rabbitmq --network=punchat --network-alias=rabbitmq rabbitmq:management
