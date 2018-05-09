@@ -26,11 +26,6 @@
         </dependency>
         <dependency>
             <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-logging-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
             <artifactId>events</artifactId>
             <version>${punchat.ms.version}</version>
         </dependency>
@@ -43,11 +38,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-stream-binder-rabbit</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-stream-test-support</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <!-- Utils -->
@@ -68,11 +58,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

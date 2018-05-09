@@ -1,4 +1,4 @@
-package com.github.punchat.am.domain.invite;
+package com.github.punchat.am.domain.invite.workspace;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

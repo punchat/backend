@@ -1,10 +1,14 @@
 package com.github.punchat.am.domain.access;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.github.punchat.am.domain.AbstractIdentifiableObject;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonSetter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "access_code")
+@Table(name = "ACCESS_CODE")
 @Entity
 public class AccessCode extends AbstractIdentifiableObject {
     @Column(name = "code", nullable = false)

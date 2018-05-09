@@ -1,9 +1,8 @@
 package com.github.punchat.am.domain.access;
 
-import com.github.punchat.am.domain.invite.*;
-import com.github.punchat.am.events.AccessCodesBus;
+import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidation;
+import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidationResult;
 import com.github.punchat.am.id.IdService;
-import com.github.punchat.events.AccessCodeGeneratedEvent;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +13,14 @@ import java.time.temporal.ChronoUnit;
 @Service
 public class AccessCodeServiceImpl implements AccessCodeService {
     private final AccessCodeRepository accessCodeRepository;
+    private final AccessCodeCheck accessCodeCheck;
     private final IdService idService;
 
-
     public AccessCodeServiceImpl(AccessCodeRepository accessCodeRepository,
-                                 InviteService inviteService,
+                                 AccessCodeCheck accessCodeCheck,
                                  IdService idService) {
         this.accessCodeRepository = accessCodeRepository;
+        this.accessCodeCheck = accessCodeCheck;
         this.idService = idService;
     }
 
@@ -35,13 +35,30 @@ public class AccessCodeServiceImpl implements AccessCodeService {
     }
 
     @Override
-    public boolean checkAccessCode(AccessCode checkCode, AccessCode accessCode) {
-        if (accessCode.getCode().equals(checkCode.getCode())) {
-            if (ChronoUnit.MINUTES.between(accessCode.getCreationTime(),
-                    LocalDateTime.now(Clock.systemUTC())) < 60) {
-                return true;
+    public AccessCode refreshAccessCode(AccessCode accessCode) {
+        if (ChronoUnit.MINUTES.between(
+                accessCode.getCreationTime(), LocalDateTime.now(Clock.systemUTC()))
+                > accessCodeCheck.getRefreshTimeInMinutes()) {
+            return generateAccessCode();
+        } else {
+            throw new AccessCodeCanNotRefresh(accessCodeCheck.getRefreshTimeInMinutes() -
+                    ChronoUnit.MINUTES.between(accessCode.getCreationTime(),
+                            LocalDateTime.now(Clock.systemUTC())));
+        }
+    }
+
+    @Override
+    public AccessCodeValidationResult checkAccessCode(AccessCode accessCode,
+                                                      AccessCodeValidation accessCodeValidation) {
+        if (accessCode.getCode().equals(accessCodeValidation.getCode())) {
+            if (ChronoUnit.MINUTES.between(
+                    accessCode.getCreationTime(), LocalDateTime.now(Clock.systemUTC()))
+                    < accessCodeCheck.getAccessTimeInMinutes()) {
+                return AccessCodeValidationResult.VALID;
+            } else {
+                return AccessCodeValidationResult.OUTDATED;
             }
         }
-        return false;
+        return AccessCodeValidationResult.INVALID;
     }
 }

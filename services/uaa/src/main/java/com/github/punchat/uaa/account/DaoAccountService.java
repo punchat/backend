@@ -26,7 +26,10 @@ public class DaoAccountService implements AccountService {
     private final PasswordEncoder passwordEncoder;
     private final EventBus eventBus;
 
-    public DaoAccountService(IdService idService, AccountRepository repository, PasswordEncoder passwordEncoder, EventBus eventBus) {
+    public DaoAccountService(IdService idService,
+                             AccountRepository repository,
+                             PasswordEncoder passwordEncoder,
+                             EventBus eventBus) {
         this.idService = idService;
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;

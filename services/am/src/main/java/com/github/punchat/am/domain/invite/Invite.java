@@ -1,7 +1,7 @@
 package com.github.punchat.am.domain.invite;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.punchat.am.domain.AbstractIdentifiableObject;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,8 +18,10 @@ public class Invite extends AbstractIdentifiableObject {
 
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
+    @JsonIgnore
     private State state;
 
     @Column(name = "sender_user_id")
+    @JsonIgnore
     private Long senderUserId;
 }
