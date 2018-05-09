@@ -1,7 +1,7 @@
 spring:
   cloud:
     config:
-      label: issue-43-nomad
+      label: ${branch:dev}
       fail-fast: true
       retry:
         max-attempts: 5
