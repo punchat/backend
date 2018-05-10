@@ -1,5 +1,5 @@
 package com.github.punchat.am.domain.invite.workspace.dto;
 
-public enum EmailValidationResult {
+public enum WorkspaceEmailValidationResult {
     VALID, INVALID
 }

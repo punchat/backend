@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmailValidation {
+public class WorkspaceEmailValidation {
     private String email;
-    private EmailValidationResult emailValidationResult;
+    private WorkspaceEmailValidationResult workspaceEmailValidationResult;
 }

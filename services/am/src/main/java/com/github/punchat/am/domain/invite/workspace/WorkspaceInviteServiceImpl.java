@@ -3,16 +3,11 @@ package com.github.punchat.am.domain.invite.workspace;
 import com.github.punchat.am.domain.access.AccessCodeService;
 import com.github.punchat.am.domain.invite.InviteService;
 import com.github.punchat.am.domain.invite.State;
-import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidation;
-import com.github.punchat.am.domain.invite.workspace.dto.EmailValidation;
-import com.github.punchat.am.domain.invite.workspace.dto.EmailValidationResult;
+import com.github.punchat.am.domain.invite.workspace.dto.*;
 import com.github.punchat.am.events.EventBus;
 import com.github.punchat.events.AccessCodeGeneratedEvent;
 import com.github.punchat.events.InviteToWorkspaceEvent;
 import org.springframework.stereotype.Service;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
 
 @Service
 public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
@@ -31,38 +26,40 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
         this.eventBus = eventBus;
     }
 
-    public WorkspaceInvite getInvite(String email) {
+    public WorkspaceInvite getInvite(java.lang.String email) {
         return workspaceInviteRepository.findByEmail(email);
     }
 
     @Override
-    public WorkspaceInvite createWorkspaceInvite(WorkspaceInvite invite) {
-        WorkspaceInvite workspaceInvite;
-        if (workspaceInviteRepository.existsByEmail(invite.getEmail())) {
-            workspaceInvite = workspaceInviteRepository.findByEmail(invite.getEmail());
+    public void createWorkspaceInvite(String email) {
+        WorkspaceInvite invite = new WorkspaceInvite();
+        if (workspaceInviteRepository.existsByEmail(email)) {
+            invite = workspaceInviteRepository.findByEmail(email);
         } else {
-            workspaceInvite = (WorkspaceInvite) inviteService.createInvite(invite);
-            workspaceInvite.setEmail(invite.getEmail());
+            invite = (WorkspaceInvite) inviteService.createInvite(invite);
+            invite.setEmail(email);
+            workspaceInviteRepository.save(invite);
         }
         eventBus.publish(new InviteToWorkspaceEvent(
-                workspaceInvite.getSenderUserId(), workspaceInvite.getEmail(),
-                LocalDateTime.now(Clock.systemUTC())));
-        return workspaceInviteRepository.save(workspaceInvite);
+                invite.getSenderUserId(), invite.getEmail()));
     }
 
     @Override
-    public EmailValidation checkWorkspaceInvite(String email) {
+    public WorkspaceEmailValidation checkWorkspaceInvite(String email) {
         if (workspaceInviteRepository.existsByEmail(email)) {
             WorkspaceInvite workspaceInvite = getInvite(email);
             workspaceInvite.setState(State.ANSWERED);
             workspaceInviteRepository.save(workspaceInvite);
-            return new EmailValidation(email, EmailValidationResult.VALID);
+            return new WorkspaceEmailValidation(email, WorkspaceEmailValidationResult.VALID);
         }
-        return new EmailValidation(email, EmailValidationResult.INVALID);
+        return new WorkspaceEmailValidation(email, WorkspaceEmailValidationResult.INVALID);
     }
 
     @Override
-    public WorkspaceInvite requestAccessCode(String email) {
+    public void requestAccessCode(String email) {
+        if (!workspaceInviteRepository.existsByEmail(email)) {
+            throw new WorkspaceInviteDoNotFound(email);
+        }
         WorkspaceInvite workspaceInvite = getInvite(email);
         if (workspaceInvite.getAccessCode() != null) {
             workspaceInvite.setAccessCode(
@@ -71,17 +68,15 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
         workspaceInvite.setAccessCode(accessCodeService.generateAccessCode());
         eventBus.publish(new AccessCodeGeneratedEvent(
                 workspaceInvite.getEmail(),
-                workspaceInvite.getAccessCode().getCode(),
-                workspaceInvite.getAccessCode().getCreationTime()));
-        return workspaceInviteRepository.save(workspaceInvite);
+                workspaceInvite.getAccessCode().getCode()));
+        workspaceInviteRepository.save(workspaceInvite);
     }
 
     @Override
-    public AccessCodeValidation checkAccessCode(AccessCodeValidation accessCodeValidation) {
-        WorkspaceInvite workspaceInvite = getInvite(accessCodeValidation.getEmail());
-        accessCodeValidation.setAccessCodeValidationResult(
-                accessCodeService.checkAccessCode(
-                        workspaceInvite.getAccessCode(), accessCodeValidation));
-        return accessCodeValidation;
+    public WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation validation) {
+        WorkspaceInvite email = getInvite(validation.getEmail());
+        AccessCodeValidationResult result =
+                accessCodeService.checkAccessCode(email.getAccessCode(), validation);
+        return new WorkspaceAccessCodeValidationResult(validation.getEmail(), validation.getCode(), result);
     }
 }

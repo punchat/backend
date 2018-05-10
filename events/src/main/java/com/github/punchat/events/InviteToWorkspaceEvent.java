@@ -14,5 +14,4 @@ import java.time.LocalDateTime;
 public class InviteToWorkspaceEvent {
     private long senderUserId;
     private String email;
-    private LocalDateTime creationTime;
 }

@@ -1,15 +1,16 @@
 package com.github.punchat.am.domain.invite.workspace;
 
-import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidation;
-import com.github.punchat.am.domain.invite.workspace.dto.EmailValidation;
+import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceAccessCodeValidation;
+import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceAccessCodeValidationResult;
+import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceEmailValidation;
 
 public interface WorkspaceInviteService {
 
-    WorkspaceInvite createWorkspaceInvite(WorkspaceInvite invite);
+    void createWorkspaceInvite(String email);
 
-    EmailValidation checkWorkspaceInvite(String email);
+    WorkspaceEmailValidation checkWorkspaceInvite(String email);
 
-    WorkspaceInvite requestAccessCode(String email);
+    void requestAccessCode(String email);
 
-    AccessCodeValidation checkAccessCode(AccessCodeValidation accessCodeValidation);
+    WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation workspaceAccessCodeValidation);
 }

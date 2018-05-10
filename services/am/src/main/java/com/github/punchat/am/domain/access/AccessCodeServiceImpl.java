@@ -1,6 +1,6 @@
 package com.github.punchat.am.domain.access;
 
-import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidation;
+import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceAccessCodeValidation;
 import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidationResult;
 import com.github.punchat.am.id.IdService;
 import org.apache.commons.lang.RandomStringUtils;
@@ -49,8 +49,8 @@ public class AccessCodeServiceImpl implements AccessCodeService {
 
     @Override
     public AccessCodeValidationResult checkAccessCode(AccessCode accessCode,
-                                                      AccessCodeValidation accessCodeValidation) {
-        if (accessCode.getCode().equals(accessCodeValidation.getCode())) {
+                                                      WorkspaceAccessCodeValidation workspaceAccessCodeValidation) {
+        if (accessCode.getCode().equals(workspaceAccessCodeValidation.getCode())) {
             if (ChronoUnit.MINUTES.between(
                     accessCode.getCreationTime(), LocalDateTime.now(Clock.systemUTC()))
                     < accessCodeCheck.getAccessTimeInMinutes()) {

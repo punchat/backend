@@ -42,7 +42,7 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
         channelInvite = (ChannelInvite) inviteService.createInvite(channelInvite);
         eventBus.publish(new InviteToChannelEvent(
                 channelInvite.getSenderUserId(), channelInvite.getRecipientUserId(),
-                channelInvite.getChannelId(), LocalDateTime.now(Clock.systemUTC())));
+                channelInvite.getChannelId()));
         return channelInviteRepository.save(channelInvite);
     }
 

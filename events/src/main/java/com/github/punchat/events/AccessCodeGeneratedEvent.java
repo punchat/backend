@@ -14,5 +14,4 @@ import java.time.LocalDateTime;
 public class AccessCodeGeneratedEvent {
     private String email;
     private String code;
-    private LocalDateTime creationTime;
 }

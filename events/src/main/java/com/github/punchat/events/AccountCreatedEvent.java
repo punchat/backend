@@ -13,5 +13,4 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class AccountCreatedEvent {
     private long userId;
-    private LocalDateTime creationTime;
 }

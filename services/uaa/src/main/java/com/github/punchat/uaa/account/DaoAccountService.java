@@ -45,7 +45,7 @@ public class DaoAccountService implements AccountService {
         }
         String encodedPassword = passwordEncoder.encode(password);
         Account account = new Account(idService.next(), username, encodedPassword);
-        eventBus.publish(new AccountCreatedEvent(account.getId(), LocalDateTime.now(Clock.systemUTC())));
+        eventBus.publish(new AccountCreatedEvent(account.getId()));
         return repository.save(account);
     }
 

@@ -15,5 +15,4 @@ public class InviteToChannelEvent {
     private long senderUserId;
     private long recipientUserId;
     private long channelId;
-    private LocalDateTime creationTime;
 }
