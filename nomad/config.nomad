@@ -2,7 +2,7 @@ job "config-service" {
   datacenters = ["dc1"]
   type = "service"
   group "config" {
-    count = 2
+    count = 1
     task "config-api" {
       driver = "docker"
       config {

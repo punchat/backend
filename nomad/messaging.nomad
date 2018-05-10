@@ -2,7 +2,7 @@ job "messaging-service" {
   datacenters = ["dc1"]
   type = "service"
   group "messaging" {
-    count = 2
+    count = 1
     task "messaging-api" {
       driver = "docker"
       config {
@@ -16,7 +16,7 @@ job "messaging-service" {
       }
       resources {
         cpu = 300
-        memory = 300
+        memory = 450
         network {
           port "http" {}
         }

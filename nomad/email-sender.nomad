@@ -2,7 +2,7 @@ job "email-sender-service" {
   datacenters = ["dc1"]
   type = "service"
   group "emails" {
-    count = 2
+    count = 1
     task "emails-api" {
       driver = "docker"
       config {

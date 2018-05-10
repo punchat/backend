@@ -2,7 +2,7 @@ job "uaa-service" {
   datacenters = ["dc1"]
   type = "service"
   group "uaa" {
-    count = 2
+    count = 1
     task "uaa-api" {
       driver = "docker"
       config {

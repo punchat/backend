@@ -21,7 +21,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 ).permitAll()
                 .antMatchers("/actuator/health**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/accounts").permitAll()
                 .anyRequest().authenticated();
     }
 }
