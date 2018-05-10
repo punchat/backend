@@ -1,5 +1,5 @@
 server:
-  port: ${PORT}
+  port: ${PORT:8086}
 spring:
   cloud:
     config:
@@ -9,9 +9,9 @@ spring:
 ---
 spring:
   profiles: registration-first
-eureka:
-   client:
-     registerWithEureka: true
-     fetchRegistry: true
-     serviceUrl:
-       defaultZone: http://discovery:8761/eureka/
+  cloud:
+    consul:
+      discovery:
+        enabled: true
+      host: ${serviceUrlDefaultZone:consul}
+      port: ${serviceUrlDefaultPort:8500}

@@ -19,11 +19,14 @@
         <module>services/id</module>
         <module>services/messaging</module>
         <module>services/email-sender</module>
+        <module>services/gateway</module>
         <module>spring-boot-parent</module>
         <module>support/punchat-ms-starter</module>
         <module>support/punchat-web-starter</module>
         <module>support/punchat-uaa-client-starter</module>
-        <module>support/log</module>
+        <module>support/punchat-swagger-starter</module>
+        <module>support/punchat-log-starter</module>
+        <module>support/punchat-all-starter</module>
         <module>events</module>
     </modules>
 </project>

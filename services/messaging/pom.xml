@@ -49,6 +49,12 @@
 
         <dependency>
             <groupId>com.github.punchat</groupId>
+            <artifactId>punchat-swagger-starter</artifactId>
+            <version>${punchat.ms.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.punchat</groupId>
             <artifactId>punchat-ms-starter</artifactId>
             <version>${punchat.ms.version}</version>
         </dependency>

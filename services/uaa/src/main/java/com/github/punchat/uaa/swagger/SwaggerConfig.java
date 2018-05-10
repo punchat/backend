@@ -1,7 +1,6 @@
-package com.github.punchat.messaging.swagger;
+package com.github.punchat.uaa.swagger;
 
-import com.github.punchat.messaging.MessagingApplication;
-import lombok.extern.slf4j.Slf4j;
+import com.github.punchat.uaa.UaaApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,11 +15,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Collections;
 
-@Slf4j
-@Configuration
 @EnableSwagger2
+@Configuration
 @ConditionalOnProperty("swagger.enabled")
-@ComponentScan(basePackageClasses = MessagingApplication.class)
+@ComponentScan(basePackageClasses = UaaApplication.class)
 public class SwaggerConfig {
     private final SecurityContext securityContext;
     private final SecurityScheme securityScheme;

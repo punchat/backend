@@ -1,0 +1,7 @@
+export port=8080
+export clientId=messaging
+export clientSecret=pass
+export accessKeyUri=http://localhost:9999/oauth/token_key
+export accessTokenUri=http://localhost:9999/oauth/token
+export serviceUrlDefaultZone=localhost
+export rabbitmqHost=localhost
