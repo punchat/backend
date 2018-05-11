@@ -14,18 +14,18 @@ public class WorkspaceInviteController {
 
     @PostMapping("/workspace/members/")
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody java.lang.String email) {
+    public void create(@RequestBody String email) {
        service.createWorkspaceInvite(email);
     }
 
     @PutMapping("/workspace/members/check")
-    public WorkspaceEmailValidation check(@RequestBody java.lang.String email) {
+    public WorkspaceEmailValidation check(@RequestBody String email) {
         return service.checkWorkspaceInvite(email);
     }
 
     @PutMapping("/workspace/codes/request")
     @ResponseStatus(HttpStatus.OK)
-    public void requestAccessCode(@RequestBody java.lang.String email) {
+    public void requestAccessCode(@RequestBody String email) {
         service.requestAccessCode(email);
     }
 

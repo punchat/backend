@@ -13,20 +13,10 @@
     <artifactId>account-management</artifactId>
 
     <dependencies>
-        <!-- Starters -->
+        <!-- Starter -->
         <dependency>
             <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-ms-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-uaa-client-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>events</artifactId>
+            <artifactId>punchat-all-starter</artifactId>
             <version>${punchat.ms.version}</version>
         </dependency>
 
