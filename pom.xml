@@ -28,5 +28,6 @@
         <module>support/punchat-log-starter</module>
         <module>support/punchat-all-starter</module>
         <module>events</module>
+        <module>dto</module>
     </modules>
 </project>
