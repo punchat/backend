@@ -1,7 +1,7 @@
 package com.github.punchat.am.domain.access;
 
-import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceAccessCodeValidation;
-import com.github.punchat.am.domain.invite.workspace.dto.AccessCodeValidationResult;
+import com.github.punchat.dto.AccessCodeValidationResult;
+import com.github.punchat.dto.WorkspaceAccessCodeValidation;
 
 public interface AccessCodeService {
     AccessCode generateAccessCode();

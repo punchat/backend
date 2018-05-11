@@ -88,7 +88,6 @@ services:
       - "${AM_PORT}"
     ports:
       - 8686:${AM_PORT}
-=======
   email-sender:
     image: punchat/email-sender
     container_name: punchat_email_sender
@@ -101,4 +100,3 @@ services:
       - "${EMAIL_SENDER_PORT}"
     ports:
       - 8882:${EMAIL_SENDER_PORT}
->>>>>>> dev

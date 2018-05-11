@@ -3,10 +3,9 @@ package com.github.punchat.am.domain.invite.workspace;
 import com.github.punchat.am.domain.access.AccessCodeService;
 import com.github.punchat.am.domain.invite.InviteService;
 import com.github.punchat.am.domain.invite.State;
-import com.github.punchat.am.domain.invite.workspace.dto.*;
 import com.github.punchat.am.events.EventBus;
-import com.github.punchat.events.AccessCodeGeneratedEvent;
-import com.github.punchat.events.InviteToWorkspaceEvent;
+import com.github.punchat.dto.*;
+import com.github.punchat.events.*;
 import org.springframework.stereotype.Service;
 
 @Service

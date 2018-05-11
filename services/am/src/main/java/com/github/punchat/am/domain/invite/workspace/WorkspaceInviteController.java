@@ -1,8 +1,6 @@
 package com.github.punchat.am.domain.invite.workspace;
 
-import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceAccessCodeValidation;
-import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceAccessCodeValidationResult;
-import com.github.punchat.am.domain.invite.workspace.dto.WorkspaceEmailValidation;
+import com.github.punchat.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

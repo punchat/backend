@@ -8,9 +8,6 @@ import com.github.punchat.events.NewMemberInChannelEvent;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.stereotype.Service;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-
 @Service
 public class ChannelInviteServiceImpl implements ChannelInviteService {
     private final ChannelInviteRepository channelInviteRepository;
