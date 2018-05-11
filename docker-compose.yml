@@ -76,3 +76,17 @@ services:
       - "${AM_PORT}"
     ports:
       - 8686:${AM_PORT}
+=======
+  email-sender:
+    image: punchat/email-sender
+    container_name: punchat_email_sender
+    restart: always
+    environment:
+      clientId: ${EMAIL_SENDER_SERVICE_CLIENT_ID}
+      clientSecret: ${EMAIL_SENDER_SERVICE_CLIENT_SECRET}
+      PORT: ${EMAIL_SENDER_PORT}
+    expose:
+      - "${EMAIL_SENDER_PORT}"
+    ports:
+      - 8882:${EMAIL_SENDER_PORT}
+>>>>>>> dev
