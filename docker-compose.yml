@@ -10,13 +10,25 @@ services:
       - "${CONFIG_PORT}"
     ports:
       - 8888:${CONFIG_PORT}
+  gateway:
+    image: punchat/gateway
+    container_name: punchat_gateway
+    restart: always
+    environment:
+      PORT: ${GATEWAY_PORT}
+    expose:
+      - "${GATEWAY_PORT}"
+    ports:
+      - 8082:${GATEWAY_PORT}
   uaa:
     image: punchat/uaa
     container_name: punchat_uaa
     restart: always
     environment:
+      appName: uaams
       clientId: ${UAA_SERVICE_CLIENT_ID}
       clientSecret: ${UAA_SERVICE_CLIENT_SECRET}
+      accessTokenUri: http://gateway:8082/uaa/oauth/token
       PORT: ${UAA_PORT}
     expose:
       - "${UAA_PORT}"

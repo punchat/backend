@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.punchat.starter.swagger.SwaggerPropertiesConfig,\
+  com.github.punchat.starter.swagger.SwaggerConfigBeans

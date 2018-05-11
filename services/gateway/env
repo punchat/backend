@@ -1,0 +1,2 @@
+export port=8083
+export serviceUrlDefaultZone=localhost

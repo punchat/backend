@@ -20,18 +20,8 @@
     <dependencies>
         <dependency>
             <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-ms-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-web-starter</artifactId>
-            <version>${punchat.ms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.punchat</groupId>
-            <artifactId>punchat-uaa-client-starter</artifactId>
-            <version>${punchat.ms.version}</version>
+            <artifactId>punchat-all-starter</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
