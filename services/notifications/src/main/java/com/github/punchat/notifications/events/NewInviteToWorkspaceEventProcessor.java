@@ -20,7 +20,7 @@ public class NewInviteToWorkspaceEventProcessor {
         this.builder = builder;
     }
 
-    @StreamListener(Channels.NEW_WORKSPACE_INVITATION_EVENTS)
+    @StreamListener(Channels.INVITE_TO_WORKSPACE_EVENTS)
     public void newInviteToWorkspaceEvent(InviteToWorkspaceEvent event) {
         channel.send(MessageBuilder.withPayload(builder.create(event)).build());
     }

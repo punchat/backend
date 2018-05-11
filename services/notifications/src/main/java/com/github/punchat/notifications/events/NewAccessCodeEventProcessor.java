@@ -3,8 +3,6 @@ package com.github.punchat.notifications.events;
 import com.github.punchat.events.AccessCodeGeneratedEvent;
 import com.github.punchat.events.NewEmailCreatedEvent;
 import com.github.punchat.log.Trace;
-import com.github.punchat.notifications.events.Channels;
-import com.github.punchat.notifications.events.NewEmailEventBuilder;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.MessageChannel;
@@ -24,7 +22,7 @@ public class NewAccessCodeEventProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    @StreamListener(Channels.NEW_ACCESS_CODE_EVENTS)
+    @StreamListener(Channels.ACCESS_CODE_GENERATED_EVENTS)
     public void newAccessCodeEvent(AccessCodeGeneratedEvent event) {
         NewEmailCreatedEvent email = builder.create(event);
         emails.send(MessageBuilder.withPayload(email).build());

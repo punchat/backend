@@ -6,17 +6,17 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.SubscribableChannel;
 
 public interface Channels {
-    String NEW_ACCESS_CODE_EVENTS = "newAccessCodeEvents";
+    String ACCESS_CODE_GENERATED_EVENTS = "accessCodeGeneratedEvents";
 
-    String NEW_WORKSPACE_INVITATION_EVENTS = "newWorkspaceInvitationEvents";
+    String INVITE_TO_WORKSPACE_EVENTS = "inviteToWorkspaceEvents";
 
     String NEW_EMAILS_EVENTS = "newEmailsEvents";
 
-    @Input(NEW_ACCESS_CODE_EVENTS)
-    SubscribableChannel newAccessCodeEvents();
+    @Input(ACCESS_CODE_GENERATED_EVENTS)
+    SubscribableChannel accessCodeGeneratedEvents();
 
-    @Input(NEW_WORKSPACE_INVITATION_EVENTS)
-    SubscribableChannel newWorkspaceInvitationEvents();
+    @Input(INVITE_TO_WORKSPACE_EVENTS)
+    SubscribableChannel inviteToWorkspaceEvents();
 
     @Output(NEW_EMAILS_EVENTS)
     MessageChannel newEmailsEvents();
