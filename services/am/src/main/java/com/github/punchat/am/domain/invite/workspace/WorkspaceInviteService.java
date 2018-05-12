@@ -1,6 +1,6 @@
 package com.github.punchat.am.domain.invite.workspace;
 
-import com.github.punchat.dto.*;
+import com.github.punchat.dto.am.*;
 
 public interface WorkspaceInviteService {
 
@@ -11,4 +11,6 @@ public interface WorkspaceInviteService {
     void requestAccessCode(NewAccessCodeRequest accessCodeRequest);
 
     WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation accessCodeValidation);
+
+//    void checkRegistrationData(WorkspaceRegistration registrationDto);
 }

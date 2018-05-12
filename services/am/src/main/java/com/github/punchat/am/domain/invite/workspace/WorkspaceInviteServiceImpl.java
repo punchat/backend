@@ -4,7 +4,7 @@ import com.github.punchat.am.domain.access.AccessCodeService;
 import com.github.punchat.am.domain.invite.InviteService;
 import com.github.punchat.am.domain.invite.State;
 import com.github.punchat.am.events.EventBus;
-import com.github.punchat.dto.*;
+import com.github.punchat.dto.am.*;
 import com.github.punchat.events.*;
 import com.github.punchat.log.Trace;
 import org.springframework.stereotype.Service;
@@ -62,12 +62,12 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
     public void requestAccessCode(NewAccessCodeRequest accessCodeRequest) {
         String email = accessCodeRequest.getEmail();
         if (!workspaceInviteRepository.existsByEmail(email)) {
-            throw new WorkspaceInviteDoNotFound(email);
+            throw new WorkspaceInviteWasNotFound(email);
         }
         WorkspaceInvite workspaceInvite = getInvite(email);
         if (workspaceInvite.getAccessCode() != null) {
             workspaceInvite.setAccessCode(
-                       accessCodeService.refreshAccessCode(workspaceInvite.getAccessCode()));
+                    accessCodeService.refreshAccessCode(workspaceInvite.getAccessCode()));
         }
         workspaceInvite.setAccessCode(accessCodeService.generateAccessCode());
         eventBus.publish(new AccessCodeGeneratedEvent(
@@ -84,4 +84,9 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
         return new WorkspaceAccessCodeValidationResult(accessCodeValidation.getEmail(),
                 accessCodeValidation.getCode(), result);
     }
+
+//    @Override
+//    public void checkRegistrationData(WorkspaceRegistration registrationDto) {
+//        WorkspaceInvite email
+//    }
 }
