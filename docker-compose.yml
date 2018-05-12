@@ -72,8 +72,22 @@ services:
       PORT: ${MESSAGING_PORT}
     expose:
       - "${MESSAGING_PORT}"
+      - 4000 #debug
     ports:
       - 8787:${MESSAGING_PORT}
+      - 4000:4000 #debug
+  account-management:
+    image: punchat/account-management
+    container_name: punchat_account-management
+    restart: always
+    environment:
+      clientId: ${AM_SERVICE_CLIENT_ID}
+      clientSecret: ${AM_SERVICE_CLIENT_SECRET}
+      PORT: ${AM_PORT}
+    expose:
+      - "${AM_PORT}"
+    ports:
+      - 8686:${AM_PORT}
   email-sender:
     image: punchat/email-sender
     container_name: punchat_email_sender

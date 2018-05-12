@@ -26,7 +26,10 @@ public class DaoAccountService implements AccountService {
     private final PasswordEncoder passwordEncoder;
     private final EventBus eventBus;
 
-    public DaoAccountService(IdService idService, AccountRepository repository, PasswordEncoder passwordEncoder, EventBus eventBus) {
+    public DaoAccountService(IdService idService,
+                             AccountRepository repository,
+                             PasswordEncoder passwordEncoder,
+                             EventBus eventBus) {
         this.idService = idService;
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
@@ -42,7 +45,7 @@ public class DaoAccountService implements AccountService {
         }
         String encodedPassword = passwordEncoder.encode(password);
         Account account = new Account(idService.next(), username, encodedPassword);
-        eventBus.publish(new AccountCreatedEvent(account.getId(), LocalDateTime.now(Clock.systemUTC())));
+        eventBus.publish(new AccountCreatedEvent(account.getId()));
         return repository.save(account);
     }
 
