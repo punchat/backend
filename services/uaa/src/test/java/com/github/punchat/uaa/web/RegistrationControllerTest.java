@@ -18,37 +18,43 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.containsString;
 
-/**
- * @author Alex Ivchenko
- */
 @RunWith(SpringRunner.class)
 @WebMvcTest(secure = false)
 @ActiveProfiles("test")
 @Import(ValidationErrorHandlingConfiguration.class)
 @MockBean({AccountService.class, RegistrationService.class})
-public class AccountControllerTest {
+public class RegistrationControllerTest {
     @Autowired
     private MockMvc mvc;
 
     @Test
-    public void missNewPasswordField_whenChangingPassword_thenBadRequestWithExplainingMessage() throws Exception {
+    public void givenRightData_whenCreatingAccount_thenStatusIsCreated() throws Exception {
         mvc.perform(
-                MockMvcRequestBuilders.put("/accounts/@me/password")
-                        .content("{\"oldPassword\": \"old\"}")
+                MockMvcRequestBuilders.post("/accounts")
+                        .content("{\"username\": \"alex\", \"password\": \"pass\", \"code\": \"3245\", \"email\": \"test\"}")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-        )
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string(containsString("newPassword")));
+        ).andExpect(MockMvcResultMatchers.status().isCreated());
     }
 
     @Test
-    public void missOldPasswordField_whenChangingPassword_thenBadRequestWithExplainingMessage() throws Exception {
+    public void missUsernameField_whenCreatingAccount_thenBadRequestWithExplainingMessage() throws Exception {
         mvc.perform(
-                MockMvcRequestBuilders.put("/accounts/@me/password")
-                        .content("{\"newPassword\": \"new\"}")
+                MockMvcRequestBuilders.post("/accounts")
+                        .content("{\"password\": \"pass\"}")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
         )
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string(containsString("oldPassword")));
+                .andExpect(MockMvcResultMatchers.content().string(containsString("username")));
+    }
+
+    @Test
+    public void missPasswordField_whenCreatingAccount_thenBadRequestWithExplainingMessage() throws Exception {
+        mvc.perform(
+                MockMvcRequestBuilders.post("/accounts")
+                        .content("{\"username\": \"user\"}")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.content().string(containsString("password")));
     }
 }

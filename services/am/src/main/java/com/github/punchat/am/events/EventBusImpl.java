@@ -4,11 +4,13 @@ import com.github.punchat.events.AccessCodeGeneratedEvent;
 import com.github.punchat.events.InviteToChannelEvent;
 import com.github.punchat.events.InviteToWorkspaceEvent;
 import com.github.punchat.events.NewMemberInChannelEvent;
+import com.github.punchat.log.Trace;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+@Trace
 @Component
 @EnableBinding(Channels.class)
 public class EventBusImpl implements EventBus {
