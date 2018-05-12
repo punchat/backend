@@ -5,7 +5,9 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class WorkspaceEmailValidationResult {
-    private String email;
-    private EmailValidationResult result;
+public class WorkspaceRegistration {
+    String email;
+    String username;
+    String password;
+    String code;
 }

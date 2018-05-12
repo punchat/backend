@@ -9,5 +9,5 @@ public interface AccessCodeService {
     AccessCode refreshAccessCode(AccessCode accessCode);
 
     AccessCodeValidationResult checkAccessCode(AccessCode accessCode,
-                                               WorkspaceAccessCodeValidation workspaceAccessCodeValidation);
+                                               WorkspaceAccessCodeValidation accessCodeValidation);
 }

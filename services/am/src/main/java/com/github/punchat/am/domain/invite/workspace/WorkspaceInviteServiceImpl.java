@@ -32,32 +32,35 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
     }
 
     @Override
-    public void createWorkspaceInvite(String email) {
-        WorkspaceInvite invite = new WorkspaceInvite();
+    public void createWorkspaceInvite(WorkspaceInvitation invitation) {
+        String email = invitation.getEmail();
+        WorkspaceInvite workspaceInvite = new WorkspaceInvite();
         if (workspaceInviteRepository.existsByEmail(email)) {
-            invite = workspaceInviteRepository.findByEmail(email);
+            workspaceInvite = workspaceInviteRepository.findByEmail(email);
         } else {
-            invite = (WorkspaceInvite) inviteService.createInvite(invite);
-            invite.setEmail(email);
-            workspaceInviteRepository.save(invite);
+            workspaceInvite = (WorkspaceInvite) inviteService.createInvite(workspaceInvite);
+            workspaceInvite.setEmail(email);
+            workspaceInviteRepository.save(workspaceInvite);
         }
         eventBus.publish(new InviteToWorkspaceEvent(
-                invite.getSenderUserId(), invite.getEmail()));
+                workspaceInvite.getSenderUserId(), invitation.getEmail()));
     }
 
     @Override
-    public WorkspaceEmailValidation checkWorkspaceInvite(String email) {
+    public WorkspaceEmailValidationResult checkWorkspaceInvite(WorkspaceEmailValidation emailValidation) {
+        String email = emailValidation.getEmail();
         if (workspaceInviteRepository.existsByEmail(email)) {
             WorkspaceInvite workspaceInvite = getInvite(email);
             workspaceInvite.setState(State.ANSWERED);
             workspaceInviteRepository.save(workspaceInvite);
-            return new WorkspaceEmailValidation(email, WorkspaceEmailValidationResult.VALID);
+            return new WorkspaceEmailValidationResult(email, EmailValidationResult.VALID);
         }
-        return new WorkspaceEmailValidation(email, WorkspaceEmailValidationResult.INVALID);
+        return new WorkspaceEmailValidationResult(email, EmailValidationResult.INVALID);
     }
 
     @Override
-    public void requestAccessCode(String email) {
+    public void requestAccessCode(NewAccessCodeRequest accessCodeRequest) {
+        String email = accessCodeRequest.getEmail();
         if (!workspaceInviteRepository.existsByEmail(email)) {
             throw new WorkspaceInviteDoNotFound(email);
         }
@@ -74,10 +77,11 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
     }
 
     @Override
-    public WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation validation) {
-        WorkspaceInvite email = getInvite(validation.getEmail());
+    public WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation accessCodeValidation) {
+        WorkspaceInvite email = getInvite(accessCodeValidation.getEmail());
         AccessCodeValidationResult result =
-                accessCodeService.checkAccessCode(email.getAccessCode(), validation);
-        return new WorkspaceAccessCodeValidationResult(validation.getEmail(), validation.getCode(), result);
+                accessCodeService.checkAccessCode(email.getAccessCode(), accessCodeValidation);
+        return new WorkspaceAccessCodeValidationResult(accessCodeValidation.getEmail(),
+                accessCodeValidation.getCode(), result);
     }
 }

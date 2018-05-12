@@ -7,5 +7,4 @@ import lombok.Data;
 @Data
 public class WorkspaceEmailValidation {
     private String email;
-    private WorkspaceEmailValidationResult workspaceEmailValidationResult;
 }

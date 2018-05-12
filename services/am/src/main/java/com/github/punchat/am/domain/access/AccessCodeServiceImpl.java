@@ -49,15 +49,14 @@ public class AccessCodeServiceImpl implements AccessCodeService {
 
     @Override
     public AccessCodeValidationResult checkAccessCode(AccessCode accessCode,
-                                                      WorkspaceAccessCodeValidation workspaceAccessCodeValidation) {
-        if (accessCode.getCode().equals(workspaceAccessCodeValidation.getCode())) {
+                                                      WorkspaceAccessCodeValidation accessCodeValidation) {
+        if (accessCode.getCode().equals(accessCodeValidation.getCode())) {
             if (ChronoUnit.MINUTES.between(
                     accessCode.getCreationTime(), LocalDateTime.now(Clock.systemUTC()))
                     < accessCodeCheck.getAccessTimeInMinutes()) {
                 return AccessCodeValidationResult.VALID;
-            } else {
-                return AccessCodeValidationResult.OUTDATED;
             }
+            return AccessCodeValidationResult.OUTDATED;
         }
         return AccessCodeValidationResult.INVALID;
     }

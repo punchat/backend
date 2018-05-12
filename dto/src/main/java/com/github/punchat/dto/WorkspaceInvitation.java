@@ -5,7 +5,6 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class WorkspaceEmailValidationResult {
+public class WorkspaceInvitation {
     private String email;
-    private EmailValidationResult result;
 }

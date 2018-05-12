@@ -4,11 +4,11 @@ import com.github.punchat.dto.*;
 
 public interface WorkspaceInviteService {
 
-    void createWorkspaceInvite(String email);
+    void createWorkspaceInvite(WorkspaceInvitation invitation);
 
-    WorkspaceEmailValidation checkWorkspaceInvite(String email);
+    WorkspaceEmailValidationResult checkWorkspaceInvite(WorkspaceEmailValidation emailValidation);
 
-    void requestAccessCode(String email);
+    void requestAccessCode(NewAccessCodeRequest accessCodeRequest);
 
-    WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation workspaceAccessCodeValidation);
+    WorkspaceAccessCodeValidationResult checkAccessCode(WorkspaceAccessCodeValidation accessCodeValidation);
 }
