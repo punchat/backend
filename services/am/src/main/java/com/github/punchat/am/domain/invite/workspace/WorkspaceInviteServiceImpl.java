@@ -6,8 +6,10 @@ import com.github.punchat.am.domain.invite.State;
 import com.github.punchat.am.events.EventBus;
 import com.github.punchat.dto.*;
 import com.github.punchat.events.*;
+import com.github.punchat.log.Trace;
 import org.springframework.stereotype.Service;
 
+@Trace
 @Service
 public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
     private final WorkspaceInviteRepository workspaceInviteRepository;

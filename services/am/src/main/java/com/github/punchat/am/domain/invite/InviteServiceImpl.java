@@ -1,10 +1,11 @@
 package com.github.punchat.am.domain.invite;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.stereotype.Service;
 import com.github.punchat.am.id.IdService;
 
-
+@Trace
 @Service
 public class InviteServiceImpl implements InviteService {
     private final AuthContext authContext;
