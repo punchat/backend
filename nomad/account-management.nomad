@@ -16,7 +16,7 @@ job "am-service" {
       }
       resources {
         cpu = 300
-        memory = 300
+        memory = 450
         network {
           port "http" {}
         }
