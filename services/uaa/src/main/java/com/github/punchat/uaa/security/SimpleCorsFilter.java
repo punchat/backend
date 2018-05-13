@@ -1,6 +1,7 @@
 package com.github.punchat.uaa.security;
 
 import com.github.punchat.log.Trace;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import java.io.IOException;
 
 @Trace
 @Component
+@Profile("!test")
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class SimpleCorsFilter implements Filter {
 

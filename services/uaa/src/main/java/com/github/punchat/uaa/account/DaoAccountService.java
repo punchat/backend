@@ -1,8 +1,6 @@
 package com.github.punchat.uaa.account;
 
-import com.github.punchat.events.AccountCreatedEvent;
 import com.github.punchat.log.Trace;
-import com.github.punchat.uaa.events.EventBus;
 import com.github.punchat.uaa.id.IdService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
 
 /**
  * @author Alex Ivchenko
@@ -24,16 +19,13 @@ public class DaoAccountService implements AccountService {
     private final IdService idService;
     private final AccountRepository repository;
     private final PasswordEncoder passwordEncoder;
-    private final EventBus eventBus;
 
     public DaoAccountService(IdService idService,
                              AccountRepository repository,
-                             PasswordEncoder passwordEncoder,
-                             EventBus eventBus) {
+                             PasswordEncoder passwordEncoder) {
         this.idService = idService;
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
-        this.eventBus = eventBus;
     }
 
     @Override
@@ -45,7 +37,6 @@ public class DaoAccountService implements AccountService {
         }
         String encodedPassword = passwordEncoder.encode(password);
         Account account = new Account(idService.next(), username, encodedPassword);
-        eventBus.publish(new AccountCreatedEvent(account.getId()));
         return repository.save(account);
     }
 

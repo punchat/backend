@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AccountCreatedEvent {
     private long userId;
+    private String email;
 }
