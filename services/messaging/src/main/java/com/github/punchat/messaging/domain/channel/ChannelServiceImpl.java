@@ -2,7 +2,7 @@ package com.github.punchat.messaging.domain.channel;
 
 import com.github.punchat.messaging.domain.member.Member;
 import com.github.punchat.messaging.domain.member.MemberRepository;
-import com.github.punchat.messaging.domain.member.Role;
+import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserService;
 import com.github.punchat.messaging.id.IdService;
