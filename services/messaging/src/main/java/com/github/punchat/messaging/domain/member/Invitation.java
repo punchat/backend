@@ -10,5 +10,6 @@ import javax.validation.constraints.NotNull;
 public class Invitation {
     @NotNull
     private Long userId;
-    private String role;
+    @NotNull
+    private Long role;
 }
