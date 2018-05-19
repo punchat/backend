@@ -1,6 +1,6 @@
 package com.github.punchat.messaging.domain.role;
 
-import com.github.punchat.dto.am.messaging.role.RoleDto;
+import com.github.punchat.dto.messaging.role.RoleDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;

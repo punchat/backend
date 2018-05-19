@@ -1,6 +1,6 @@
 package com.github.punchat.messaging.domain.message;
 
-import com.github.punchat.dto.am.messaging.message.MessageDto;
+import com.github.punchat.dto.messaging.message.MessageDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;

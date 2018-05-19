@@ -1,6 +1,11 @@
 package com.github.punchat.uaa.registration;
 
-import com.github.punchat.dto.am.*;
+import com.github.punchat.dto.am.access.AccessCodeValidationResult;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidation;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidationResult;
+import com.github.punchat.dto.am.invite.EmailValidationResult;
+import com.github.punchat.dto.am.invite.WorkspaceEmailValidation;
+import com.github.punchat.dto.am.invite.WorkspaceEmailValidationResult;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 

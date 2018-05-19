@@ -1,7 +1,7 @@
 package com.github.punchat.messaging.domain.member;
 
-import com.github.punchat.dto.am.messaging.member.InvitationDto;
-import com.github.punchat.dto.am.messaging.member.MemberDto;
+import com.github.punchat.dto.messaging.member.InvitationDto;
+import com.github.punchat.dto.messaging.member.MemberDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

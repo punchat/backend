@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am.messaging.role;
+package com.github.punchat.dto.messaging.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

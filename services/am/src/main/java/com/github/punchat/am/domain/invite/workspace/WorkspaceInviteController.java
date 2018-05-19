@@ -1,11 +1,11 @@
 package com.github.punchat.am.domain.invite.workspace;
 
-import com.github.punchat.dto.am.am.access.NewAccessCodeRequest;
-import com.github.punchat.dto.am.am.access.WorkspaceAccessCodeValidation;
-import com.github.punchat.dto.am.am.access.WorkspaceAccessCodeValidationResult;
-import com.github.punchat.dto.am.am.invite.WorkspaceEmailValidation;
-import com.github.punchat.dto.am.am.invite.WorkspaceEmailValidationResult;
-import com.github.punchat.dto.am.am.invite.WorkspaceInvitation;
+import com.github.punchat.dto.am.access.NewAccessCodeRequest;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidation;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidationResult;
+import com.github.punchat.dto.am.invite.WorkspaceEmailValidation;
+import com.github.punchat.dto.am.invite.WorkspaceEmailValidationResult;
+import com.github.punchat.dto.am.invite.WorkspaceInvitation;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;

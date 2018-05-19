@@ -1,7 +1,7 @@
-package com.github.punchat.dto.am.messaging.message;
+package com.github.punchat.dto.messaging.message;
 
-import com.github.punchat.dto.am.messaging.user.UserDto;
-import com.github.punchat.dto.am.messaging.resource.ResourceDto;
+import com.github.punchat.dto.messaging.user.UserDto;
+import com.github.punchat.dto.messaging.resource.ResourceDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

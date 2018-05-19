@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am.am.invite;
+package com.github.punchat.dto.am.invite;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

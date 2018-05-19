@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am.messaging.resource;
+package com.github.punchat.dto.am.invite;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ResourceDto {
-    private long id;
+public class WorkspaceInvitation {
+    private String email;
 }

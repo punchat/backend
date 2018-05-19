@@ -1,6 +1,6 @@
 package com.github.punchat.messaging.domain.channel;
 
-import com.github.punchat.dto.am.messaging.channel.BroadcastChannelDto;
+import com.github.punchat.dto.messaging.channel.BroadcastChannelDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,9 +1,9 @@
 package com.github.punchat.uaa.registration;
 
-import com.github.punchat.dto.am.WorkspaceAccessCodeValidation;
-import com.github.punchat.dto.am.WorkspaceAccessCodeValidationResult;
-import com.github.punchat.dto.am.WorkspaceEmailValidation;
-import com.github.punchat.dto.am.WorkspaceEmailValidationResult;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidation;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidationResult;
+import com.github.punchat.dto.am.invite.WorkspaceEmailValidation;
+import com.github.punchat.dto.am.invite.WorkspaceEmailValidationResult;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PutMapping;
 

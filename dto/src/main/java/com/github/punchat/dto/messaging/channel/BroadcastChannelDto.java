@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am.messaging.channel;
+package com.github.punchat.dto.messaging.channel;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
