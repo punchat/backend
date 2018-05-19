@@ -1,4 +1,4 @@
-package com.github.punchat.messaging.domain.member;
+package com.github.punchat.messaging.domain.role;
 
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
 import lombok.Getter;

@@ -1,8 +1,8 @@
 package com.github.punchat.am.domain.access;
 
 import com.github.punchat.am.id.IdService;
-import com.github.punchat.dto.am.AccessCodeValidationResult;
-import com.github.punchat.dto.am.WorkspaceAccessCodeValidation;
+import com.github.punchat.dto.am.access.AccessCodeValidationResult;
+import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidation;
 import com.github.punchat.log.Trace;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.stereotype.Service;

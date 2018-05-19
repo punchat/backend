@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ChannelInviteAlreadyCreated extends RuntimeException {
 
     public ChannelInviteAlreadyCreated(Long channelId, Long userId) {
-        super(String.format("Invite to Channel with channelId: %d " +
+        super(String.format("Invite to BroadcastChannelDto with channelId: %d " +
                 "for User with userId: %d already created", channelId, userId));
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ChannelInviteDoNotFoundException extends RuntimeException {
 
     public ChannelInviteDoNotFoundException(Long channelId, Long userId) {
-        super(String.format("Invite to Channel with channelId: %d " +
+        super(String.format("Invite to BroadcastChannelDto with channelId: %d " +
                 "for User with userId: %d don't found", channelId, userId));
     }
 }

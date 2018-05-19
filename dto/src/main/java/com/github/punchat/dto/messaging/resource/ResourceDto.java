@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am;
+package com.github.punchat.dto.messaging.resource;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class NewAccessCodeRequest {
-    private String email;
+public class ResourceDto {
+    private long id;
 }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

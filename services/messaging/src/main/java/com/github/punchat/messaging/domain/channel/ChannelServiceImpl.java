@@ -2,7 +2,7 @@ package com.github.punchat.messaging.domain.channel;
 
 import com.github.punchat.messaging.domain.member.Member;
 import com.github.punchat.messaging.domain.member.MemberRepository;
-import com.github.punchat.messaging.domain.member.Role;
+import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserService;
 import com.github.punchat.messaging.id.IdService;
@@ -19,7 +19,12 @@ public class ChannelServiceImpl implements ChannelService {
     private final IdService idService;
     private final MemberRepository memberRepository;
 
-    public ChannelServiceImpl(AuthContext authContext, BroadcastChannelRepository broadcastChannelRepository, DirectChannelRepository directChannelRepository, UserService userService, IdService idService, MemberRepository memberRepository) {
+    public ChannelServiceImpl(AuthContext authContext,
+                              BroadcastChannelRepository broadcastChannelRepository,
+                              DirectChannelRepository directChannelRepository,
+                              UserService userService,
+                              IdService idService,
+                              MemberRepository memberRepository) {
         this.authContext = authContext;
         this.broadcastChannelRepository = broadcastChannelRepository;
         this.directChannelRepository = directChannelRepository;
