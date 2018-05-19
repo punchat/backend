@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.message;
 
+import com.github.punchat.dto.am.messaging.message.MessageDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -15,13 +16,14 @@ public class MessageController {
 
     //writing new message to some channel (permission check)
     @PostMapping("/channels/{id}/messages")
-    public Message create(@PathVariable Long id, @RequestBody Message message) {
+    public MessageDto create(@PathVariable Long id, @RequestBody Message message) {
         throw new UnsupportedOperationException();
     }
 
     //getting all messages of some channel
     @GetMapping("/channels/{id}/messages")
-    public Set<Message> get(@PathVariable Long id) {
+    public Set<MessageDto> get(@PathVariable Long id) {
+
         throw new UnsupportedOperationException();
     }
 }

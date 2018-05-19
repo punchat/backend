@@ -1,5 +1,7 @@
 package com.github.punchat.messaging.domain.member;
 
+import com.github.punchat.dto.am.messaging.member.InvitationDto;
+import com.github.punchat.dto.am.messaging.member.MemberDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,16 +15,17 @@ public class MemberController {
         this.service = service;
     }
 
-    //inviting user to channel (user can refuse invitation, here is only permission check)
+    //inviting user to channel (user can refuse invitationDto, here is only permission check)
     @PutMapping("/channels/{channelId}/members")
-    public void inviteUser(@PathVariable("channelId") Long channelId, @Valid @RequestBody Invitation invitation) {
+    public void inviteUser(@PathVariable("channelId") Long channelId, @Valid @RequestBody InvitationDto invitationDto) {
         throw new UnsupportedOperationException();
     }
 
     //getting members of channel
     @GetMapping("/channels/{channelId}/members")
-    public Set<Member> members(@PathVariable("channelId") Long channelId) {
-        return service.findByChannel(channelId);
+    public Set<MemberDto> members(@PathVariable("channelId") Long channelId) {
+        throw new UnsupportedOperationException();
+        //return service.findByChannel(channelId);
     }
 
     //excluding member of channel (permission check)

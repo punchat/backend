@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.role;
 
+import com.github.punchat.dto.am.messaging.role.RoleDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
@@ -14,19 +15,20 @@ public class RoleController {
 
     //creating custom role
     @PostMapping("/role")
-    public Role create(@RequestBody Role role) {
-        return service.createRole(role);
+    public RoleDto create(@RequestBody RoleDto role) {
+        throw new UnsupportedOperationException();
+//        return service.createRole(role);
     }
 
     //getting particular role
     @GetMapping("/role/{id}")
-    public Role get(@PathVariable Long id) {
+    public RoleDto get(@PathVariable Long id) {
         throw new UnsupportedOperationException();
     }
 
     //getting all existing roles
     @GetMapping("/role")
-    public Set<Role> get() {
+    public Set<RoleDto> get() {
         throw new UnsupportedOperationException();
     }
 }

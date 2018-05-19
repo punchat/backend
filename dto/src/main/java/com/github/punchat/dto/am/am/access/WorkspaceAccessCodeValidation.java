@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am;
+package com.github.punchat.dto.am.am.access;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WorkspaceEmailValidationResult {
+public class WorkspaceAccessCodeValidation {
     private String email;
-    private EmailValidationResult result;
+    private String code;
 }

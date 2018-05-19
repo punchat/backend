@@ -19,7 +19,12 @@ public class ChannelServiceImpl implements ChannelService {
     private final IdService idService;
     private final MemberRepository memberRepository;
 
-    public ChannelServiceImpl(AuthContext authContext, BroadcastChannelRepository broadcastChannelRepository, DirectChannelRepository directChannelRepository, UserService userService, IdService idService, MemberRepository memberRepository) {
+    public ChannelServiceImpl(AuthContext authContext,
+                              BroadcastChannelRepository broadcastChannelRepository,
+                              DirectChannelRepository directChannelRepository,
+                              UserService userService,
+                              IdService idService,
+                              MemberRepository memberRepository) {
         this.authContext = authContext;
         this.broadcastChannelRepository = broadcastChannelRepository;
         this.directChannelRepository = directChannelRepository;

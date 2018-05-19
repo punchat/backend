@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.dto.am.messaging.channel.BroadcastChannelDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,36 +10,34 @@ import java.util.Set;
 @RestController
 public class ChannelController {
     private final ChannelService service;
+    private final ChannelMapper mapper;
 
-    public ChannelController(ChannelService service) {
+    public ChannelController(ChannelService service, ChannelMapper mapper) {
         this.service = service;
+        this.mapper = mapper;
     }
 
-    //getting all channels of user
     @GetMapping("/channels")
-    public Set<Channel> getUserChannels(){
+    public Set<BroadcastChannelDto> getUserChannels(){
         throw new UnsupportedOperationException();
     }
 
-    //creating new channel
     @PostMapping("/channels")
-    public BroadcastChannel create(@RequestBody BroadcastChannel channel) {
-        return service.createBroadcastChannel(channel);
+    public BroadcastChannelDto create(@RequestBody BroadcastChannelDto channelDto) {
+        BroadcastChannel channel = mapper.channelDtoToChannel(channelDto);
+        return mapper.channelToChannelDto(service.createBroadcastChannel(channel));
     }
 
-    //getting particular channel
     @GetMapping("/channels/{id}")
-    public Channel get(@PathVariable Long id) {
-        return service.get(id);
+    public BroadcastChannelDto get(@PathVariable Long id) {
+        return mapper.channelToChannelDto(service.get(id));
     }
 
-    //changing channel
     @PutMapping("/channels/{id}")
-    public BroadcastChannel update(@PathVariable Long id, @RequestBody BroadcastChannel channel){
+    public BroadcastChannelDto update(@PathVariable Long id, @RequestBody BroadcastChannelDto channel){
         throw new UnsupportedOperationException();
     }
 
-    //deleting channel (checking that channel isn't direct)
     @DeleteMapping("/channels/{id}")
     public void delete(@PathVariable Long id){
         throw new UnsupportedOperationException();

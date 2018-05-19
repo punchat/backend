@@ -1,4 +1,4 @@
-package com.github.punchat.dto.am;
+package com.github.punchat.dto.am.am.access;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class WorkspaceInvitation {
+public class NewAccessCodeRequest {
     private String email;
 }
