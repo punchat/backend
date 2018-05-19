@@ -19,6 +19,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/webjars/**",
                         "favicon.ico"
                 ).permitAll()
+                .antMatchers(
+                        HttpMethod.PUT,
+                        "/workspace/members/check",
+                        "/workspace/codes/**"
+                ).permitAll()
                 .antMatchers("/actuator/health**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest().authenticated();
