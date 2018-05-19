@@ -15,20 +15,16 @@ public class MemberController {
         this.service = service;
     }
 
-    //inviting user to channel (user can refuse invitationDto, here is only permission check)
     @PutMapping("/channels/{channelId}/members")
     public void inviteUser(@PathVariable("channelId") Long channelId, @Valid @RequestBody InvitationDto invitationDto) {
         throw new UnsupportedOperationException();
     }
 
-    //getting members of channel
     @GetMapping("/channels/{channelId}/members")
     public Set<MemberDto> members(@PathVariable("channelId") Long channelId) {
         throw new UnsupportedOperationException();
-        //return service.findByChannel(channelId);
     }
 
-    //excluding member of channel (permission check)
     @DeleteMapping("/channels/{channelId}/members/{memberId}")
     public void exclude(@PathVariable Long channelId, @PathVariable Long memberId) {
         throw new UnsupportedOperationException();

@@ -24,13 +24,17 @@ public class Member extends AbstractIdentifiableObject {
     @JsonUnwrapped
     private User user;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "channel_id", nullable = false)
     @JsonIgnore
     private BroadcastChannel channel;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "role_id")
+    @JoinColumn(name = "role_id", nullable = false)
     @JsonUnwrapped
     private Role role;
+
+    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
+    private State state;
 }
