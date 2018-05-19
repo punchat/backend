@@ -5,9 +5,11 @@ import com.github.punchat.am.domain.invite.State;
 import com.github.punchat.am.events.EventBus;
 import com.github.punchat.events.InviteToChannelEvent;
 import com.github.punchat.events.NewMemberInChannelEvent;
+import com.github.punchat.log.Trace;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.stereotype.Service;
 
+@Trace
 @Service
 public class ChannelInviteServiceImpl implements ChannelInviteService {
     private final ChannelInviteRepository channelInviteRepository;

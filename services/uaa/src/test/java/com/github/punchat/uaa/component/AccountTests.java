@@ -3,6 +3,7 @@ package com.github.punchat.uaa.component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.punchat.uaa.account.AccountService;
 import com.github.punchat.uaa.account.ChangePasswordPayload;
+import com.github.punchat.uaa.registration.RegistrationService;
 import com.github.punchat.uaa.utils.OAuthUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,6 +31,7 @@ import static org.hamcrest.core.StringContains.containsString;
 @AutoConfigureMockMvc
 @SpringBootTest
 @Slf4j
+@MockBean(RegistrationService.class)
 @ContextConfiguration(classes = ComponentTestConfig.class)
 public class AccountTests {
     @Autowired
