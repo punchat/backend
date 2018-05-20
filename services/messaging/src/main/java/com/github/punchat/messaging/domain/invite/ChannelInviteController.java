@@ -1,5 +1,7 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.messaging.domain.role.AbsentPermissionException;
+import com.github.punchat.starter.web.error.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,16 +13,24 @@ public class ChannelInviteController {
         this.service = service;
     }
 
-    @PostMapping("/channel/{channel}/users/{username}")
+    @PostMapping("/channel/{channelName}/users/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ChannelInvite create(@PathVariable("channel") String channel,
-                                @PathVariable("username") String username) {
-        return service.createChannelInvite(channel, username);
+    public ChannelInvite create(@PathVariable("channelName") String channelName,
+                                @PathVariable("userId") Long userId) {
+        return service.createChannelInvite(channelName, userId);
     }
 
-    @PutMapping("/channel/{channel}/accept")
+    @PutMapping("/channel/{channelName}/accept")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ChannelInvite accept(@PathVariable("channel") String channel) {
-        return service.acceptChannelInvite(channel);
+    public ChannelInvite accept(@PathVariable("channelName") String channelName) {
+        return service.acceptChannelInvite(channelName);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AbsentPermissionException.class)
+    public ApiError handleException(AbsentPermissionException ex) {
+        ApiError error = new ApiError();
+        error.setMessage(ex.getMessage());
+        return error;
     }
 }
