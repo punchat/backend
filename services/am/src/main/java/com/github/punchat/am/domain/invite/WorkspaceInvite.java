@@ -1,6 +1,5 @@
 package com.github.punchat.am.domain.invite;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.punchat.am.domain.AbstractIdentifiableObject;
 import com.github.punchat.am.domain.access.AccessCode;
 import lombok.Getter;

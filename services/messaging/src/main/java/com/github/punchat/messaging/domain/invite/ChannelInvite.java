@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.member.Member;
 import com.github.punchat.messaging.domain.user.User;
@@ -13,11 +14,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"recipient_user_id", "channel_id"}),
         name = "CHANNEL_INVITE")
 @Entity
-public class ChannelInvite {
+public class ChannelInvite extends AbstractIdentifiableObject{
 
     @ManyToOne
     @JoinColumn(name = "sender_user_id")
