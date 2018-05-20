@@ -1,9 +1,8 @@
-package com.github.punchat.am.domain.invite.workspace;
+package com.github.punchat.am.domain.invite;
 
 import com.github.punchat.am.domain.access.AccessCodeService;
-import com.github.punchat.am.domain.invite.InviteService;
-import com.github.punchat.am.domain.invite.State;
 import com.github.punchat.am.events.EventBus;
+import com.github.punchat.am.id.IdService;
 import com.github.punchat.dto.am.access.AccessCodeValidationResult;
 import com.github.punchat.dto.am.access.NewAccessCodeRequest;
 import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidation;
@@ -12,29 +11,30 @@ import com.github.punchat.dto.am.invite.EmailValidationResult;
 import com.github.punchat.dto.am.invite.WorkspaceEmailValidation;
 import com.github.punchat.dto.am.invite.WorkspaceEmailValidationResult;
 import com.github.punchat.dto.am.invite.WorkspaceInvitation;
-import com.github.punchat.events.*;
+import com.github.punchat.events.AccessCodeGeneratedEvent;
+import com.github.punchat.events.InviteToWorkspaceEvent;
 import com.github.punchat.log.Trace;
+import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.stereotype.Service;
 
 @Trace
 @Service
 public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
     private final WorkspaceInviteRepository workspaceInviteRepository;
-    private final InviteService inviteService;
     private final AccessCodeService accessCodeService;
     private final EventBus eventBus;
+    private final AuthContext authContext;
+    private final IdService idService;
 
-    public WorkspaceInviteServiceImpl(WorkspaceInviteRepository workspaceInviteRepository,
-                                      InviteService inviteService,
-                                      AccessCodeService accessCodeService,
-                                      EventBus eventBus) {
+    public WorkspaceInviteServiceImpl(WorkspaceInviteRepository workspaceInviteRepository, AccessCodeService accessCodeService, EventBus eventBus, AuthContext authContext, IdService idService) {
         this.workspaceInviteRepository = workspaceInviteRepository;
-        this.inviteService = inviteService;
         this.accessCodeService = accessCodeService;
         this.eventBus = eventBus;
+        this.authContext = authContext;
+        this.idService = idService;
     }
 
-    public WorkspaceInvite getInvite(java.lang.String email) {
+    public WorkspaceInvite getInvite(String email) {
         return workspaceInviteRepository.findByEmail(email);
     }
 
@@ -45,7 +45,9 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
         if (workspaceInviteRepository.existsByEmail(email)) {
             workspaceInvite = workspaceInviteRepository.findByEmail(email);
         } else {
-            workspaceInvite = (WorkspaceInvite) inviteService.createInvite(workspaceInvite);
+            Long senderUserId = authContext.get().getUserInfo().get().getUserId();
+            workspaceInvite.setId(idService.next());
+            workspaceInvite.setSenderUserId(senderUserId);
             workspaceInvite.setEmail(email);
             workspaceInviteRepository.save(workspaceInvite);
         }
@@ -58,7 +60,6 @@ public class WorkspaceInviteServiceImpl implements WorkspaceInviteService {
         String email = emailValidation.getEmail();
         if (workspaceInviteRepository.existsByEmail(email)) {
             WorkspaceInvite workspaceInvite = getInvite(email);
-            workspaceInvite.setState(State.ANSWERED);
             workspaceInviteRepository.save(workspaceInvite);
             return new WorkspaceEmailValidationResult(email, EmailValidationResult.VALID);
         }

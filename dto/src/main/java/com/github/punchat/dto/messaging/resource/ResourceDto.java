@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ResourceDto {
-    private long id;
+    private String resource;
 }

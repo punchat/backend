@@ -5,5 +5,5 @@ public interface ChannelService {
 
     BroadcastChannel createBroadcastChannel(BroadcastChannel channel);
 
-    BroadcastChannel get(Long id);
+    BroadcastChannel getBroadcastChannelByName(String channel);
 }
