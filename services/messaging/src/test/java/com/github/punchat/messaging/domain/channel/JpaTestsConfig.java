@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.messaging.MockIdService;
 import com.github.punchat.messaging.domain.member.MemberRepository;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.member.MemberServiceImpl;

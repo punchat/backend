@@ -1,4 +1,4 @@
-package com.github.punchat.messaging.domain.channel;
+package com.github.punchat.messaging;
 
 import com.github.punchat.messaging.id.IdService;
 

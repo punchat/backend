@@ -3,6 +3,7 @@ package com.github.punchat.messaging.domain.invite;
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.member.Member;
+import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,4 +35,8 @@ public class ChannelInvite extends AbstractIdentifiableObject{
     @Column(name = "state")
     @Enumerated(EnumType.STRING)
     private State state;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 }

@@ -33,8 +33,4 @@ public class Member extends AbstractIdentifiableObject {
     @JoinColumn(name = "role_id", nullable = false)
     @JsonUnwrapped
     private Role role;
-
-    @Column(name = "state")
-    @Enumerated(EnumType.STRING)
-    private State state;
 }

@@ -15,15 +15,16 @@ public class ChannelInviteController {
         this.service = service;
     }
 
-    @PostMapping("/channel/{channelName}/users/{userId}")
+    @PostMapping("/channel/{channelName}/users/{userId}/roles/{roleId}")
     @ResponseStatus(HttpStatus.CREATED)
     public ChannelInvite create(@PathVariable("channelName") String channelName,
-                                @PathVariable("userId") Long userId) {
-        return service.createChannelInvite(channelName, userId);
+                                @PathVariable("userId") Long userId,
+                                @PathVariable("roleId") Long roleId) {
+        return service.createChannelInvite(channelName, userId, roleId);
     }
 
     @GetMapping("/channels/users/{userId}/invited")
-    public Set<Long> getUserChannelsInvited(@PathVariable("userId") Long userId){
+    public Set<Long> getUserChannelsInvited(@PathVariable("userId") Long userId) {
         return service.getUserChannelsInvited(userId);
     }
 

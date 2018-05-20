@@ -1,10 +1,12 @@
 package com.github.punchat.messaging.domain.invite;
 
 import com.github.punchat.log.Trace;
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.ChannelService;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
 import com.github.punchat.messaging.domain.role.Permission;
+import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserService;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
@@ -33,11 +35,13 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     }
 
     @Override
-    public ChannelInvite createChannelInvite(String channelName, Long recipientId) {
+    public ChannelInvite createChannelInvite(String channelName, Long recipientId, Long roleId) {
         Long authUserId = authContext.get().getUserInfo().get().getUserId();
         if (memberService.findByUser(authUserId).getRole().
                 getPermissions().contains(Permission.CAN_INVITE_USERS)) {
-            if (!repository.existsByChannel_NameAndRecipient_Id(channelName, recipientId)) {
+            User recipient = userService.getUser(recipientId);
+            BroadcastChannel channel = channelService.getBroadcastChannelByName(channelName);
+            if (!repository.existsByChannelAndRecipient(channel, recipient)) {
                 ChannelInvite channelInvite = new ChannelInvite();
                 channelInvite.setId(idService.next());
                 channelInvite.setSender(memberService.findByUser(authUserId));
@@ -55,7 +59,8 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
 
     @Override
     public Set<Long> getUserChannelsInvited(Long userId) {
-        return repository.findByRecipient_IdAndState(userId, State.CREATED)
+        User user = userService.getUser(userId);
+        return repository.findByRecipientAndState(user, State.CREATED)
                 .stream()
                 .map(ChannelInvite::getId)
                 .collect(Collectors.toSet());
@@ -64,10 +69,13 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     @Override
     public ChannelInvite acceptChannelInvite(String channelName) {
         Long recipientId = authContext.get().getUserInfo().get().getUserId();
-        if (repository.existsByChannel_NameAndRecipient_Id(channelName, recipientId)) {
+        BroadcastChannel channel = channelService.getBroadcastChannelByName(channelName);
+        User recipient = userService.getUser(recipientId);
+        if (repository.existsByChannelAndRecipient(channel, recipient)) {
             ChannelInvite channelInvite =
-                    repository.findByChannel_NameAndRecipient_Id(channelName, recipientId);
+                    repository.findByChannelAndRecipient(channel, recipient);
             channelInvite.setState(State.ACCEPTED);
+            memberService.create(recipientId, channel.getId(), channelInvite.getRole().getId());
             return repository.save(channelInvite);
         } else {
             throw new ChannelInviteDoNotFoundException(channelName, recipientId);
