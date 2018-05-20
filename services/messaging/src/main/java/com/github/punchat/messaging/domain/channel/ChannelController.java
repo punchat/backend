@@ -29,9 +29,9 @@ public class ChannelController {
         return mapper.channelToChannelDto(service.createBroadcastChannel(channel));
     }
 
-    @GetMapping("/channels/{id}")
-    public BroadcastChannelDto get(@PathVariable Long id) {
-        return mapper.channelToChannelDto(service.get(id));
+    @GetMapping("/channels/{channelName}")
+    public BroadcastChannelDto get(@PathVariable String channelName) {
+        return mapper.channelToChannelDto(service.getBroadcastChannelByName(channelName));
     }
 
     @PutMapping("/channels/{id}")

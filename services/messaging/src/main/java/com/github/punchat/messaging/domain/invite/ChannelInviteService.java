@@ -4,11 +4,9 @@ import java.util.Set;
 
 public interface ChannelInviteService {
 
-    ChannelInvite getInvite(Long recipientUserId, Long channelId);
-
-    ChannelInvite createChannelInvite(Long recipientUserId, Long channelId);
-
     Set<Long> getUserChannelsInvited(Long userId);
 
-    ChannelInvite acceptChannelInvite(Long channelId);
+    ChannelInvite createChannelInvite(String channelName, Long userId);
+
+    ChannelInvite acceptChannelInvite(String channelName);
 }

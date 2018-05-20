@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Set;
 
 public interface ChannelInviteRepository extends JpaRepository<ChannelInvite, Long> {
-    ChannelInvite findByRecipientUserIdAndChannelId(Long recipientUserId, Long channelId);
+    ChannelInvite findByChannel_NameAndRecipient_Id(String channelName, Long recipientId);
 
-    Set<ChannelInvite> findByRecipientUserIdAndState(Long recipientUserId, State state);
+    Set<ChannelInvite> findByRecipient_IdAndState(Long recipientId, State state);
 
-    boolean existsByRecipientUserIdAndChannelId(Long recipientUserId, Long channelId);
+    boolean existsByChannel_NameAndRecipient_Id(String channelName, Long recipientId);
 }

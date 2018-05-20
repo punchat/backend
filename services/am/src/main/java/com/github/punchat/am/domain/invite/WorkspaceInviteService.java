@@ -1,4 +1,4 @@
-package com.github.punchat.am.domain.invite.workspace;
+package com.github.punchat.am.domain.invite;
 
 import com.github.punchat.dto.am.access.NewAccessCodeRequest;
 import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidation;

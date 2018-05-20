@@ -1,5 +1,7 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.messaging.domain.role.AbsentPermissionException;
+import com.github.punchat.starter.web.error.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,11 +15,11 @@ public class ChannelInviteController {
         this.service = service;
     }
 
-    @PostMapping("/channel/{channelId}/users/{userId}")
+    @PostMapping("/channel/{channelName}/users/{userId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public ChannelInvite create(@PathVariable("userId") Long recipientUserId,
-                                @PathVariable("channelId") Long channelId) {
-        return service.createChannelInvite(recipientUserId, channelId);
+    public ChannelInvite create(@PathVariable("channelName") String channelName,
+                                @PathVariable("userId") Long userId) {
+        return service.createChannelInvite(channelName, userId);
     }
 
     @GetMapping("/channels/users/{userId}/invited")
@@ -25,9 +27,17 @@ public class ChannelInviteController {
         return service.getUserChannelsInvited(userId);
     }
 
-    @PutMapping("/channel/{channelId}/accept")
+    @PutMapping("/channel/{channelName}/accept")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ChannelInvite accept(@PathVariable("channelId") Long channelId) {
-        return service.acceptChannelInvite(channelId);
+    public ChannelInvite accept(@PathVariable("channelName") String channelName) {
+        return service.acceptChannelInvite(channelName);
+    }
+
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(AbsentPermissionException.class)
+    public ApiError handleException(AbsentPermissionException ex) {
+        ApiError error = new ApiError();
+        error.setMessage(ex.getMessage());
+        return error;
     }
 }

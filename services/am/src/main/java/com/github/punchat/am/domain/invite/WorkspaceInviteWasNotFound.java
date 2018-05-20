@@ -1,4 +1,4 @@
-package com.github.punchat.am.domain.invite.workspace;
+package com.github.punchat.am.domain.invite;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
