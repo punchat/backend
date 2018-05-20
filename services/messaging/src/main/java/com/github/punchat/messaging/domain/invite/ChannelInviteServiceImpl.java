@@ -10,6 +10,9 @@ import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Trace
 @Service
 public class ChannelInviteServiceImpl implements ChannelInviteService {
@@ -48,6 +51,14 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
         } else {
             throw new AbsentPermissionException(recipientId, Permission.CAN_INVITE_USERS);
         }
+    }
+
+    @Override
+    public Set<Long> getUserChannelsInvited(Long userId) {
+        return repository.findByRecipient_IdAndState(userId, State.CREATED)
+                .stream()
+                .map(ChannelInvite::getId)
+                .collect(Collectors.toSet());
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.github.punchat.messaging;
 
 import com.github.punchat.messaging.domain.channel.ChannelMapper;
 import com.github.punchat.messaging.domain.role.RoleController;
+import com.github.punchat.messaging.domain.role.RoleMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class MessagingApplicationTests {
 //    private RoleService roleService;
     @MockBean
     private ChannelMapper channelMapper;
+    @MockBean
+    private RoleMapper roleMapper;
     @Autowired
     private RoleController roleController;
     @Test

@@ -5,6 +5,8 @@ import com.github.punchat.starter.web.error.ApiError;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @RestController
 public class ChannelInviteController {
     private final ChannelInviteService service;
@@ -18,6 +20,11 @@ public class ChannelInviteController {
     public ChannelInvite create(@PathVariable("channelName") String channelName,
                                 @PathVariable("userId") Long userId) {
         return service.createChannelInvite(channelName, userId);
+    }
+
+    @GetMapping("/channels/users/{userId}/invited")
+    public Set<Long> getUserChannelsInvited(@PathVariable("userId") Long userId){
+        return service.getUserChannelsInvited(userId);
     }
 
     @PutMapping("/channel/{channelName}/accept")

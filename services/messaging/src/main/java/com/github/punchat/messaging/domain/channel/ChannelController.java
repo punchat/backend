@@ -22,6 +22,7 @@ public class ChannelController {
         throw new UnsupportedOperationException();
     }
 
+
     @PostMapping("/channels")
     public BroadcastChannelDto create(@RequestBody BroadcastChannelDto channelDto) {
         BroadcastChannel channel = mapper.channelDtoToChannel(channelDto);
@@ -37,6 +38,8 @@ public class ChannelController {
     public BroadcastChannelDto update(@PathVariable Long id, @RequestBody BroadcastChannelDto channel){
         throw new UnsupportedOperationException();
     }
+
+
 
     @DeleteMapping("/channels/{id}")
     public void delete(@PathVariable Long id){
