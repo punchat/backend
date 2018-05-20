@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BroadcastChannelRepository extends JpaRepository<BroadcastChannel, Long> {
+    BroadcastChannel findByName(String name);
 
     @Query("select m.channel from Member m where m.user = :user")
     List<BroadcastChannel> findUserChannels(@Param("user") User user);

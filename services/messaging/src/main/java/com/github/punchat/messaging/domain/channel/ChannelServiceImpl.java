@@ -58,8 +58,8 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public BroadcastChannel get(Long id) {
-        return broadcastChannelRepository.getOne(id);
+    public BroadcastChannel getBroadcastChannelByName(String channel) {
+        return broadcastChannelRepository.findByName(channel);
     }
 
     @Override

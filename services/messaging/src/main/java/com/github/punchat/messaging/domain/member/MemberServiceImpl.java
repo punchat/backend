@@ -2,6 +2,7 @@ package com.github.punchat.messaging.domain.member;
 
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelRepository;
+import com.github.punchat.messaging.domain.user.UserRepository;
 import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.role.RoleRepository;
 import com.github.punchat.messaging.domain.user.User;
@@ -17,12 +18,15 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final BroadcastChannelRepository broadcastChannelRepository;
     private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final IdService idService;
 
     public MemberServiceImpl(MemberRepository memberRepository, BroadcastChannelRepository broadcastChannelRepository, UserRepository userRepository, RoleRepository roleRepository, IdService idService) {
         this.memberRepository = memberRepository;
         this.broadcastChannelRepository = broadcastChannelRepository;
+        this.userRepository = userRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.idService = idService;
@@ -48,6 +52,12 @@ public class MemberServiceImpl implements MemberService {
         Role role = roleRepository.getOne(roleId);
         member.setRole(role);
         return memberRepository.save(member);
+    }
+
+    @Override
+    public Member findByUser(Long userId) {
+        return userRepository.findById(userId)
+                .map(repository::findByUser).orElse(new Member());
     }
 
     @Override

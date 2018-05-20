@@ -7,6 +7,7 @@ public interface ChannelService {
 
     BroadcastChannel createBroadcastChannel(BroadcastChannel channel);
 
+    BroadcastChannel getBroadcastChannelByName(String channel);
     BroadcastChannel get(Long id);
 
     List<BroadcastChannel> getAuthorizedUserChannels();

@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Set;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
+    Member findByUser(User user);
+
     Set<Member> findByChannel(BroadcastChannel channel);
 
     Member findByUserAndChannel(User user, BroadcastChannel channel);

@@ -7,5 +7,7 @@ public interface MemberService {
 
     Member invite(Long userId, Long channelId, Long roleId);
 
+    Member findByUser(Long userId);
+
     Set<Member> findByChannel(Long channelId);
 }
