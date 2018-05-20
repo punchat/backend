@@ -22,24 +22,25 @@ public class RoleController {
         return mapper.roleToRoleDto(service.createRole(role));
     }
 
-    @GetMapping("/role/{name}")
-    public RoleDto get(@PathVariable String name) {
-        return mapper.roleToRoleDto(service.getRole(name));
+    @GetMapping("/role/{role}")
+    public RoleDto get(@PathVariable String role) {
+
+        return mapper.roleToRoleDto(service.getRole(role));
     }
 
-    @PutMapping("/role/{name}")
-    public RoleDto edit(@PathVariable String name, @RequestBody Role role) {
-        return mapper.roleToRoleDto(service.getRole(name));
+    @PutMapping("/role/{role}")
+    public RoleDto edit(@PathVariable String role, @RequestBody Role newRole) {
+        return mapper.roleToRoleDto(service.editRole(role, newRole));
     }
 
-    @PatchMapping("/role/{name}/add")
-    public RoleDto addPermission(@PathVariable String name, @RequestBody Permission permission) {
-        return mapper.roleToRoleDto(service.addPermission(name, permission));
+    @PatchMapping("/role/{role}/add")
+    public RoleDto addPermission(@PathVariable String role, @RequestBody Permission permission) {
+        return mapper.roleToRoleDto(service.addPermission(role, permission));
     }
 
-    @PatchMapping("/role/{name}/exclude")
-    public RoleDto excludePermission(@PathVariable String name, @RequestBody Permission permission) {
-        return mapper.roleToRoleDto(service.excludePermission(name, permission));
+    @PatchMapping("/role/{role}/exclude")
+    public RoleDto excludePermission(@PathVariable String role, @RequestBody Permission permission) {
+        return mapper.roleToRoleDto(service.excludePermission(role, permission));
     }
 
     @GetMapping("/role")

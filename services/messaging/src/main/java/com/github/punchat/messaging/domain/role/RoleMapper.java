@@ -12,6 +12,6 @@ public interface RoleMapper {
 
     RoleDto roleToRoleDto(Role role);
 
-    List<RoleDto> rolesToRoleDtos(List<Role> cars);
+    List<RoleDto> rolesToRoleDtos(List<Role> roles);
 }
 

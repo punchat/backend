@@ -22,7 +22,7 @@ public class RoleServiceImpl implements RoleService {
             role.setId(idService.next());
             return roleRepository.save(role);
         } else {
-            throw new RoleAlreadyExists(role.getName());
+            throw new RoleAlreadyExistsException(role.getName());
         }
     }
 
@@ -31,7 +31,7 @@ public class RoleServiceImpl implements RoleService {
         if (!roleRepository.existsByName(name)) {
             return roleRepository.findRoleByName(name);
         } else {
-            throw new RoleAlreadyExists(name);
+            throw new RoleAlreadyExistsException(name);
         }
     }
 
@@ -43,7 +43,7 @@ public class RoleServiceImpl implements RoleService {
                 if (!roleRepository.existsByName(newRole.getName())) {
                     role.setName(newRole.getName());
                 } else {
-                    throw new RoleAlreadyExists(newRole.getName());
+                    throw new RoleAlreadyExistsException(newRole.getName());
                 }
             }
             if (!newRole.getPermissions().isEmpty()) {
@@ -51,7 +51,7 @@ public class RoleServiceImpl implements RoleService {
             }
             return roleRepository.save(role);
         } else {
-            throw new RoleAlreadyExists(name);
+            throw new RoleAlreadyExistsException(name);
         }
     }
 
@@ -63,10 +63,10 @@ public class RoleServiceImpl implements RoleService {
                 role.getPermissions().add(permission);
                 return roleRepository.save(role);
             } else {
-                throw new PermissionAlreadyContains(permission.toString(), name);
+                throw new PermissionAlreadyContainsException(permission.toString(), name);
             }
         } else {
-            throw new RoleAlreadyExists(name);
+            throw new RoleAlreadyExistsException(name);
         }
     }
 
@@ -78,10 +78,10 @@ public class RoleServiceImpl implements RoleService {
                 role.getPermissions().add(permission);
                 return roleRepository.save(role);
             } else {
-                throw new PermissionDoesNotContains(permission.toString(), name);
+                throw new PermissionDoesNotContainsException(permission.toString(), name);
             }
         } else {
-            throw new RoleAlreadyExists(name);
+            throw new RoleAlreadyExistsException(name);
         }
     }
 
