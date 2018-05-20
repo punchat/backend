@@ -6,6 +6,7 @@ import com.github.punchat.messaging.domain.channel.ChannelService;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
 import com.github.punchat.messaging.domain.role.Permission;
+import com.github.punchat.messaging.domain.role.RoleRepository;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserService;
 import com.github.punchat.messaging.id.IdService;
@@ -24,30 +25,33 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     private final UserService userService;
     private final ChannelService channelService;
     private final IdService idService;
+    private final RoleRepository roleRepository;
 
-    public ChannelInviteServiceImpl(ChannelInviteRepository repository, AuthContext authContext, MemberService memberService, UserService userService, ChannelService channelService, IdService idService) {
+    public ChannelInviteServiceImpl(ChannelInviteRepository repository, AuthContext authContext, MemberService memberService, UserService userService, ChannelService channelService, IdService idService, RoleRepository roleRepository) {
         this.repository = repository;
         this.authContext = authContext;
         this.memberService = memberService;
         this.userService = userService;
         this.channelService = channelService;
         this.idService = idService;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public ChannelInvite createChannelInvite(String channelName, Long recipientId, Long roleId) {
         Long authUserId = authContext.get().getUserInfo().get().getUserId();
-        if (memberService.findByUser(authUserId).getRole().
+        if (memberService.findByUserAndChannel(authUserId, channelName).getRole().
                 getPermissions().contains(Permission.CAN_INVITE_USERS)) {
             User recipient = userService.getUser(recipientId);
             BroadcastChannel channel = channelService.getBroadcastChannelByName(channelName);
             if (!repository.existsByChannelAndRecipient(channel, recipient)) {
                 ChannelInvite channelInvite = new ChannelInvite();
                 channelInvite.setId(idService.next());
-                channelInvite.setSender(memberService.findByUser(authUserId));
+                channelInvite.setSender(memberService.findByUserAndChannel(authUserId, channelName));
                 channelInvite.setChannel(channelService.getBroadcastChannelByName(channelName));
                 channelInvite.setRecipient(userService.getUser(recipientId));
                 channelInvite.setState(State.CREATED);
+                channelInvite.setRole(roleRepository.getOne(roleId));
                 return repository.save(channelInvite);
             } else {
                 throw new ChannelInviteAlreadyCreatedException(channelName, recipientId);

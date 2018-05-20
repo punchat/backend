@@ -42,9 +42,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findByUser(Long userId) {
-        return userRepository.findById(userId)
-                .map(memberRepository::findByUser).orElse(new Member());
+    public Member findByUserAndChannel(Long userId, String channelName) {
+        User user = userRepository.getOne(userId);
+        BroadcastChannel channel = broadcastChannelRepository.findByName(channelName);
+        return memberRepository.findByUserAndChannel(user, channel);
     }
 
     @Override
