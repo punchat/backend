@@ -10,4 +10,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByUser(User user);
 
     Set<Member> findByChannel(BroadcastChannel channel);
+
+    Member findByUserAndChannel(User user, BroadcastChannel channel);
+
+    boolean existsByUserAndChannel(User user, BroadcastChannel channel);
 }

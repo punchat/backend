@@ -1,13 +1,15 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+import com.github.punchat.messaging.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Set;
 
 public interface ChannelInviteRepository extends JpaRepository<ChannelInvite, Long> {
-    ChannelInvite findByChannel_NameAndRecipient_Id(String channelName, Long recipientId);
+    ChannelInvite findByChannelAndRecipient(BroadcastChannel channel, User recipient);
 
-    Set<ChannelInvite> findByRecipient_IdAndState(Long recipientId, State state);
+    Set<ChannelInvite> findByRecipientAndState(User recipient, State state);
 
-    boolean existsByChannel_NameAndRecipient_Id(String channelName, Long recipientId);
+    boolean existsByChannelAndRecipient(BroadcastChannel channel, User recipient);
 }

@@ -1,7 +1,3 @@
-eureka:
-  client:
-    enabled: false
 uaa:
   client:
     enabled: false
-#spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration

@@ -56,32 +56,32 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role addPermission(String name, Permission permission) {
-        if (!roleRepository.existsByName(name)) {
+    public Role addPermissions(String name, Permission[] permissions) {
+        if (roleRepository.existsByName(name)) {
             Role role = roleRepository.findRoleByName(name);
-            if (!role.getPermissions().contains(permission)) {
-                role.getPermissions().add(permission);
-                return roleRepository.save(role);
-            } else {
-                throw new PermissionAlreadyContainsException(permission.toString(), name);
+            for (Permission permission : permissions) {
+                if (!role.getPermissions().contains(permission)) {
+                    role.getPermissions().add(permission);
+                }
             }
+            return roleRepository.save(role);
         } else {
-            throw new RoleAlreadyExistsException(name);
+            throw new RoleDoesNotExistException(name);
         }
     }
 
     @Override
-    public Role excludePermission(String name, Permission permission) {
-        if (!roleRepository.existsByName(name)) {
+    public Role excludePermissions(String name, Permission[] permissions) {
+        if (roleRepository.existsByName(name)) {
             Role role = roleRepository.findRoleByName(name);
-            if (role.getPermissions().contains(permission)) {
-                role.getPermissions().add(permission);
-                return roleRepository.save(role);
-            } else {
-                throw new PermissionDoesNotContainsException(permission.toString(), name);
+            for (Permission permission : permissions) {
+                if (role.getPermissions().contains(permission)) {
+                    role.getPermissions().add(permission);
+                }
             }
+            return roleRepository.save(role);
         } else {
-            throw new RoleAlreadyExistsException(name);
+            throw new RoleDoesNotExistException(name);
         }
     }
 

@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -17,9 +18,18 @@ public class ChannelController {
         this.mapper = mapper;
     }
 
-    @GetMapping("/channels")
-    public Set<BroadcastChannelDto> getUserChannels(){
-        throw new UnsupportedOperationException();
+    @GetMapping("/@me/channels")
+    public Set<BroadcastChannelDto> getAuthorizedUserChannels(){
+        return service.getAuthorizedUserChannels()
+                .stream().map(mapper::channelToChannelDto)
+                .collect(Collectors.toSet());
+    }
+
+    @GetMapping("/users/{userId}/channels/")
+    public Set<BroadcastChannelDto> getUserChannels(@PathVariable("userId") Long userId){
+        return service.getUserChannels(userId)
+                .stream().map(mapper::channelToChannelDto)
+                .collect(Collectors.toSet());
     }
 
 
@@ -38,8 +48,6 @@ public class ChannelController {
     public BroadcastChannelDto update(@PathVariable Long id, @RequestBody BroadcastChannelDto channel){
         throw new UnsupportedOperationException();
     }
-
-
 
     @DeleteMapping("/channels/{id}")
     public void delete(@PathVariable Long id){

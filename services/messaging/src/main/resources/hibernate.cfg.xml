@@ -14,5 +14,6 @@
         <mapping class="com.github.punchat.messaging.domain.message.BroadcastMessage"/>
         <mapping class="com.github.punchat.messaging.domain.member.Member"/>
         <mapping class="com.github.punchat.messaging.domain.role.Role"/>
+        <mapping class="com.github.punchat.messaging.domain.invite.ChannelInvite"/>
     </session-factory>
 </hibernate-configuration>
