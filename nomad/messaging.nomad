@@ -16,7 +16,7 @@ job "messaging-service" {
       }
       resources {
         cpu = 300
-        memory = 450
+        memory = 550
         network {
           port "http" {}
         }
