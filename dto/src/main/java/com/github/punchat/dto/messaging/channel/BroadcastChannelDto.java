@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class BroadcastChannelDto {
+    private Long id;
     private String name;
     private Privacy privacy;
 }

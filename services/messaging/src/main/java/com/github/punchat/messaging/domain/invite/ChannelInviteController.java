@@ -1,7 +1,10 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.dto.messaging.invite.ChannelInviteDto;
+import com.github.punchat.dto.messaging.member.AddNewMembersDto;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
 import com.github.punchat.starter.web.error.ApiError;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,23 +18,26 @@ public class ChannelInviteController {
         this.service = service;
     }
 
-    @PostMapping("/channel/{channelName}/users/{userId}/roles/{roleId}")
+    @ApiOperation("invite user to channel")
+    @PostMapping("/channels/{channelId}/members")
     @ResponseStatus(HttpStatus.CREATED)
-    public ChannelInvite create(@PathVariable("channelName") String channelName,
-                                @PathVariable("userId") Long userId,
-                                @PathVariable("roleId") Long roleId) {
-        return service.createChannelInvite(channelName, userId, roleId);
+    public ChannelInviteDto create(@PathVariable("channelId") Long channelId,
+                                @RequestBody AddNewMembersDto payload) {
+        throw new UnsupportedOperationException();
     }
 
-    @GetMapping("/channels/users/{userId}/invited")
-    public Set<Long> getUserChannelsInvited(@PathVariable("userId") Long userId) {
-        return service.getUserChannelsInvited(userId);
+    @ApiOperation("get all invitations for current user")
+    @GetMapping("/@me/invitations")
+    @ResponseStatus(HttpStatus.OK)
+    public Set<ChannelInviteDto> getInvitations() {
+        throw new UnsupportedOperationException();
     }
 
-    @PutMapping("/channel/{channelName}/accept")
+    @ApiOperation("accept invitation")
+    @PutMapping("/@me/invitations/{invitationId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ChannelInvite accept(@PathVariable("channelName") String channelName) {
-        return service.acceptChannelInvite(channelName);
+    public ChannelInvite accept(@PathVariable("invitationId") Long invitationId) {
+        throw new UnsupportedOperationException();
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)

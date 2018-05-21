@@ -49,8 +49,6 @@ public class ChannelController {
         throw new UnsupportedOperationException();
     }
 
-
-
     @DeleteMapping("/channels/{id}")
     public void delete(@PathVariable Long id){
         throw new UnsupportedOperationException();

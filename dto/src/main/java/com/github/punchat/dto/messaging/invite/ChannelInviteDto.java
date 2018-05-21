@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class ChannelInviteDto {
+    private Long id;
     private MemberDto sender;
     private BroadcastChannelDto channel;
     private MemberDto recipient;

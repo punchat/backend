@@ -1,6 +1,7 @@
 package com.github.punchat.messaging.domain.role;
 
 import com.github.punchat.dto.messaging.role.RoleDto;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,35 +16,39 @@ public class RoleController {
         this.mapper = mapper;
     }
 
-    //creating custom role
-    @PostMapping("/role")
+    @ApiOperation("create role")
+    @PostMapping("/roles")
     public RoleDto create(@RequestBody RoleDto roleDto) {
         Role role = mapper.roleDtoToRole(roleDto);
         return mapper.roleToRoleDto(service.createRole(role));
     }
 
-    @GetMapping("/role/{role}")
-    public RoleDto get(@PathVariable String role) {
-
-        return mapper.roleToRoleDto(service.getRole(role));
+    @ApiOperation("get role by name")
+    @GetMapping("/roles/{role}")
+    public RoleDto get(@PathVariable("role") String roleName) {
+        return mapper.roleToRoleDto(service.getRole(roleName));
     }
 
-    @PutMapping("/role/{role}")
-    public RoleDto edit(@PathVariable String role, @RequestBody Role newRole) {
-        return mapper.roleToRoleDto(service.editRole(role, newRole));
+    @ApiOperation("edit role by name")
+    @PutMapping("/roles/{role}")
+    public RoleDto edit(@PathVariable("role") String roleName, @RequestBody RoleDto newRole) {
+        return mapper.roleToRoleDto(service.editRole(roleName, mapper.roleDtoToRole(newRole)));
     }
 
-    @PatchMapping("/role/{role}/add")
-    public RoleDto addPermission(@PathVariable String role, @RequestBody Permission permission) {
-        return mapper.roleToRoleDto(service.addPermission(role, permission));
+    @ApiOperation("add permission from role")
+    @PutMapping("/roles/{role}/permissions")
+    public RoleDto addPermission(@PathVariable("role") String roleName, @RequestBody Permission[] permission) {
+        return mapper.roleToRoleDto(service.addPermissions(roleName, permission));
     }
 
-    @PatchMapping("/role/{role}/exclude")
-    public RoleDto excludePermission(@PathVariable String role, @RequestBody Permission permission) {
-        return mapper.roleToRoleDto(service.excludePermission(role, permission));
+    @ApiOperation("remove permission from role")
+    @DeleteMapping("/roles/{role}/permissions")
+    public RoleDto excludePermission(@PathVariable("role") String roleName, @RequestBody Permission[] permission) {
+        return mapper.roleToRoleDto(service.excludePermissions(roleName, permission));
     }
 
-    @GetMapping("/role")
+    @ApiOperation("get all available roles")
+    @GetMapping("/roles")
     public List<RoleDto> get() {
         return mapper.rolesToRoleDtos(service.getAllRoles());
     }
