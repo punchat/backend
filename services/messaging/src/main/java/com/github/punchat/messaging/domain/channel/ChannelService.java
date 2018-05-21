@@ -1,15 +1,20 @@
 package com.github.punchat.messaging.domain.channel;
 
-import java.util.List;
+import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
+import com.github.punchat.messaging.domain.user.User;
+
+import java.util.Set;
 
 public interface ChannelService {
-    DirectChannel getDirectChannel(Long userId);
+    BroadcastChannel create(BroadcastChannelRequest payload);
 
-    BroadcastChannel createBroadcastChannel(BroadcastChannel channel);
+    BroadcastChannel update(Long id, BroadcastChannelRequest request);
 
-    BroadcastChannel getBroadcastChannelByName(String channel);
+    Set<BroadcastChannel> getAuthorizedUserChannels();
 
-    List<BroadcastChannel> getAuthorizedUserChannels();
+    Set<BroadcastChannel> getUserChannels(Long userId);
 
-    List<BroadcastChannel> getUserChannels(Long userId);
+    Set<BroadcastChannel> getUserChannels(User user);
+
+    void delete(Long id);
 }

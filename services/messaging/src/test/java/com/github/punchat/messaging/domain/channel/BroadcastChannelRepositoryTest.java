@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserService;
 import com.github.punchat.messaging.id.IdService;
@@ -39,18 +40,16 @@ public class BroadcastChannelRepositoryTest {
         User user1 = userService.createUser(idService.next());
         SecurityUtils.withUser(authContext, user1);
         for (int channelNum = 0; channelNum < 3; ++channelNum) {
-            BroadcastChannel channel = new BroadcastChannel();
-            channel.setId(idService.next());
+            BroadcastChannelRequest channel = new BroadcastChannelRequest();
             channel.setName("channel1#" + channelNum);
-            channelService.createBroadcastChannel(channel);
+            channelService.create(channel);
         }
         User user2 = userService.createUser(idService.next());
         SecurityUtils.withUser(authContext, user2);
         for (int channelNum = 0; channelNum < 7; ++channelNum) {
-            BroadcastChannel channel = new BroadcastChannel();
-            channel.setId(idService.next());
+            BroadcastChannelRequest channel = new BroadcastChannelRequest();
             channel.setName("channel2#" + channelNum);
-            channelService.createBroadcastChannel(channel);
+            channelService.create(channel);
         }
 
         assertThat(repo.findUserChannels(user1).size()).isEqualTo(3);

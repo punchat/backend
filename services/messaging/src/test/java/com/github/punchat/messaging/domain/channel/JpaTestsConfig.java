@@ -1,16 +1,17 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.messaging.security.AuthService;
+import com.github.punchat.messaging.security.AuthServiceImpl;
 import com.github.punchat.messaging.MockIdService;
 import com.github.punchat.messaging.domain.member.MemberRepository;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.member.MemberServiceImpl;
 import com.github.punchat.messaging.domain.role.DefaultRoleAutoCreator;
 import com.github.punchat.messaging.domain.role.RoleRepository;
-import com.github.punchat.messaging.domain.user.UserRepository;
-import com.github.punchat.messaging.domain.user.UserService;
-import com.github.punchat.messaging.domain.user.UserServiceImpl;
+import com.github.punchat.messaging.domain.user.*;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,12 +40,32 @@ public class JpaTestsConfig {
 
     @Bean
     public MemberService memberService() {
-        return new MemberServiceImpl(memberRepository, broadcastChannelRepository, userRepository, roleRepository, idService());
+        return new MemberServiceImpl(memberRepository, broadcastChannelFinder(), userRepository, roleRepository, idService());
+    }
+
+    @Bean
+    public BroadcastChannelFinder broadcastChannelFinder() {
+        return new BroadcastChannelFinderImpl(broadcastChannelRepository);
     }
 
     @Bean
     public ChannelService channelService() {
-        return new ChannelServiceImpl(authContext, broadcastChannelRepository, directChannelRepository, userService(), idService(), memberRepository, roleRepository);
+        return new ChannelServiceImpl(authService(), broadcastChannelRepository, idService(), channelMapper(), memberService(), userFinder(), broadcastChannelFinder());
+    }
+
+    @Bean
+    public ChannelMapper channelMapper() {
+        return Mappers.getMapper(ChannelMapper.class);
+    }
+
+    @Bean
+    public UserFinder userFinder() {
+        return new UserFinderImpl(userRepository);
+    }
+
+    @Bean
+    public AuthService authService() {
+        return new AuthServiceImpl(authContext, userRepository);
     }
 
     @Bean
