@@ -7,7 +7,7 @@ public interface RoleService {
 
     Role getRole(String name);
 
-    Role editRole(String name, Role newRole);
+    Role editRole(String name, String newName, List<Permission> permissions);
 
     Role addPermissions(String name, Permission[] permissions);
 

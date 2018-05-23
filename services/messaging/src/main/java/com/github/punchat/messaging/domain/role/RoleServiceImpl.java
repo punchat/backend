@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
+// TODO add mewmbership check
 @Service
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
@@ -32,17 +32,17 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role editRole(String name, Role newRole) {
+    public Role editRole(String name, String newName, List<Permission> permissions) {
         Role role = getRole(name);
-        if (!role.getName().equals(newRole.getName())) {
-            if (!roleRepository.existsByName(newRole.getName())) {
-                role.setName(newRole.getName());
+        if (!role.getName().equals(newName)) {
+            if (!roleRepository.existsByName(newName)) {
+                role.setName(newName);
             } else {
-                throw new RoleAlreadyExistsException(newRole.getName());
+                throw new RoleAlreadyExistsException(newName);
             }
         }
-        if (!newRole.getPermissions().isEmpty()) {
-            role.setPermissions(newRole.getPermissions());
+        if (!permissions.isEmpty()) {
+            role.setPermissions(permissions);
         }
         return roleRepository.save(role);
     }

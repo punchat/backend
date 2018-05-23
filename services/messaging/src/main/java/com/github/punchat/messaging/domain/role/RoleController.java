@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// TODO membership check
 @RestController
 public class RoleController {
     private final RoleService service;
@@ -17,38 +18,39 @@ public class RoleController {
     }
 
     @ApiOperation("create role")
-    @PostMapping("/roles")
+    @PostMapping("channels/{channelId}/roles")
     public RoleDto create(@RequestBody RoleDto roleDto) {
         Role role = mapper.roleDtoToRole(roleDto);
         return mapper.roleToRoleDto(service.createRole(role));
     }
 
     @ApiOperation("get role by name")
-    @GetMapping("/roles/{role}")
+    @GetMapping("channels/{channelId}/roles/{role}")
     public RoleDto get(@PathVariable("role") String roleName) {
         return mapper.roleToRoleDto(service.getRole(roleName));
     }
 
     @ApiOperation("edit role by name")
-    @PutMapping("/roles/{role}")
+    @PutMapping("channels/{channelId}/roles/{role}")
     public RoleDto edit(@PathVariable("role") String roleName, @RequestBody RoleDto newRole) {
-        return mapper.roleToRoleDto(service.editRole(roleName, mapper.roleDtoToRole(newRole)));
+        Role role = mapper.roleDtoToRole(newRole);
+        return mapper.roleToRoleDto(service.editRole(roleName, role.getName(), role.getPermissions()));
     }
 
     @ApiOperation("add permission from role")
-    @PutMapping("/roles/{role}/permissions")
+    @PutMapping("channels/{channelId}/roles/{role}/permissions")
     public RoleDto addPermission(@PathVariable("role") String roleName, @RequestBody Permission[] permission) {
         return mapper.roleToRoleDto(service.addPermissions(roleName, permission));
     }
 
     @ApiOperation("remove permission from role")
-    @DeleteMapping("/roles/{role}/permissions")
+    @DeleteMapping("channels/{channelId}/roles/{role}/permissions")
     public RoleDto excludePermission(@PathVariable("role") String roleName, @RequestBody Permission[] permission) {
         return mapper.roleToRoleDto(service.excludePermissions(roleName, permission));
     }
 
     @ApiOperation("get all available roles")
-    @GetMapping("/roles")
+    @GetMapping("channels/{channelId}/roles")
     public List<RoleDto> get() {
         return mapper.rolesToRoleDtos(service.getAllRoles());
     }
