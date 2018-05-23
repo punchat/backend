@@ -28,61 +28,45 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role getRole(String name) {
-        if (!roleRepository.existsByName(name)) {
-            return roleRepository.findRoleByName(name);
-        } else {
-            throw new RoleAlreadyExistsException(name);
-        }
+        return roleRepository.findByName(name).orElseThrow(() -> new RoleDoesNotExistException(name));
     }
 
     @Override
     public Role editRole(String name, Role newRole) {
-        if (!roleRepository.existsByName(name)) {
-            Role role = roleRepository.findRoleByName(name);
-            if (!role.getName().equals(newRole.getName())) {
-                if (!roleRepository.existsByName(newRole.getName())) {
-                    role.setName(newRole.getName());
-                } else {
-                    throw new RoleAlreadyExistsException(newRole.getName());
-                }
+        Role role = getRole(name);
+        if (!role.getName().equals(newRole.getName())) {
+            if (!roleRepository.existsByName(newRole.getName())) {
+                role.setName(newRole.getName());
+            } else {
+                throw new RoleAlreadyExistsException(newRole.getName());
             }
-            if (!newRole.getPermissions().isEmpty()) {
-                role.setPermissions(newRole.getPermissions());
-            }
-            return roleRepository.save(role);
-        } else {
-            throw new RoleAlreadyExistsException(name);
         }
+        if (!newRole.getPermissions().isEmpty()) {
+            role.setPermissions(newRole.getPermissions());
+        }
+        return roleRepository.save(role);
     }
 
     @Override
     public Role addPermissions(String name, Permission[] permissions) {
-        if (roleRepository.existsByName(name)) {
-            Role role = roleRepository.findRoleByName(name);
-            for (Permission permission : permissions) {
-                if (!role.getPermissions().contains(permission)) {
-                    role.getPermissions().add(permission);
-                }
+        Role role = getRole(name);
+        for (Permission permission : permissions) {
+            if (!role.getPermissions().contains(permission)) {
+                role.getPermissions().add(permission);
             }
-            return roleRepository.save(role);
-        } else {
-            throw new RoleDoesNotExistException(name);
         }
+        return roleRepository.save(role);
     }
 
     @Override
     public Role excludePermissions(String name, Permission[] permissions) {
-        if (roleRepository.existsByName(name)) {
-            Role role = roleRepository.findRoleByName(name);
-            for (Permission permission : permissions) {
-                if (role.getPermissions().contains(permission)) {
-                    role.getPermissions().add(permission);
-                }
+        Role role = getRole(name);
+        for (Permission permission : permissions) {
+            if (role.getPermissions().contains(permission)) {
+                role.getPermissions().add(permission);
             }
-            return roleRepository.save(role);
-        } else {
-            throw new RoleDoesNotExistException(name);
         }
+        return roleRepository.save(role);
     }
 
     @Override

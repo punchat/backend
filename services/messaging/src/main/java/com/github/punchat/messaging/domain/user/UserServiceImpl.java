@@ -5,9 +5,6 @@ import com.github.punchat.messaging.domain.channel.DirectChannel;
 import com.github.punchat.messaging.domain.channel.DirectChannelRepository;
 import com.github.punchat.messaging.id.IdService;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Trace
 @Service
@@ -36,12 +33,5 @@ public class UserServiceImpl implements UserService {
         user = userRepository.save(user);
         directChannelRepository.save(channel);
         return user;
-    }
-
-    @Override
-    @Transactional
-    public User getUser(Long id) {
-        Optional<User> found = userRepository.findById(id);
-        return found.orElseGet(() -> createUser(id));
     }
 }

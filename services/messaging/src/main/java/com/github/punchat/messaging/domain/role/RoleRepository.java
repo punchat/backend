@@ -2,9 +2,10 @@ package com.github.punchat.messaging.domain.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RoleRepository extends JpaRepository<Role, Long> {
-    Role findRoleByName(String name);
+import java.util.Optional;
 
+public interface RoleRepository extends JpaRepository<Role, Long> {
     boolean existsByName(String name);
-    Role findByName(String name);
+
+    Optional<Role> findByName(String name);
 }

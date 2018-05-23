@@ -1,5 +1,7 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.messaging.domain.role.RoleFinder;
+import com.github.punchat.messaging.domain.role.RoleFinderImpl;
 import com.github.punchat.messaging.security.AuthService;
 import com.github.punchat.messaging.security.AuthServiceImpl;
 import com.github.punchat.messaging.MockIdService;
@@ -40,7 +42,12 @@ public class JpaTestsConfig {
 
     @Bean
     public MemberService memberService() {
-        return new MemberServiceImpl(memberRepository, broadcastChannelFinder(), userRepository, roleRepository, idService());
+        return new MemberServiceImpl(authService(), memberRepository, roleFinder(), idService());
+    }
+
+    @Bean
+    public RoleFinder roleFinder() {
+        return new RoleFinderImpl(roleRepository);
     }
 
     @Bean

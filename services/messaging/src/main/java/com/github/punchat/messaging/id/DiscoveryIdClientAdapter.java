@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-@Profile("!standalone")
+@Profile("!test")
 public class DiscoveryIdClientAdapter implements IdService {
     private final DiscoveryIdClient idClient;
 

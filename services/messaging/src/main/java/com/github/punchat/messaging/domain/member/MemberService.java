@@ -7,15 +7,14 @@ import com.github.punchat.messaging.domain.user.User;
 import java.util.Set;
 
 public interface MemberService {
-    Member createAdmin(BroadcastChannel channel, User user);
+    Set<Member> getMembers(BroadcastChannel channel);
 
-    Member create(Long userId, Long channelId, Long roleId);
+    Member createAdmin(BroadcastChannel channel, User user);
 
     Member create(User user, BroadcastChannel channel, Role role);
 
-    Set<Member> findByChannel(Long channelId);
-
-    Member findByUserAndChannel(Long userId, String channelName);
-
+    // TODO move to finder
     Member findByUserAndChannel(User user, BroadcastChannel channel);
+
+    void delete(User user, BroadcastChannel channel);
 }
