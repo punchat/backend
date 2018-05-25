@@ -21,15 +21,18 @@ public class RoleFinderImpl implements RoleFinder {
 
     @Override
     public Role owner(BroadcastChannel channel) {
-        Role owner = repository.findByChannelAndName(channel, DefaultRoles.OWNER);
-        if (owner == null) {
-            throw new RuntimeException("default role does not exist");
-        }
-        return owner;
+        return repository.findByChannelAndName(channel, DefaultRoles.OWNER).orElseThrow(() ->
+                new RuntimeException("owner role not found"));
     }
 
     @Override
     public Set<Role> byChannel(BroadcastChannel channel) {
         return repository.findByChannel(channel);
+    }
+
+    @Override
+    public Role defaultRole(BroadcastChannel channel) {
+        return repository.findByChannelAndName(channel, DefaultRoles.DEFAULT).orElseThrow(() ->
+                new RuntimeException("default role not found"));
     }
 }

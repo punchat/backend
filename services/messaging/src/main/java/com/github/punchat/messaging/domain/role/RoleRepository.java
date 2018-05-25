@@ -9,9 +9,10 @@ import java.util.Set;
 public interface RoleRepository extends JpaRepository<Role, Long> {
     boolean existsByName(String name);
 
+    @Deprecated
     Optional<Role> findByName(String name);
 
     Set<Role> findByChannel(BroadcastChannel channel);
 
-    Role findByChannelAndName(BroadcastChannel channel, String name);
+    Optional<Role> findByChannelAndName(BroadcastChannel channel, String name);
 }

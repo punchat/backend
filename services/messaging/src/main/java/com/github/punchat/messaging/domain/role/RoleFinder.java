@@ -10,4 +10,6 @@ public interface RoleFinder {
     Role owner(BroadcastChannel channel);
 
     Set<Role> byChannel(BroadcastChannel channel);
+
+    Role defaultRole(BroadcastChannel channel);
 }

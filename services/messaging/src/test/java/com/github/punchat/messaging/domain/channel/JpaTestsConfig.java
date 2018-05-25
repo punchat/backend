@@ -57,7 +57,15 @@ public class JpaTestsConfig {
 
     @Bean
     public ChannelService channelService() {
-        return new ChannelServiceImpl(authService(), broadcastChannelRepository, idService(), channelMapper(), memberService(), roleService(), memberFinder(), broadcastChannelFinder());
+        return new ChannelServiceImpl(authService(),
+                broadcastChannelRepository,
+                idService(),
+                channelMapper(),
+                memberService(),
+                roleService(),
+                memberFinder(),
+                broadcastChannelFinder(),
+                roleFinder());
     }
 
     @Bean

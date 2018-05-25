@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
         User authorized = auth.getAuthorizedUser();
         BroadcastChannel channel = bFinder.byId(request.getChannelId());
         Member member = memberFinder.byUserAndChannel(authorized, channel);
-        if (!member.getRole().getPermissions().contains(Permission.CAN_EXCLUDE_USERS)) {
+        if (!member.getRole().getPermissions().contains(Permission.CAN_CREATE_ROLES)) {
             throw new AbsentPermissionException(authorized.getId(), Permission.CAN_CREATE_ROLES);
         }
         if (!roleRepository.existsByName(request.getName())) {
@@ -52,7 +52,7 @@ public class RoleServiceImpl implements RoleService {
             role.setName(request.getName());
         }
         if (request.getPermissions() != null && !request.getPermissions().isEmpty()) {
-            List<Permission> granted = permissions(request);
+            Set<Permission> granted = permissions(request);
             checkPermissions(member, granted);
             role.setPermissions(granted);
         }
@@ -61,13 +61,27 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Set<Role> createDefaultRoles(BroadcastChannel channel) {
-        Role owner = new Role();
-        owner.setId(idService.next());
-        owner.setName(DefaultRoles.OWNER);
-        owner.setChannel(channel);
-        owner.setPermissions(Arrays.asList(Permission.values()));
-        roleRepository.save(owner);
-        return Collections.singleton(owner);
+        Role owner = createOwnerRole(channel);
+        Role def = createDefaultUserRole(channel);
+        return new HashSet<>(Arrays.asList(owner, def));
+    }
+
+    private Role createOwnerRole(BroadcastChannel channel) {
+        return createRole(DefaultRoles.OWNER, Arrays.asList(Permission.values()), channel);
+    }
+
+    private Role createDefaultUserRole(BroadcastChannel channel) {
+        return createRole(DefaultRoles.DEFAULT, Arrays.asList(Permission.CAN_WRITE_MESSAGES), channel);
+    }
+
+    private Role createRole(String name, Collection<Permission> permissions, BroadcastChannel channel) {
+        Role role = new Role();
+        role.setId(idService.next());
+        role.setName(name);
+        role.setChannel(channel);
+        role.setPermissions(new HashSet<>(permissions));
+        roleRepository.save(role);
+        return role;
     }
 
     private void checkName(String name) {
@@ -88,7 +102,7 @@ public class RoleServiceImpl implements RoleService {
         }
     }
 
-    private List<Permission> permissions(RoleRequest request) {
+    private Set<Permission> permissions(RoleRequest request) {
         return mapper.toRole(request).getPermissions();
     }
 }

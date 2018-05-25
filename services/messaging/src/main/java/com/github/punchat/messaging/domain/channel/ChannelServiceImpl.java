@@ -6,6 +6,7 @@ import com.github.punchat.messaging.domain.member.MemberFinder;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
 import com.github.punchat.messaging.domain.role.Permission;
+import com.github.punchat.messaging.domain.role.RoleFinder;
 import com.github.punchat.messaging.domain.role.RoleService;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.id.IdService;
@@ -27,15 +28,22 @@ public class ChannelServiceImpl implements ChannelService {
     private final RoleService roleService;
     private final MemberFinder memberFinder;
     private final BroadcastChannelFinder bFinder;
+    private final RoleFinder roleFinder;
 
     @Override
     @Transactional
     public BroadcastChannel create(BroadcastChannelRequest payload) {
         User user = authService.getAuthorizedUser();
+        return createFor(user, payload);
+    }
+
+    @Override
+    public BroadcastChannel createFor(User user, BroadcastChannelRequest payload) {
         BroadcastChannel channel = channelMapper.fromRequest(payload);
         channel.setId(idService.next());
         channel = broadcastChannelRepository.save(channel);
         roleService.createDefaultRoles(channel);
+        channel.setDefaultRole(roleFinder.defaultRole(channel));
         memberService.createAdmin(channel, user);
         return channel;
     }

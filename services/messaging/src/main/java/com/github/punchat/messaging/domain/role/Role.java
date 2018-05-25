@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class Role extends AbstractIdentifiableObject {
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "permissions")
     @Column(name = "permission")
-    private List<Permission> permissions;
+    private Set<Permission> permissions;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "channel", nullable = false)
