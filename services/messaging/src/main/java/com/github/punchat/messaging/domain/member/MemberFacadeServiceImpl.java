@@ -1,6 +1,7 @@
 package com.github.punchat.messaging.domain.member;
 
 import com.github.punchat.dto.messaging.member.MemberDto;
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Trace
 @Service
 @AllArgsConstructor
 public class MemberFacadeServiceImpl implements MemberFacadeService {

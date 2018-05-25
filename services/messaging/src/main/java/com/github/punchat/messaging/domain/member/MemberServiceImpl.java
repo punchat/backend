@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.member;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.ResourceNotFoundException;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.role.*;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
+@Trace
 @Service
 @AllArgsConstructor
 public class MemberServiceImpl implements MemberService {

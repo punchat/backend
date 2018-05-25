@@ -2,6 +2,7 @@ package com.github.punchat.messaging.domain.role;
 
 import com.github.punchat.dto.messaging.role.RoleDto;
 import com.github.punchat.dto.messaging.role.RoleRequest;
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Trace
 @Service
 @AllArgsConstructor
 public class RoleFacadeServiceImpl implements RoleFacadeService {

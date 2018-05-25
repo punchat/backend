@@ -12,22 +12,36 @@ import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.messaging.security.AuthService;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 @Trace
 @Service
-@AllArgsConstructor
+@Setter
+@NoArgsConstructor
 public class ChannelInviteServiceImpl implements ChannelInviteService {
-    private final ChannelInviteRepository repo;
-    private final AuthService auth;
-    private final MemberService memberService;
-    private final MemberFinder memberFinder;
-    private final IdService ids;
+    private AuthService auth;
+    private IdService ids;
+    private ChannelInviteRepository repo;
+    private MemberService memberService;
+    private MemberFinder memberFinder;
+
+    @Autowired
+    public ChannelInviteServiceImpl(AuthService auth, IdService ids, ChannelInviteRepository repo, MemberService memberService, MemberFinder memberFinder) {
+        this.auth = auth;
+        this.ids = ids;
+        this.repo = repo;
+        this.memberService = memberService;
+        this.memberFinder = memberFinder;
+    }
 
     @Override
+    @Transactional
     public ChannelInvite createChannelInvite(BroadcastChannel channel, User recipient, Role role) {
         User authorized = auth.getAuthorizedUser();
         assertInvitationDoesNotExists(channel, recipient);

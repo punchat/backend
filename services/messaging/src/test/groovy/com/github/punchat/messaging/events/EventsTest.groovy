@@ -5,17 +5,24 @@ import com.github.punchat.messaging.ComponentTestsConfiguration
 import com.github.punchat.messaging.domain.channel.BroadcastChannelRepository
 import com.github.punchat.messaging.domain.channel.DefaultChannels
 import com.github.punchat.messaging.domain.channel.DirectChannelRepository
+import com.github.punchat.messaging.domain.member.MemberRepository
+import com.github.punchat.messaging.domain.role.RoleRepository
 import com.github.punchat.messaging.domain.user.User
 import com.github.punchat.messaging.domain.user.UserRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.messaging.support.MessageBuilder
+import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(classes = ComponentTestsConfiguration)
 class EventsTest extends Specification {
+    private final static Logger LOG = LoggerFactory.getLogger(EventsTest)
     @Autowired
     private Channels channels
 
@@ -28,6 +35,12 @@ class EventsTest extends Specification {
     @Autowired
     private BroadcastChannelRepository bRepository
 
+    @Autowired
+    private MemberRepository memberRepository
+
+    @Autowired
+    private RoleRepository roleRepository
+
     def "when 'user created event' received then user data will be stored"() {
         when:
         def payload = MessageBuilder.withPayload(new AccountCreatedEvent(2L, null)).build()
@@ -36,6 +49,7 @@ class EventsTest extends Specification {
         then:
         userRepository.getOne(2L) != null
     }
+
 
     def "when 'user created event' received then direct channel will be created"() {
         when:

@@ -30,30 +30,6 @@ public class ChannelController {
     private final ChannelInviteFacadeService invitesFacade;
     private final RoleFacadeService rolesFacade;
 
-    // POST                     /channels
-    // GET, PUT, DELETE         /channels/{id}
-    // GET                      /channels/{id}/members
-    // GET                      /channels/{id}/members/@me
-    // GET                      /channels/{id}/invitations
-    // GET                      /channels/{id}/roles
-    // GET                      /channels/{id}/messages/last?count={count}
-    // GET                      /channels/{id}/messages/before?id={id}&limit={limit}
-    // GET                      /channels/{id}/messages/after?id={id}&limit={limit}
-
-    // PUT, DELETE              /members/{id}
-
-    // GET                      /users/@me/channels
-    // GET                      /users/@me/invitations
-
-    // GET                      /messages/{id}
-
-    // POST                     /invitations
-    // PUT                      /invitations/accepting/{id}
-    // GET                      /invitations/{id}
-
-    // POST                     /roles
-    // PUT                      /roles/{id}
-
     @ApiOperation("create new channel")
     @PostMapping("/channels")
     public BroadcastChannelResponse createNewChannel(@RequestBody BroadcastChannelRequest request) {

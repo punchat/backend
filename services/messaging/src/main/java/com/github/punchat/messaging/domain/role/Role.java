@@ -18,7 +18,7 @@ public class Role extends AbstractIdentifiableObject {
     @Column(name = "name")
     private String name;
 
-    @ElementCollection(targetClass = Permission.class)
+    @ElementCollection(targetClass = Permission.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "permissions")
     @Column(name = "permission")

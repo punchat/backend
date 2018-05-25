@@ -1,11 +1,13 @@
 package com.github.punchat.messaging.domain.member;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.ResourceNotFoundException;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@Trace
 @Service
 @AllArgsConstructor
 public class MemberFinderImpl implements MemberFinder {

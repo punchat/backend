@@ -1,6 +1,7 @@
 package com.github.punchat.messaging.domain.invite;
 
 import com.github.punchat.dto.messaging.invite.ChannelInvitationResponse;
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import com.github.punchat.messaging.domain.role.Role;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Trace
 @Service
 @AllArgsConstructor
 public class ChannelInviteFacadeServiceImpl implements ChannelInviteFacadeService {
@@ -42,7 +44,12 @@ public class ChannelInviteFacadeServiceImpl implements ChannelInviteFacadeServic
     public ChannelInvitationResponse createChannelInvite(Long channelId, Long recipientId, Long roleId) {
         BroadcastChannel channel = channelFinder.byId(channelId);
         User user = userFinder.byId(recipientId);
-        Role role = roleFinder.byId(roleId);
+        Role role;
+        if (roleId == null) {
+            role = roleFinder.defaultRole(channel);
+        } else {
+            role = roleFinder.byId(roleId);
+        }
         return map(service.createChannelInvite(channel, user, role));
     }
 

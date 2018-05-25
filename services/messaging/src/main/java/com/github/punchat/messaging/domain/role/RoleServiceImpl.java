@@ -1,6 +1,7 @@
 package com.github.punchat.messaging.domain.role;
 
 import com.github.punchat.dto.messaging.role.RoleRequest;
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import com.github.punchat.messaging.domain.member.Member;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Trace
 @Service
 @AllArgsConstructor
 public class RoleServiceImpl implements RoleService {

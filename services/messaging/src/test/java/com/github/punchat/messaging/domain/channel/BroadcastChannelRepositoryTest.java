@@ -4,6 +4,7 @@ import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserService;
 import com.github.punchat.messaging.id.IdService;
+import com.github.punchat.messaging.security.AuthService;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,8 +36,12 @@ public class BroadcastChannelRepositoryTest {
     @Autowired
     private AuthContext authContext;
 
+    @Autowired
+    private AuthService authService;
+
     @Test
     public void whenUserCreatingChannel_thenHeBecomesMember() {
+        System.out.println(authService);
         User user1 = userService.createUser(idService.next());
         SecurityUtils.withUser(authContext, user1);
         for (int channelNum = 0; channelNum < 3; ++channelNum) {

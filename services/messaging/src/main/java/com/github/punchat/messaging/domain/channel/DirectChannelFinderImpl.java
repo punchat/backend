@@ -1,9 +1,11 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserFinder;
 import org.springframework.stereotype.Service;
 
+@Trace
 @Service
 public class DirectChannelFinderImpl implements DirectChannelFinder {
     private final UserFinder userFinder;
