@@ -9,37 +9,30 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
 @RestController
 @AllArgsConstructor
 public class ChannelInviteController {
-    private final ChannelInviteFacadeServiceImpl service;
-    private final ChannelInviteMapper mapper;
+    private final ChannelInviteFacadeService service;
 
     @ApiOperation("invite user to channel")
-    @PostMapping("/channels/{channelId}/members")
+    @PostMapping("/invitations")
     @ResponseStatus(HttpStatus.CREATED)
-    public ChannelInvitationResponse create(@PathVariable("channelId") Long channelId,
-                                            @RequestBody ChannelInvitationRequest request) {
-        return mapper.toResponse(service.createChannelInvitation(channelId, request.getRecipientId(), request.getRoleId()));
+    public ChannelInvitationResponse create(@RequestBody ChannelInvitationRequest request) {
+        return service.createChannelInvite(request.getChannelId(), request.getRecipientId(), request.getRoleId());
     }
 
-    @ApiOperation("get all invitations for current user")
-    @GetMapping("/@me/invitations")
+    @ApiOperation("get invitation by id")
+    @GetMapping("/invitations/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Set<ChannelInvitationResponse> getInvitations() {
-        return service.getAuthorizedUserInvitations().stream()
-                .map(mapper::toResponse)
-                .collect(Collectors.toSet());
+    public ChannelInvitationResponse getInvitationById(@PathVariable("id") Long id) {
+        return service.getById(id);
     }
 
     @ApiOperation("accept invitation")
-    @PutMapping("/@me/invitations/{channelId}")
+    @PutMapping("/invitations/accepting/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ChannelInvitationResponse accept(@PathVariable("channelId") Long channelId) {
-        return mapper.toResponse(service.acceptChannelInvitation(channelId));
+    public ChannelInvitationResponse accept(@PathVariable("id") Long id) {
+        return service.acceptInvitation(id);
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)

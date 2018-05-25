@@ -1,6 +1,7 @@
 package com.github.punchat.messaging.domain.role;
 
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +23,10 @@ public class Role extends AbstractIdentifiableObject {
     @CollectionTable(name = "permissions")
     @Column(name = "permission")
     private List<Permission> permissions;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "channel", nullable = false)
+    private BroadcastChannel channel;
 
     public Role(String name) {
         this.name = name;

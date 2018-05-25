@@ -1,9 +1,13 @@
 package com.github.punchat.messaging.domain.member;
 
+import com.github.punchat.dto.messaging.member.MemberDto;
+
 import java.util.Set;
 
 public interface MemberFacadeService {
-    Set<Member> getMembers(Long channelId);
+    Set<MemberDto> getMembers(Long channelId);
 
-    void delete(Long userId, Long channelId);
+    void delete(Long id);
+
+    MemberDto getAuthorizedUserAsChannelMembers(Long channelId);
 }

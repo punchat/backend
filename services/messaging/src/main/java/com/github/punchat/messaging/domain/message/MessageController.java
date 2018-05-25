@@ -16,8 +16,8 @@ public class MessageController {
     }
 
     @ApiOperation("get channel message by id")
-    @GetMapping("/channels/{channelId}/messages/{messageId}")
-    public Set<MessageDto> get(@PathVariable("channelId") Long channelId, @PathVariable("messageId") Long messageId) {
+    @GetMapping("/messages/{id}")
+    public Set<MessageDto> get(@PathVariable("id") Long id) {
         throw new UnsupportedOperationException();
     }
 }

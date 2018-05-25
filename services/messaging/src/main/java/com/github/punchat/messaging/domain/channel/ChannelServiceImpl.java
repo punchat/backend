@@ -1,14 +1,15 @@
 package com.github.punchat.messaging.domain.channel;
 
 import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
-import com.github.punchat.messaging.security.AuthService;
 import com.github.punchat.messaging.domain.member.Member;
+import com.github.punchat.messaging.domain.member.MemberFinder;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
 import com.github.punchat.messaging.domain.role.Permission;
+import com.github.punchat.messaging.domain.role.RoleService;
 import com.github.punchat.messaging.domain.user.User;
-import com.github.punchat.messaging.domain.user.UserFinder;
 import com.github.punchat.messaging.id.IdService;
+import com.github.punchat.messaging.security.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +24,8 @@ public class ChannelServiceImpl implements ChannelService {
     private final IdService idService;
     private final ChannelMapper channelMapper;
     private final MemberService memberService;
-    private final UserFinder userFinder;
+    private final RoleService roleService;
+    private final MemberFinder memberFinder;
     private final BroadcastChannelFinder bFinder;
 
     @Override
@@ -33,6 +35,7 @@ public class ChannelServiceImpl implements ChannelService {
         BroadcastChannel channel = channelMapper.fromRequest(payload);
         channel.setId(idService.next());
         channel = broadcastChannelRepository.save(channel);
+        roleService.createDefaultRoles(channel);
         memberService.createAdmin(channel, user);
         return channel;
     }
@@ -50,11 +53,6 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
-    public Set<BroadcastChannel> getUserChannels(Long userId) {
-        return getUserChannels(userFinder.byId(userId));
-    }
-
-    @Override
     public Set<BroadcastChannel> getUserChannels(User user) {
         return broadcastChannelRepository.findUserChannels(user);
     }
@@ -63,7 +61,7 @@ public class ChannelServiceImpl implements ChannelService {
     public void delete(Long id) {
         User user = authService.getAuthorizedUser();
         BroadcastChannel channel = bFinder.byId(id);
-        Member member = memberService.findByUserAndChannel(user, channel);
+        Member member = memberFinder.byUserAndChannel(user, channel);
         if (member.getRole().getPermissions().contains(Permission.CAN_DELETE_CHANNEL)) {
             broadcastChannelRepository.deleteById(id);
         } else {

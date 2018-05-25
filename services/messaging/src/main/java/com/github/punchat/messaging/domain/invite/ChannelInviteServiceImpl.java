@@ -3,8 +3,10 @@ package com.github.punchat.messaging.domain.invite;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.member.Member;
+import com.github.punchat.messaging.domain.member.MemberFinder;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
+import com.github.punchat.messaging.domain.role.ForbiddenException;
 import com.github.punchat.messaging.domain.role.Permission;
 import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
@@ -21,14 +23,15 @@ import java.util.Set;
 public class ChannelInviteServiceImpl implements ChannelInviteService {
     private final ChannelInviteRepository repo;
     private final AuthService auth;
-    private final MemberService members;
+    private final MemberService memberService;
+    private final MemberFinder memberFinder;
     private final IdService ids;
 
     @Override
-    public ChannelInvite createChannelInvitation(BroadcastChannel channel, User recipient, Role role) {
+    public ChannelInvite createChannelInvite(BroadcastChannel channel, User recipient, Role role) {
         User authorized = auth.getAuthorizedUser();
         assertInvitationDoesNotExists(channel, recipient);
-        Member sender = members.findByUserAndChannel(authorized, channel);
+        Member sender = memberFinder.byUserAndChannel(authorized, channel);
         assertSenderHasPermissions(sender, role);
         return doCreateChannelInvitation(sender, recipient, role);
     }
@@ -66,21 +69,19 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     }
 
     @Override
-    public Set<ChannelInvite> getAuthorizedUserInvitations() {
+    public Set<ChannelInvite> getAuthorizedUserInvites() {
         return getUserInvitations(auth.getAuthorizedUser());
     }
 
     @Override
-    public ChannelInvite acceptChannelInvitation(BroadcastChannel channel) {
-        User recipient = auth.getAuthorizedUser();
-        ChannelInvite channelInvite = getInvite(channel, recipient);
-        channelInvite.setState(State.ACCEPTED);
-        members.create(recipient, channel, channelInvite.getRole());
-        return repo.save(channelInvite);
-    }
-
-    private ChannelInvite getInvite(BroadcastChannel channel, User recipient) {
-        return repo.findByChannelAndRecipient(channel, recipient).orElseThrow(() ->
-                new ChannelInviteDoNotFoundException(channel.getName(), recipient.getId()));
+    public ChannelInvite acceptInvite(ChannelInvite invite) {
+        User authorized = auth.getAuthorizedUser();
+        if (authorized.equals(invite.getRecipient())) {
+            throw new ForbiddenException(String.format("user %s cannot accept invitation of user %s",
+                    authorized.getId(), invite.getRecipient().getId()));
+        }
+        invite.setState(State.ACCEPTED);
+        memberService.create(authorized, invite.getChannel(), invite.getRole());
+        return repo.save(invite);
     }
 }

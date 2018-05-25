@@ -13,8 +13,7 @@ public interface MemberService {
 
     Member create(User user, BroadcastChannel channel, Role role);
 
-    // TODO move to finder
-    Member findByUserAndChannel(User user, BroadcastChannel channel);
+    void delete(Member member);
 
-    void delete(User user, BroadcastChannel channel);
+    Member getAuthorizedUserAsChannelMembers(BroadcastChannel channel);
 }

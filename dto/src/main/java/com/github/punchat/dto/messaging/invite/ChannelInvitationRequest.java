@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ChannelInvitationRequest {
+    private Long channelId;
     private Long recipientId;
     private Long roleId;
 }

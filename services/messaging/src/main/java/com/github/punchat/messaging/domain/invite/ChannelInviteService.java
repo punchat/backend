@@ -7,9 +7,9 @@ import com.github.punchat.messaging.domain.user.User;
 import java.util.Set;
 
 public interface ChannelInviteService {
-    Set<ChannelInvite> getAuthorizedUserInvitations();
+    Set<ChannelInvite> getAuthorizedUserInvites();
 
-    ChannelInvite createChannelInvitation(BroadcastChannel channel, User recipient, Role role);
+    ChannelInvite createChannelInvite(BroadcastChannel channel, User recipient, Role role);
 
-    ChannelInvite acceptChannelInvitation(BroadcastChannel channel);
+    ChannelInvite acceptInvite(ChannelInvite invite);
 }

@@ -1,30 +1,45 @@
 package com.github.punchat.messaging.domain.member;
 
+import com.github.punchat.dto.messaging.member.MemberDto;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
-import com.github.punchat.messaging.domain.user.User;
-import com.github.punchat.messaging.domain.user.UserFinder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class MemberFacadeServiceImpl implements MemberFacadeService {
     private final MemberService service;
-    private final UserFinder userFinder;
+    private final MemberFinder finder;
     private final BroadcastChannelFinder channelFinder;
+    private final MemberMapper mapper;
 
     @Override
-    public Set<Member> getMembers(Long channelId) {
-        return service.getMembers(channelFinder.byId(channelId));
+    public Set<MemberDto> getMembers(Long channelId) {
+        return map(service.getMembers(channelFinder.byId(channelId)));
     }
 
     @Override
-    public void delete(Long userId, Long channelId) {
-        User user = userFinder.byId(userId);
+    public void delete(Long id) {
+        service.delete(finder.byId(id));
+    }
+
+    @Override
+    public MemberDto getAuthorizedUserAsChannelMembers(Long channelId) {
         BroadcastChannel channel = channelFinder.byId(channelId);
-        service.delete(user, channel);
+        return map(service.getAuthorizedUserAsChannelMembers(channel));
+    }
+
+    private MemberDto map(Member member) {
+        return mapper.toResponse(member);
+    }
+
+    private Set<MemberDto> map(Set<Member> members) {
+        return members.stream()
+                .map(this::map)
+                .collect(Collectors.toSet());
     }
 }

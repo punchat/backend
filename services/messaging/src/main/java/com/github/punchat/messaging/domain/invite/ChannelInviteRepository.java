@@ -13,8 +13,12 @@ public interface ChannelInviteRepository extends JpaRepository<ChannelInvite, Lo
 
     Set<ChannelInvite> findByRecipientAndState(User recipient, State state);
 
+    Set<ChannelInvite> findByChannelAndState(BroadcastChannel channel, State state);
+
     boolean existsByChannelAndRecipient(BroadcastChannel channel, User recipient);
 
     @Query("select count (i)>0 from ChannelInvite ")
     boolean existsByChannelAndRecipient(Long channelId, Long recipientId);
+
+    Set<ChannelInvite> findByChannel(BroadcastChannel channel);
 }

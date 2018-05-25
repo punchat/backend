@@ -1,17 +1,12 @@
 package com.github.punchat.messaging.domain.channel;
 
-import com.github.punchat.messaging.domain.role.RoleFinder;
-import com.github.punchat.messaging.domain.role.RoleFinderImpl;
-import com.github.punchat.messaging.security.AuthService;
-import com.github.punchat.messaging.security.AuthServiceImpl;
 import com.github.punchat.messaging.MockIdService;
-import com.github.punchat.messaging.domain.member.MemberRepository;
-import com.github.punchat.messaging.domain.member.MemberService;
-import com.github.punchat.messaging.domain.member.MemberServiceImpl;
-import com.github.punchat.messaging.domain.role.DefaultRoleAutoCreator;
-import com.github.punchat.messaging.domain.role.RoleRepository;
+import com.github.punchat.messaging.domain.member.*;
+import com.github.punchat.messaging.domain.role.*;
 import com.github.punchat.messaging.domain.user.*;
 import com.github.punchat.messaging.id.IdService;
+import com.github.punchat.messaging.security.AuthService;
+import com.github.punchat.messaging.security.AuthServiceImpl;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +37,12 @@ public class JpaTestsConfig {
 
     @Bean
     public MemberService memberService() {
-        return new MemberServiceImpl(authService(), memberRepository, roleFinder(), idService());
+        return new MemberServiceImpl(authService(), memberRepository, memberFinder(), roleFinder(), idService());
+    }
+
+    @Bean
+    public MemberFinder memberFinder() {
+        return new MemberFinderImpl(memberRepository);
     }
 
     @Bean
@@ -57,7 +57,17 @@ public class JpaTestsConfig {
 
     @Bean
     public ChannelService channelService() {
-        return new ChannelServiceImpl(authService(), broadcastChannelRepository, idService(), channelMapper(), memberService(), userFinder(), broadcastChannelFinder());
+        return new ChannelServiceImpl(authService(), broadcastChannelRepository, idService(), channelMapper(), memberService(), roleService(), memberFinder(), broadcastChannelFinder());
+    }
+
+    @Bean
+    public RoleService roleService() {
+        return new RoleServiceImpl(authService(), idService(), roleMapper(), roleRepository, broadcastChannelFinder(), memberFinder());
+    }
+
+    @Bean
+    public RoleMapper roleMapper() {
+        return Mappers.getMapper(RoleMapper.class);
     }
 
     @Bean
@@ -78,10 +88,5 @@ public class JpaTestsConfig {
     @Bean
     public IdService idService() {
         return new MockIdService();
-    }
-
-    @Bean
-    public DefaultRoleAutoCreator defaultRoleAutoCreator() {
-        return new DefaultRoleAutoCreator(roleRepository, idService());
     }
 }

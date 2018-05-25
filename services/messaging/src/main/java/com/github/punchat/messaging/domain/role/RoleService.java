@@ -1,17 +1,14 @@
 package com.github.punchat.messaging.domain.role;
 
-import java.util.List;
+import com.github.punchat.dto.messaging.role.RoleRequest;
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+
+import java.util.Set;
 
 public interface RoleService {
-    Role createRole(Role role);
+    Role create(RoleRequest request);
 
-    Role getRole(String name);
+    Role edit(Role role, RoleRequest request);
 
-    Role editRole(String name, String newName, List<Permission> permissions);
-
-    Role addPermissions(String name, Permission[] permissions);
-
-    Role excludePermissions(String name, Permission[] permissions);
-
-    List<Role> getAllRoles();
+    Set<Role> createDefaultRoles(BroadcastChannel channel);
 }

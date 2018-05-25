@@ -2,11 +2,13 @@ package com.github.punchat.messaging.domain.role
 
 import com.github.punchat.messaging.MockIdService
 import com.github.punchat.messaging.id.IdService
+import org.junit.Ignore
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
+@Ignore
 @ActiveProfiles("test")
 @DataJpaTest
 class RoleServiceImplTest extends Specification {
@@ -48,5 +50,9 @@ class RoleServiceImplTest extends Specification {
 
         then:
         repository.findByName("example") != null
+    }
+
+    def "to edit role member should have special permission"() {
+
     }
 }

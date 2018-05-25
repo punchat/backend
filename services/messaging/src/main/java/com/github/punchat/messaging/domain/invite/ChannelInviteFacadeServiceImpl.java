@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.dto.messaging.invite.ChannelInvitationResponse;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import com.github.punchat.messaging.domain.role.Role;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -18,27 +20,44 @@ public class ChannelInviteFacadeServiceImpl implements ChannelInviteFacadeServic
     private final BroadcastChannelFinder channelFinder;
     private final RoleFinder roleFinder;
     private final ChannelInviteService service;
+    private final ChannelInviteFinder finder;
+    private final ChannelInviteMapper mapper;
 
     @Override
-    public Set<ChannelInvite> getAuthorizedUserInvitations() {
-        return service.getAuthorizedUserInvitations();
+    public ChannelInvitationResponse getById(Long id) {
+        return map(finder.byId(id));
     }
 
     @Override
-    public ChannelInvite createChannelInvitation(Long channelId, Long recipientId, Long roleId) {
+    public Set<ChannelInvitationResponse> getAuthorizedUserInvites() {
+        return map(service.getAuthorizedUserInvites());
+    }
+
+    @Override
+    public Set<ChannelInvitationResponse> getChannelInvites(Long id) {
+        return map(finder.byChannel(channelFinder.byId(id)));
+    }
+
+    @Override
+    public ChannelInvitationResponse createChannelInvite(Long channelId, Long recipientId, Long roleId) {
         BroadcastChannel channel = channelFinder.byId(channelId);
         User user = userFinder.byId(recipientId);
         Role role = roleFinder.byId(roleId);
-        return service.createChannelInvitation(channel, user, role);
+        return map(service.createChannelInvite(channel, user, role));
     }
 
     @Override
-    public ChannelInvite acceptChannelInvitation(Long channelId) {
-        return service.acceptChannelInvitation(channelFinder.byId(channelId));
+    public ChannelInvitationResponse acceptInvitation(Long id) {
+        return map(service.acceptInvite(finder.byId(id)));
     }
 
-    @Override
-    public ChannelInvite acceptChannelInvitation(String channelName) {
-        return service.acceptChannelInvitation(channelFinder.byName(channelName));
+    private ChannelInvitationResponse map(ChannelInvite invite) {
+        return mapper.toResponse(invite);
+    }
+
+    private Set<ChannelInvitationResponse> map(Set<ChannelInvite> invites) {
+        return invites.stream()
+                .map(this::map)
+                .collect(Collectors.toSet());
     }
 }

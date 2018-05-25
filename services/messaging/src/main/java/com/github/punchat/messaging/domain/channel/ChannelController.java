@@ -2,65 +2,123 @@ package com.github.punchat.messaging.domain.channel;
 
 import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
 import com.github.punchat.dto.messaging.channel.BroadcastChannelResponse;
+import com.github.punchat.dto.messaging.invite.ChannelInvitationResponse;
+import com.github.punchat.dto.messaging.member.MemberDto;
+import com.github.punchat.dto.messaging.message.MessageDto;
+import com.github.punchat.dto.messaging.role.RoleDto;
+import com.github.punchat.messaging.domain.invite.ChannelInviteFacadeService;
+import com.github.punchat.messaging.domain.member.MemberFacadeService;
+import com.github.punchat.messaging.domain.role.RoleFacadeService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
+@Api("Channels operations")
 @Slf4j
 @RestController
+@AllArgsConstructor
 public class ChannelController {
     private final BroadcastChannelFinder finder;
     private final ChannelService service;
     private final ChannelMapper mapper;
 
-    public ChannelController(BroadcastChannelFinder finder, ChannelService service, ChannelMapper mapper) {
-        this.finder = finder;
-        this.service = service;
-        this.mapper = mapper;
-    }
+    private final MemberFacadeService membersFacade;
+    private final ChannelInviteFacadeService invitesFacade;
+    private final RoleFacadeService rolesFacade;
 
-    @GetMapping("/@me/channels")
-    public Set<BroadcastChannelResponse> getAuthorizedUserChannels(){
-        return service.getAuthorizedUserChannels()
-                .stream().map(mapper::toResponse)
-                .collect(Collectors.toSet());
-    }
+    // POST                     /channels
+    // GET, PUT, DELETE         /channels/{id}
+    // GET                      /channels/{id}/members
+    // GET                      /channels/{id}/members/@me
+    // GET                      /channels/{id}/invitations
+    // GET                      /channels/{id}/roles
+    // GET                      /channels/{id}/messages/last?count={count}
+    // GET                      /channels/{id}/messages/before?id={id}&limit={limit}
+    // GET                      /channels/{id}/messages/after?id={id}&limit={limit}
 
-    @GetMapping("/users/{userId}/channels/")
-    public Set<BroadcastChannelResponse> getUserChannels(@PathVariable("userId") Long userId){
-        return service.getUserChannels(userId)
-                .stream().map(mapper::toResponse)
-                .collect(Collectors.toSet());
-    }
+    // PUT, DELETE              /members/{id}
 
+    // GET                      /users/@me/channels
+    // GET                      /users/@me/invitations
 
+    // GET                      /messages/{id}
+
+    // POST                     /invitations
+    // PUT                      /invitations/accepting/{id}
+    // GET                      /invitations/{id}
+
+    // POST                     /roles
+    // PUT                      /roles/{id}
+
+    @ApiOperation("create new channel")
     @PostMapping("/channels")
-    public BroadcastChannelResponse create(@RequestBody BroadcastChannelRequest request) {
+    public BroadcastChannelResponse createNewChannel(@RequestBody BroadcastChannelRequest request) {
         return mapper.toResponse(service.create(request));
     }
 
-    @ApiOperation("get channel by long id")
+    @ApiOperation("get channel info by id")
     @GetMapping("/channels/{id}")
-    public BroadcastChannelResponse getById(@PathVariable("id") Long channelId) {
-        return mapper.toResponse(finder.byId(channelId));
+    public BroadcastChannelResponse getChannelInfoById(@PathVariable("id") Long id) {
+        return mapper.toResponse(finder.byId(id));
     }
 
-    @ApiOperation("get channel by string name")
-    @GetMapping("/channels/{name}")
-    public BroadcastChannelResponse getByName(@PathVariable("name") String channelName) {
-        return mapper.toResponse(finder.byName(channelName));
-    }
-
+    @ApiOperation("update channel info by id")
     @PutMapping("/channels/{id}")
-    public BroadcastChannelResponse updateChannelById(@PathVariable Long id, @RequestBody BroadcastChannelRequest request){
+    public BroadcastChannelResponse updateChannelInfo(@PathVariable("id") Long id, @RequestBody BroadcastChannelRequest request) {
         return mapper.toResponse(service.update(id, request));
     }
 
+    @ApiOperation("delete channel")
     @DeleteMapping("/channels/{id}")
-    public void delete(@PathVariable Long id){
+    public void deleteChannel(@PathVariable("id") Long id) {
         service.delete(id);
+    }
+
+    @ApiOperation("get all members of the channel")
+    @GetMapping("/channels/{id}/members")
+    public Set<MemberDto> getAllMembers(@PathVariable("id") Long id) {
+        return membersFacade.getMembers(id);
+    }
+
+    @ApiOperation("get current user as a member of the channel")
+    @GetMapping("/channels/{id}/members/@me")
+    public MemberDto getCurrentUserAsMember(@PathVariable("id") Long id) {
+        return membersFacade.getAuthorizedUserAsChannelMembers(id);
+    }
+
+    @ApiOperation("get invitations list of the channel")
+    @GetMapping("/channels/{id}/invitations")
+    public Set<ChannelInvitationResponse> getAllInvitations(@PathVariable("id") Long id) {
+        return invitesFacade.getChannelInvites(id);
+    }
+
+    @ApiOperation("get available roles of the channel")
+    @GetMapping("/channels/{id}/roles")
+    public Set<RoleDto> getChannelRoles(@PathVariable("id") Long id) {
+        return rolesFacade.getChannelRoles(id);
+    }
+
+    @GetMapping("/channels/{id}/messages/last")
+    public Set<MessageDto> getLastMessages(@PathVariable("id") Long id,
+            @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+        throw new UnsupportedOperationException();
+    }
+
+    @GetMapping("/channels/{channelId}/messages/before")
+    public Set<MessageDto> getLastMessagesBeforeSpecifiedId(@PathVariable("channelId") Long id,
+                                           @RequestParam(value = "id") Long anchor,
+                                           @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+        throw new UnsupportedOperationException();
+    }
+
+    @GetMapping("/channels/{channelId}/messages/after")
+    public Set<MessageDto> getMessagesAfterSpecifiedId(@PathVariable("channelId") Long id,
+                                           @RequestParam(value = "id") Long anchor,
+                                           @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+        throw new UnsupportedOperationException();
     }
 }

@@ -1,13 +1,17 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.dto.messaging.invite.ChannelInvitationResponse;
+
 import java.util.Set;
 
 public interface ChannelInviteFacadeService {
-    Set<ChannelInvite> getAuthorizedUserInvitations();
+    ChannelInvitationResponse getById(Long id);
 
-    ChannelInvite createChannelInvitation(Long channelId, Long recipientId, Long roleId);
+    Set<ChannelInvitationResponse> getAuthorizedUserInvites();
 
-    ChannelInvite acceptChannelInvitation(Long channelId);
+    Set<ChannelInvitationResponse> getChannelInvites(Long id);
 
-    ChannelInvite acceptChannelInvitation(String channelName);
+    ChannelInvitationResponse createChannelInvite(Long channelId, Long recipientId, Long roleId);
+
+    ChannelInvitationResponse acceptInvitation(Long id);
 }

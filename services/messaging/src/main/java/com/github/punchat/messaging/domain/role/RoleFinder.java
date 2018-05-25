@@ -1,9 +1,13 @@
 package com.github.punchat.messaging.domain.role;
 
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+
+import java.util.Set;
+
 public interface RoleFinder {
     Role byId(Long id);
 
-    Role byName(String name);
+    Role owner(BroadcastChannel channel);
 
-    Role owner();
+    Set<Role> byChannel(BroadcastChannel channel);
 }

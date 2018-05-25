@@ -1,7 +1,10 @@
 package com.github.punchat.messaging.domain.role;
 
 import com.github.punchat.messaging.domain.ResourceNotFoundException;
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 public class RoleFinderImpl implements RoleFinder {
@@ -17,12 +20,16 @@ public class RoleFinderImpl implements RoleFinder {
     }
 
     @Override
-    public Role byName(String name) {
-        return repository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("role", name));
+    public Role owner(BroadcastChannel channel) {
+        Role owner = repository.findByChannelAndName(channel, DefaultRoles.OWNER);
+        if (owner == null) {
+            throw new RuntimeException("default role does not exist");
+        }
+        return owner;
     }
 
     @Override
-    public Role owner() {
-        return byName(DefaultRoles.OWNER);
+    public Set<Role> byChannel(BroadcastChannel channel) {
+        return repository.findByChannel(channel);
     }
 }
