@@ -21,6 +21,7 @@ public class UserController {
 
     private final ChannelInviteFacadeService invitations;
 
+    @ApiOperation("get all channels of current user")
     @GetMapping("/users/@me/channels")
     public Set<BroadcastChannelResponse> getCurrentUserChannels() {
         return service.getAuthorizedUserChannels()
