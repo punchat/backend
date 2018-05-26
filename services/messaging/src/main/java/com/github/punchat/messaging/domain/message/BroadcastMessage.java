@@ -21,6 +21,9 @@ public class BroadcastMessage extends Message {
 
     @ManyToOne
     @JoinColumn(name = "member_sender_id")
+    /*
+    https://hibernate.atlassian.net/browse/HHH-12539?attachmentOrder=asc
+     */
     private Member senderMember;
 
     @ManyToMany

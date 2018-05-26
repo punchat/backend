@@ -21,5 +21,8 @@ public class DirectMessage extends Message {
 
     @ManyToOne
     @JoinColumn(name = "user_sender_id")
+    /*
+    https://hibernate.atlassian.net/browse/HHH-12539?attachmentOrder=asc
+     */
     private User senderUser;
 }
