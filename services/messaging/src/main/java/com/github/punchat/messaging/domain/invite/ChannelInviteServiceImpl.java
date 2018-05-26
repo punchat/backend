@@ -1,88 +1,108 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.events.InviteToChannelEvent;
+import com.github.punchat.events.NewMemberInChannelEvent;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
-import com.github.punchat.messaging.domain.channel.ChannelService;
+import com.github.punchat.messaging.domain.member.Member;
+import com.github.punchat.messaging.domain.member.MemberFinder;
 import com.github.punchat.messaging.domain.member.MemberService;
 import com.github.punchat.messaging.domain.role.AbsentPermissionException;
+import com.github.punchat.messaging.domain.role.ForbiddenException;
 import com.github.punchat.messaging.domain.role.Permission;
-import com.github.punchat.messaging.domain.role.RoleRepository;
+import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
-import com.github.punchat.messaging.domain.user.UserService;
+import com.github.punchat.messaging.events.EventBus;
 import com.github.punchat.messaging.id.IdService;
-import com.github.punchat.starter.uaa.client.context.AuthContext;
+import com.github.punchat.messaging.security.AuthService;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Trace
 @Service
+@Setter
+@NoArgsConstructor
 public class ChannelInviteServiceImpl implements ChannelInviteService {
-    private final ChannelInviteRepository repository;
-    private final AuthContext authContext;
-    private final MemberService memberService;
-    private final UserService userService;
-    private final ChannelService channelService;
-    private final IdService idService;
-    private final RoleRepository roleRepository;
+    private AuthService auth;
+    private IdService ids;
+    private ChannelInviteRepository repo;
+    private MemberService memberService;
+    private MemberFinder memberFinder;
+    private EventBus eventBus;
 
-    public ChannelInviteServiceImpl(ChannelInviteRepository repository, AuthContext authContext, MemberService memberService, UserService userService, ChannelService channelService, IdService idService, RoleRepository roleRepository) {
-        this.repository = repository;
-        this.authContext = authContext;
+    @Autowired
+    public ChannelInviteServiceImpl(AuthService auth, IdService ids, ChannelInviteRepository repo, MemberService memberService, MemberFinder memberFinder, EventBus eventBus) {
+        this.auth = auth;
+        this.ids = ids;
+        this.repo = repo;
         this.memberService = memberService;
-        this.userService = userService;
-        this.channelService = channelService;
-        this.idService = idService;
-        this.roleRepository = roleRepository;
+        this.memberFinder = memberFinder;
+        this.eventBus = eventBus;
     }
 
     @Override
-    public ChannelInvite createChannelInvite(String channelName, Long recipientId, Long roleId) {
-        Long authUserId = authContext.get().getUserInfo().get().getUserId();
-        if (memberService.findByUserAndChannel(authUserId, channelName).getRole().
-                getPermissions().contains(Permission.CAN_INVITE_USERS)) {
-            User recipient = userService.getUser(recipientId);
-            BroadcastChannel channel = channelService.getBroadcastChannelByName(channelName);
-            if (!repository.existsByChannelAndRecipient(channel, recipient)) {
-                ChannelInvite channelInvite = new ChannelInvite();
-                channelInvite.setId(idService.next());
-                channelInvite.setSender(memberService.findByUserAndChannel(authUserId, channelName));
-                channelInvite.setChannel(channelService.getBroadcastChannelByName(channelName));
-                channelInvite.setRecipient(userService.getUser(recipientId));
-                channelInvite.setState(State.CREATED);
-                channelInvite.setRole(roleRepository.getOne(roleId));
-                return repository.save(channelInvite);
-            } else {
-                throw new ChannelInviteAlreadyCreatedException(channelName, recipientId);
+    @Transactional
+    public ChannelInvite createChannelInvite(BroadcastChannel channel, User recipient, Role role) {
+        User authorized = auth.getAuthorizedUser();
+        assertInvitationDoesNotExists(channel, recipient);
+        Member sender = memberFinder.byUserAndChannel(authorized, channel);
+        assertSenderHasPermissions(sender, role);
+        eventBus.publish(new InviteToChannelEvent(authorized.getId(), recipient.getId(), channel.getId()));
+        return doCreateChannelInvitation(sender, recipient, role);
+    }
+
+    private void assertSenderHasPermissions(Member sender, Role role) {
+        if (!sender.getRole().getPermissions().contains(Permission.CAN_INVITE_USERS)) {
+            throw new AbsentPermissionException(sender.getUser().getId(), Permission.CAN_INVITE_USERS);
+        }
+        for (Permission permission : role.getPermissions()) {
+            if (!sender.getRole().getPermissions().contains(permission)) {
+                throw new AbsentPermissionException(sender.getUser().getId(), permission);
             }
-        } else {
-            throw new AbsentPermissionException(recipientId, Permission.CAN_INVITE_USERS);
         }
     }
 
-    @Override
-    public Set<Long> getUserChannelsInvited(Long userId) {
-        User user = userService.getUser(userId);
-        return repository.findByRecipientAndState(user, State.CREATED)
-                .stream()
-                .map(ChannelInvite::getId)
-                .collect(Collectors.toSet());
+    private ChannelInvite doCreateChannelInvitation(Member sender, User recipient, Role role) {
+        ChannelInvite channelInvite = new ChannelInvite();
+        channelInvite.setId(ids.next());
+        channelInvite.setSender(sender);
+        channelInvite.setChannel(sender.getChannel());
+        channelInvite.setRecipient(recipient);
+        channelInvite.setState(State.CREATED);
+        channelInvite.setRole(role);
+        return repo.save(channelInvite);
+    }
+
+    private void assertInvitationDoesNotExists(BroadcastChannel channel, User recipient) {
+        if (repo.existsByChannelAndRecipient(channel, recipient)) {
+            throw new ChannelInviteAlreadyCreatedException(channel.getName(), recipient.getId());
+        }
+    }
+
+    private Set<ChannelInvite> getUserInvitations(User user) {
+        return repo.findByRecipientAndState(user, State.CREATED);
     }
 
     @Override
-    public ChannelInvite acceptChannelInvite(String channelName) {
-        Long recipientId = authContext.get().getUserInfo().get().getUserId();
-        BroadcastChannel channel = channelService.getBroadcastChannelByName(channelName);
-        User recipient = userService.getUser(recipientId);
-        if (repository.existsByChannelAndRecipient(channel, recipient)) {
-            ChannelInvite channelInvite =
-                    repository.findByChannelAndRecipient(channel, recipient);
-            channelInvite.setState(State.ACCEPTED);
-            memberService.create(recipientId, channel.getId(), channelInvite.getRole().getId());
-            return repository.save(channelInvite);
-        } else {
-            throw new ChannelInviteDoNotFoundException(channelName, recipientId);
+    public Set<ChannelInvite> getAuthorizedUserInvites() {
+        return getUserInvitations(auth.getAuthorizedUser());
+    }
+
+    @Override
+    public ChannelInvite acceptInvite(ChannelInvite invite) {
+        User authorized = auth.getAuthorizedUser();
+        if (authorized.equals(invite.getRecipient())) {
+            throw new ForbiddenException(String.format("user %s cannot accept invitation of user %s",
+                    authorized.getId(), invite.getRecipient().getId()));
         }
+        invite.setState(State.ACCEPTED);
+        memberService.create(authorized, invite.getChannel(), invite.getRole());
+        eventBus.publish(new NewMemberInChannelEvent(authorized.getId(), invite.getRecipient().getId(), invite.getChannel().getId(), invite.getId()));
+        return repo.save(invite);
     }
 }

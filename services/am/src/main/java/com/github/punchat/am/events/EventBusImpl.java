@@ -15,15 +15,11 @@ import org.springframework.stereotype.Component;
 @EnableBinding(Channels.class)
 public class EventBusImpl implements EventBus {
     private final MessageChannel accessCodeGeneratedEvent;
-    private final MessageChannel inviteToChannelEvent;
     private final MessageChannel inviteToWorkspaceEvent;
-    private final MessageChannel newMemberInChannelEvent;
 
     public EventBusImpl(Channels channels) {
         this.accessCodeGeneratedEvent = channels.accessCodeGeneratedEvents();
-        this.inviteToChannelEvent = channels.inviteToChannelEvents();
         this.inviteToWorkspaceEvent = channels.inviteToWorkspaceEvents();
-        this.newMemberInChannelEvent = channels.newMemberInChannel();
     }
     @Override
     public void publish(AccessCodeGeneratedEvent event) {
@@ -31,17 +27,7 @@ public class EventBusImpl implements EventBus {
     }
 
     @Override
-    public void publish(InviteToChannelEvent event) {
-        inviteToChannelEvent.send(MessageBuilder.withPayload(event).build());
-    }
-
-    @Override
     public void publish(InviteToWorkspaceEvent event) {
         inviteToWorkspaceEvent.send(MessageBuilder.withPayload(event).build());
-    }
-
-    @Override
-    public void publish(NewMemberInChannelEvent event) {
-        newMemberInChannelEvent.send(MessageBuilder.withPayload(event).build());
     }
 }

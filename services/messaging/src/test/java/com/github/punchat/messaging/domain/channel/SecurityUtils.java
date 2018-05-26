@@ -1,6 +1,7 @@
 package com.github.punchat.messaging.domain.channel;
 
 import com.github.punchat.messaging.domain.user.User;
+import com.github.punchat.messaging.security.AuthService;
 import com.github.punchat.starter.uaa.client.auth.Auth;
 import com.github.punchat.starter.uaa.client.auth.UserInfo;
 import com.github.punchat.starter.uaa.client.context.AuthContext;
@@ -16,5 +17,9 @@ public class SecurityUtils {
         UserInfo info = new UserInfo(user.getId(), "test");
         when(auth.getUserInfo()).thenReturn(Optional.of(info));
         when(authContext.get()).thenReturn(auth);
+    }
+
+    public static void withUser(AuthService authService, User user) {
+        when(authService.getAuthorizedUser()).thenReturn(user);
     }
 }

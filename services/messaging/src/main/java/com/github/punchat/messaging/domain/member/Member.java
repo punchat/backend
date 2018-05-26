@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+import com.github.punchat.messaging.domain.role.Permission;
 import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
 import lombok.Getter;
@@ -33,4 +34,8 @@ public class Member extends AbstractIdentifiableObject {
     @JoinColumn(name = "role_id", nullable = false)
     @JsonUnwrapped
     private Role role;
+
+    public boolean hasPermission(Permission permission) {
+        return getRole().getPermissions().contains(permission);
+    }
 }

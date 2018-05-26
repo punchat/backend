@@ -1,56 +1,68 @@
 package com.github.punchat.messaging.domain.member;
 
+import com.github.punchat.log.Trace;
+import com.github.punchat.messaging.domain.ResourceNotFoundException;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
-import com.github.punchat.messaging.domain.channel.BroadcastChannelRepository;
-import com.github.punchat.messaging.domain.role.Role;
-import com.github.punchat.messaging.domain.role.RoleRepository;
+import com.github.punchat.messaging.domain.role.*;
 import com.github.punchat.messaging.domain.user.User;
-import com.github.punchat.messaging.domain.user.UserRepository;
 import com.github.punchat.messaging.id.IdService;
+import com.github.punchat.messaging.security.AuthService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 
+@Trace
 @Service
+@AllArgsConstructor
 public class MemberServiceImpl implements MemberService {
+    private final AuthService auth;
     private final MemberRepository memberRepository;
-    private final BroadcastChannelRepository broadcastChannelRepository;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+    private final MemberFinder finder;
+    private final RoleFinder roleFinder;
     private final IdService idService;
 
-    public MemberServiceImpl(MemberRepository memberRepository, BroadcastChannelRepository broadcastChannelRepository, UserRepository userRepository, RoleRepository roleRepository, IdService idService) {
-        this.memberRepository = memberRepository;
-        this.broadcastChannelRepository = broadcastChannelRepository;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.idService = idService;
+    @Override
+    public Set<Member> getMembers(BroadcastChannel channel) {
+        return memberRepository.findByChannel(channel);
     }
 
     @Override
-    public Member create(Long userId, Long channelId, Long roleId) {
+    public Member createAdmin(BroadcastChannel channel, User user) {
+        Role owner = roleFinder.owner(channel);
+        return create(user, channel, owner);
+    }
+
+    @Override
+    public Member create(User user, BroadcastChannel channel, Role role) {
         Member member = new Member();
         member.setId(idService.next());
-        BroadcastChannel channel = broadcastChannelRepository.getOne(channelId);
         member.setChannel(channel);
-        User user = userRepository.getOne(userId);
         member.setUser(user);
-        Role role = roleRepository.getOne(roleId);
         member.setRole(role);
         return memberRepository.save(member);
     }
 
     @Override
-    public Member findByUserAndChannel(Long userId, String channelName) {
-        User user = userRepository.getOne(userId);
-        BroadcastChannel channel = broadcastChannelRepository.findByName(channelName);
-        return memberRepository.findByUserAndChannel(user, channel);
+    public void delete(Member member) {
+        User authorized = auth.getAuthorizedUser();
+        Member authorizedMember;
+        try {
+            authorizedMember = finder.byUserAndChannel(authorized, member.getChannel());
+        } catch (ResourceNotFoundException e) {
+            throw new NotAMemberException(authorized.getId(), member.getChannel().getName());
+        }
+
+        if (member.getRole().getName().equals(DefaultRoles.OWNER)) {
+            throw new OwnerExclusionException(authorized.getId(), member.getId());
+        }
+        if (authorizedMember.getRole().getPermissions().contains(Permission.CAN_EXCLUDE_USERS)) {
+            memberRepository.delete(member);
+        }
     }
 
     @Override
-    public Set<Member> findByChannel(Long channelId) {
-        return broadcastChannelRepository.findById(channelId)
-                .map(memberRepository::findByChannel).orElse(new HashSet<>());
+    public Member getAuthorizedUserAsChannelMembers(BroadcastChannel channel) {
+        return finder.byUserAndChannel(auth.getAuthorizedUser(), channel);
     }
 }

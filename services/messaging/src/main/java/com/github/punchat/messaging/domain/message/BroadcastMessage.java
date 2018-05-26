@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,4 +23,7 @@ public class BroadcastMessage extends Message {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "message_id"))
     private List<User> addressees;
+
+    @Column(name = "created_on")
+    private LocalDateTime createdOn;
 }

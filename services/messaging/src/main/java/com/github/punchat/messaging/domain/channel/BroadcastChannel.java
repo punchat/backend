@@ -1,5 +1,6 @@
 package com.github.punchat.messaging.domain.channel;
 
+import com.github.punchat.messaging.domain.role.Role;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,4 +20,8 @@ public class BroadcastChannel extends Channel {
     @Column(name = "privacy")
     @Enumerated(EnumType.STRING)
     private Privacy privacy;
+
+    @OneToOne
+    @JoinColumn(name = "default_role_id")
+    private Role defaultRole;
 }

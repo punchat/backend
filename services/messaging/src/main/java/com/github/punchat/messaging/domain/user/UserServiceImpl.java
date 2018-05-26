@@ -4,23 +4,16 @@ import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.DirectChannel;
 import com.github.punchat.messaging.domain.channel.DirectChannelRepository;
 import com.github.punchat.messaging.id.IdService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Trace
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final DirectChannelRepository directChannelRepository;
     private final IdService idService;
-
-    public UserServiceImpl(UserRepository userRepository, DirectChannelRepository directChannelRepository, IdService idService) {
-        this.userRepository = userRepository;
-        this.directChannelRepository = directChannelRepository;
-        this.idService = idService;
-    }
 
     @Override
     public User createUser(Long id) {
@@ -36,12 +29,5 @@ public class UserServiceImpl implements UserService {
         user = userRepository.save(user);
         directChannelRepository.save(channel);
         return user;
-    }
-
-    @Override
-    @Transactional
-    public User getUser(Long id) {
-        Optional<User> found = userRepository.findById(id);
-        return found.orElseGet(() -> createUser(id));
     }
 }

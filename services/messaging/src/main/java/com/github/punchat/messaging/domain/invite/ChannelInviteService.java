@@ -1,12 +1,15 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+import com.github.punchat.messaging.domain.role.Role;
+import com.github.punchat.messaging.domain.user.User;
+
 import java.util.Set;
 
 public interface ChannelInviteService {
+    Set<ChannelInvite> getAuthorizedUserInvites();
 
-    Set<Long> getUserChannelsInvited(Long userId);
+    ChannelInvite createChannelInvite(BroadcastChannel channel, User recipient, Role role);
 
-    ChannelInvite createChannelInvite(String channelName, Long userId, Long roleId);
-
-    ChannelInvite acceptChannelInvite(String channelName);
+    ChannelInvite acceptInvite(ChannelInvite invite);
 }

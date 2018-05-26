@@ -1,13 +1,16 @@
 package com.github.punchat.messaging.domain.channel;
 
-import com.github.punchat.dto.messaging.channel.BroadcastChannelDto;
-import org.mapstruct.Mapper;
+import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
+import com.github.punchat.dto.messaging.channel.BroadcastChannelResponse;
+import org.mapstruct.*;
 
 @Mapper(componentModel="spring")
+@MapperConfig(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ChannelMapper {
+    BroadcastChannel fromRequest(BroadcastChannelRequest payload);
 
-    BroadcastChannel channelDtoToChannel(BroadcastChannelDto channelDto);
+    BroadcastChannelResponse toResponse(BroadcastChannel channel);
 
-    BroadcastChannelDto channelToChannelDto(BroadcastChannel channel);
+    void updateChannel(BroadcastChannelRequest request, @MappingTarget BroadcastChannel channel);
 }
 
