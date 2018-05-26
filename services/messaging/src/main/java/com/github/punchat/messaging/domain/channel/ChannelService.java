@@ -17,4 +17,6 @@ public interface ChannelService {
     Set<BroadcastChannel> getUserChannels(User user);
 
     void delete(Long id);
+
+    Set<BroadcastChannel> getAllPublicChannels();
 }

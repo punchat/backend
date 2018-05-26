@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
 @ActiveProfiles("test")
@@ -41,23 +42,26 @@ class EventsTest extends Specification {
     @Autowired
     private RoleRepository roleRepository
 
+    @Transactional
     def "when 'user created event' received then user data will be stored"() {
         when:
-        def payload = MessageBuilder.withPayload(new AccountCreatedEvent(2L, null)).build()
+        def payload = MessageBuilder.withPayload(new AccountCreatedEvent(32L, null)).build()
         channels.accountCreatedEvents().send(payload)
+        User user = userRepository.findById(32L).get()
 
         then:
-        userRepository.getOne(2L) != null
+        user.id == 32L
     }
 
-
+    @Transactional
     def "when 'user created event' received then direct channel will be created"() {
         when:
-        def payload = MessageBuilder.withPayload(new AccountCreatedEvent(1L, null)).build()
+        def payload = MessageBuilder.withPayload(new AccountCreatedEvent(43L, null)).build()
         channels.accountCreatedEvents().send(payload)
+        User user = userRepository.findById(43L).get()
 
         then:
-        User user = userRepository.getOne(1L)
+        user.id == 43L
         dRepository.findByUser(user) != null
     }
 

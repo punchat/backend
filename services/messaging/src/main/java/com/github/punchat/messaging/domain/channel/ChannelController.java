@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Api("Channels operations")
 @Slf4j
@@ -37,6 +38,14 @@ public class ChannelController {
     @PostMapping("/channels")
     public BroadcastChannelResponse createNewChannel(@RequestBody BroadcastChannelRequest request) {
         return mapper.toResponse(service.create(request));
+    }
+
+    @ApiOperation("get all public channels")
+    @GetMapping("/channels")
+    public Set<BroadcastChannelResponse> getAllPublicChannels() {
+        return service.getAllPublicChannels().stream()
+                .map(mapper::toResponse)
+                .collect(Collectors.toSet());
     }
 
     @ApiOperation("get channel info by id")
