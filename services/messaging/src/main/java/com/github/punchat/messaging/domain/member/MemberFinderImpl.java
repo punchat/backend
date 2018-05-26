@@ -7,6 +7,8 @@ import com.github.punchat.messaging.domain.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Trace
 @Service
 @AllArgsConstructor
@@ -16,6 +18,11 @@ public class MemberFinderImpl implements MemberFinder {
     @Override
     public Member byId(Long id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("member", id));
+    }
+
+    @Override
+    public Set<Member> byIds(Set<Long> ids) {
+        return repository.findByIds(ids);
     }
 
     @Override

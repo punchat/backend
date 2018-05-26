@@ -1,6 +1,8 @@
 package com.github.punchat.messaging.domain.channel;
 
 import com.github.punchat.messaging.MockIdService;
+import com.github.punchat.messaging.domain.access.PermissionAssertService;
+import com.github.punchat.messaging.domain.access.PermissionAssertServiceImpl;
 import com.github.punchat.messaging.domain.member.*;
 import com.github.punchat.messaging.domain.role.*;
 import com.github.punchat.messaging.domain.user.*;
@@ -37,7 +39,12 @@ public class JpaTestsConfig {
 
     @Bean
     public MemberService memberService() {
-        return new MemberServiceImpl(authService(), memberRepository, memberFinder(), roleFinder(), idService());
+        return new MemberServiceImpl(authService(), memberRepository, memberFinder(), roleFinder(), idService(), permissionAssertService());
+    }
+
+    @Bean
+    public PermissionAssertService permissionAssertService() {
+        return new PermissionAssertServiceImpl(authService(), memberFinder());
     }
 
     @Bean

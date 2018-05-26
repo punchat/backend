@@ -1,13 +1,14 @@
 package com.github.punchat.messaging.domain.message;
 
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+import com.github.punchat.messaging.domain.member.Member;
 import com.github.punchat.messaging.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -15,14 +16,18 @@ import java.util.List;
 @DiscriminatorValue("broadcast")
 public class BroadcastMessage extends Message {
     @ManyToOne
-    @JoinColumn(name = "channel_id")
+    @JoinColumn(name = "broadcast_channel_id")
     private BroadcastChannel channel;
+
+    @ManyToOne
+    @JoinColumn(name = "member_sender_id")
+    private Member senderMember;
 
     @ManyToMany
     @JoinTable(name = "addresses",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "message_id"))
-    private List<User> addressees;
+    private Set<Member> addressees;
 
     @Column(name = "created_on")
     private LocalDateTime createdOn;

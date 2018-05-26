@@ -22,6 +22,11 @@ public class BroadcastMessageFinderImpl implements BroadcastMessageFinder {
     private final MemberRepository memberRepository;
 
     @Override
+    public BroadcastMessage byId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("message", id));
+    }
+
+    @Override
     public List<BroadcastMessage> getLast(BroadcastChannel channel, int limit) {
         checkThatCurrentUserIsMember(channel);
         return repository.findLast(channel, PageRequest.of(0, limit)).getContent();

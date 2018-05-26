@@ -19,11 +19,6 @@ import javax.persistence.*;
 @Table(name = "messages")
 @Entity
 public class Message extends AbstractIdentifiableObject {
-
-    @ManyToOne
-    @JoinColumn(name = "sender_id")
-    private User sender;
-
     @Embedded
     private Resource resource;
 }

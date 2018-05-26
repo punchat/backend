@@ -1,9 +1,12 @@
 package com.github.punchat.messaging.domain.member;
 
 import com.github.punchat.log.Trace;
-import com.github.punchat.messaging.domain.ResourceNotFoundException;
+import com.github.punchat.messaging.domain.access.PermissionAssertService;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
-import com.github.punchat.messaging.domain.role.*;
+import com.github.punchat.messaging.domain.role.DefaultRoles;
+import com.github.punchat.messaging.domain.role.Permission;
+import com.github.punchat.messaging.domain.role.Role;
+import com.github.punchat.messaging.domain.role.RoleFinder;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.messaging.security.AuthService;
@@ -21,6 +24,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberFinder finder;
     private final RoleFinder roleFinder;
     private final IdService idService;
+    private final PermissionAssertService permissions;
 
     @Override
     public Set<Member> getMembers(BroadcastChannel channel) {
@@ -45,20 +49,15 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public void delete(Member member) {
-        User authorized = auth.getAuthorizedUser();
-        Member authorizedMember;
-        try {
-            authorizedMember = finder.byUserAndChannel(authorized, member.getChannel());
-        } catch (ResourceNotFoundException e) {
-            throw new NotAMemberException(authorized.getId(), member.getChannel().getName());
-        }
-
+        permissions.checkThat()
+                .authorizedUser()
+                .hasPermission(Permission.CAN_EXCLUDE_USERS)
+                .in(member.getChannel());
         if (member.getRole().getName().equals(DefaultRoles.OWNER)) {
+            User authorized = auth.getAuthorizedUser();
             throw new OwnerExclusionException(authorized.getId(), member.getId());
         }
-        if (authorizedMember.getRole().getPermissions().contains(Permission.CAN_EXCLUDE_USERS)) {
-            memberRepository.delete(member);
-        }
+        memberRepository.delete(member);
     }
 
     @Override

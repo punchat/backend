@@ -34,7 +34,7 @@ class BroadcastMessageRepositoryTest extends Specification {
         Resource resource = new Resource()
         resource.id = ids.next()
         msg.id = 1L
-        msg.sender = null
+        msg.senderMember = null
         msg.resource = resource
         msg.createdOn = time
         msg.channel = null
@@ -63,7 +63,7 @@ class BroadcastMessageRepositoryTest extends Specification {
             resource.id = ids.next()
             resource.text = "message #$it"
             msg.id = ids.next()
-            msg.sender = null
+            msg.senderMember = null
             msg.resource = resource
             msg.createdOn = time
             msg.channel = channel
@@ -95,7 +95,7 @@ class BroadcastMessageRepositoryTest extends Specification {
             resource.id = it.longValue()
             resource.text = "message #$it"
             msg.id = it.longValue()
-            msg.sender = null
+            msg.senderMember = null
             msg.resource = resource
             msg.createdOn = time
             msg.channel = channel
@@ -132,7 +132,7 @@ class BroadcastMessageRepositoryTest extends Specification {
             resource.id = it.longValue()
             resource.text = "message #$it"
             msg.id = it.longValue()
-            msg.sender = null
+            msg.senderMember = null
             msg.resource = resource
             msg.createdOn = time
             msg.channel = channel
