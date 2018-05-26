@@ -1,5 +1,7 @@
 package com.github.punchat.messaging.domain.invite;
 
+import com.github.punchat.events.InviteToChannelEvent;
+import com.github.punchat.events.NewMemberInChannelEvent;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.member.Member;
@@ -10,6 +12,7 @@ import com.github.punchat.messaging.domain.role.ForbiddenException;
 import com.github.punchat.messaging.domain.role.Permission;
 import com.github.punchat.messaging.domain.role.Role;
 import com.github.punchat.messaging.domain.user.User;
+import com.github.punchat.messaging.events.EventBus;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.messaging.security.AuthService;
 import lombok.NoArgsConstructor;
@@ -30,14 +33,16 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     private ChannelInviteRepository repo;
     private MemberService memberService;
     private MemberFinder memberFinder;
+    private EventBus eventBus;
 
     @Autowired
-    public ChannelInviteServiceImpl(AuthService auth, IdService ids, ChannelInviteRepository repo, MemberService memberService, MemberFinder memberFinder) {
+    public ChannelInviteServiceImpl(AuthService auth, IdService ids, ChannelInviteRepository repo, MemberService memberService, MemberFinder memberFinder, EventBus eventBus) {
         this.auth = auth;
         this.ids = ids;
         this.repo = repo;
         this.memberService = memberService;
         this.memberFinder = memberFinder;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -47,6 +52,7 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
         assertInvitationDoesNotExists(channel, recipient);
         Member sender = memberFinder.byUserAndChannel(authorized, channel);
         assertSenderHasPermissions(sender, role);
+        eventBus.publish(new InviteToChannelEvent(authorized.getId(), recipient.getId(), channel.getId()));
         return doCreateChannelInvitation(sender, recipient, role);
     }
 
@@ -96,6 +102,7 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
         }
         invite.setState(State.ACCEPTED);
         memberService.create(authorized, invite.getChannel(), invite.getRole());
+        eventBus.publish(new NewMemberInChannelEvent(authorized.getId(), invite.getRecipient().getId(), invite.getChannel().getId(), invite.getId()));
         return repo.save(invite);
     }
 }
