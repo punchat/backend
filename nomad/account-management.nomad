@@ -13,6 +13,7 @@ job "am-service" {
         PORT = "${NOMAD_HOST_PORT_http}"
         clientId = "am"
         clientSecret = "pass"
+        ADMIN_EMAIL = "..."
       }
       resources {
         cpu = 300
