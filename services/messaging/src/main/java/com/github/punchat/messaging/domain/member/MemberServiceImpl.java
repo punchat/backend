@@ -3,6 +3,7 @@ package com.github.punchat.messaging.domain.member;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.access.PermissionAssertService;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
+import com.github.punchat.messaging.domain.channel.Privacy;
 import com.github.punchat.messaging.domain.role.DefaultRoles;
 import com.github.punchat.messaging.domain.role.Permission;
 import com.github.punchat.messaging.domain.role.Role;
@@ -63,5 +64,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member getAuthorizedUserAsChannelMembers(BroadcastChannel channel) {
         return finder.byUserAndChannel(auth.getAuthorizedUser(), channel);
+    }
+
+    @Override
+    public Member join(BroadcastChannel channel) {
+        User authorized = auth.getAuthorizedUser();
+        if (channel.getPrivacy() == Privacy.PUBLIC) {
+            return create(authorized, channel, channel.getDefaultRole());
+        } else {
+            throw new JoinToPrivateChannelException(channel);
+        }
     }
 }

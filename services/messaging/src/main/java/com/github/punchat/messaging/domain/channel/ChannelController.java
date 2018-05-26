@@ -54,6 +54,12 @@ public class ChannelController {
         return mapper.toResponse(finder.byId(id));
     }
 
+    @ApiOperation("join to public channel")
+    @PostMapping("/channels/{id}/joining")
+    public MemberDto joinChannelById(@PathVariable("id") Long id) {
+        return membersFacade.join(id);
+    }
+
     @ApiOperation("update channel info by id")
     @PutMapping("/channels/{id}")
     public BroadcastChannelResponse updateChannelInfo(@PathVariable("id") Long id, @RequestBody BroadcastChannelRequest request) {

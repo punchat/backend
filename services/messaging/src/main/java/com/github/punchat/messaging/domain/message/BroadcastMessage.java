@@ -23,6 +23,8 @@ public class BroadcastMessage extends Message {
     @JoinColumn(name = "member_sender_id")
     /*
     https://hibernate.atlassian.net/browse/HHH-12539?attachmentOrder=asc
+    we can't use field name such as in DirectChannel. Because hibernate will try to
+    find common class for User and Member
      */
     private Member senderMember;
 
