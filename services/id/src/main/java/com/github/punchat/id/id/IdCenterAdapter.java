@@ -8,8 +8,8 @@ import com.sohu.idcenter.IdWorker;
 public class IdCenterAdapter implements IdService {
     private final IdWorker worker;
 
-    public IdCenterAdapter(long workerId, long datacenterId, long sequence) {
-        worker = new IdWorker(workerId, datacenterId, sequence);
+    public IdCenterAdapter(long workerId, long datacenterId, long sequence, long idepoch) {
+        worker = new IdWorker(workerId, datacenterId, sequence, idepoch);
     }
 
     @Override

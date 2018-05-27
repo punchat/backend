@@ -18,8 +18,11 @@ public class IdConfiguration {
     @Value("${sequence:0}")
     private long sequence;
 
+    @Value("${idepoch:1527348444324}")
+    private long idepoch;
+
     @Bean
     public IdService idService() {
-        return new IdCenterAdapter(workerId, datacenterId, sequence);
+        return new IdCenterAdapter(workerId, datacenterId, sequence, idepoch);
     }
 }
