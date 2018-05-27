@@ -1,12 +1,9 @@
 package com.github.punchat.am;
 
 import com.github.punchat.am.domain.invite.WorkspaceInvite;
-import com.github.punchat.am.domain.invite.WorkspaceInviteController;
 import com.github.punchat.am.domain.invite.WorkspaceInviteRepository;
-import com.github.punchat.am.domain.invite.WorkspaceInviteService;
 import com.github.punchat.am.domain.invite.properties.DefaultInviteProperties;
 import com.github.punchat.am.events.EventBus;
-import com.github.punchat.dto.am.invite.WorkspaceInvitation;
 import com.github.punchat.events.InviteToWorkspaceEvent;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -28,7 +25,7 @@ public class DefaultInviteCreator implements CommandLineRunner {
     @Override
         public void run(String... args) {
             if (repository.count() == 0) {
-                WorkspaceInvite defaultInvite = new WorkspaceInvite();
+                    WorkspaceInvite defaultInvite = new WorkspaceInvite();
                 defaultInvite.setId(0L);
                 defaultInvite.setEmail(properties.getAdmin().getEmail());
                 repository.save(defaultInvite);

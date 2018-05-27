@@ -12,13 +12,13 @@ import com.github.punchat.messaging.domain.role.RoleService;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.messaging.security.AuthService;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Trace
@@ -102,5 +102,10 @@ public class ChannelServiceImpl implements ChannelService {
         } else {
             throw new AbsentPermissionException(user.getId(), Permission.CAN_DELETE_MESSAGES);
         }
+    }
+
+    @Override
+    public Set<BroadcastChannel> getAllPublicChannels() {
+        return new HashSet<>(broadcastChannelRepository.findByPrivacy(Privacy.PUBLIC));
     }
 }

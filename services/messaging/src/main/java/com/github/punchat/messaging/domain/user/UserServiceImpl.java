@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
         DirectChannel channel = new DirectChannel();
 
         channel.setId(idService.next());
-        user.setId(idService.next());
+        user.setId(id);
 
         user.setChannel(channel);
         channel.setUser(user);

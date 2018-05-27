@@ -35,4 +35,12 @@ class UserServiceImplTest extends Specification {
         then:
         directChannelRepository.findByUser(user) != null
     }
+
+    def "user will be created with the same id as parameter"() {
+        when:
+        User user = service.createUser(32L)
+
+        then:
+        user.id == 32L
+    }
 }
