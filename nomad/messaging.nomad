@@ -17,6 +17,7 @@ job "messaging-service" {
         clientId = "messaging"
         clientSecret = "pass"
         appName = "messaging"
+        DATABASE = "messaging"
       }
       resources {
         cpu = 300

@@ -18,6 +18,7 @@ job "am-service" {
         clientSecret = "pass"
         ADMIN_EMAIL = "A.S.Ivchenko@yandex.ru"
         appName = "account-management"
+        DATABASE = "am"
       }
       resources {
         cpu = 300
