@@ -8,6 +8,9 @@ job "email-sender-service" {
       config {
         image = "punchat/email-sender"
         network_mode = "punchat"
+        volumes = [
+          "/var/log/punchat/:/logs"
+        ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"

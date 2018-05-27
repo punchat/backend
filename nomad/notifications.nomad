@@ -8,6 +8,9 @@ job "notifications-service" {
       config {
         image = "punchat/notifications"
         network_mode = "punchat"
+        volumes = [
+          "/var/log/punchat/:/logs"
+        ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
