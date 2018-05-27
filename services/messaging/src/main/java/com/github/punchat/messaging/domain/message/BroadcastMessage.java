@@ -5,6 +5,7 @@ import com.github.punchat.messaging.domain.member.Member;
 import com.github.punchat.messaging.domain.user.User;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@ToString(callSuper = true)
 @DiscriminatorValue("broadcast")
 public class BroadcastMessage extends Message {
     @ManyToOne
@@ -33,7 +35,4 @@ public class BroadcastMessage extends Message {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "message_id"))
     private Set<Member> addressees;
-
-    @Column(name = "created_on")
-    private LocalDateTime createdOn;
 }

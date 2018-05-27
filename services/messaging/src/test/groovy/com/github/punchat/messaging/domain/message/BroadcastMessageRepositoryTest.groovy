@@ -6,6 +6,7 @@ import com.github.punchat.messaging.domain.channel.BroadcastChannelRepository
 import com.github.punchat.messaging.domain.channel.Privacy
 import com.github.punchat.messaging.domain.resource.Resource
 import com.github.punchat.messaging.id.IdService
+import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.data.domain.Page
@@ -16,6 +17,7 @@ import spock.lang.Specification
 import java.time.Clock
 import java.time.LocalDateTime
 
+@Slf4j
 @DataJpaTest
 @ActiveProfiles("test")
 class BroadcastMessageRepositoryTest extends Specification {
@@ -69,15 +71,19 @@ class BroadcastMessageRepositoryTest extends Specification {
             msg.channel = channel
             msg.addressees = []
             repository.save msg
+            Thread.sleep(5) // to force order
         }
 
         when:
         Page<BroadcastMessage> last = repository.findLast(channel, new PageRequest(0, 2))
 
+        log.info("last[0] " + last.content[0])
+        log.info("last[1] " + last.content[1])
+
         then:
         last.size() == 2
-        last.getContent()[0].resource.text == "message #4"
-        last.getContent()[1].resource.text == "message #3"
+        last.content[0].resource.text == "message #4"
+        last.content[1].resource.text == "message #3"
     }
 
     def "get messages before specified id test"() {
@@ -101,11 +107,18 @@ class BroadcastMessageRepositoryTest extends Specification {
             msg.channel = channel
             msg.addressees = []
             repository.save msg
+            Thread.sleep(5) // to force order
         }
 
         when:
         Page<BroadcastMessage> before4 = repository.findBefore(channel, repository.getOne(4L).createdOn, new PageRequest(0, 2))
         Page<BroadcastMessage> before3 = repository.findBefore(channel, repository.getOne(3L).createdOn, new PageRequest(0, 2))
+
+        log.info("before4[0]" + before4.content[0])
+        log.info("before4[1]" + before4.content[1])
+
+        log.info("before3[0]" + before3.content[0])
+        log.info("before3[1]" + before3.content[1])
 
         then:
         before4.content.size() == 2
@@ -138,11 +151,17 @@ class BroadcastMessageRepositoryTest extends Specification {
             msg.channel = channel
             msg.addressees = []
             repository.save msg
+            Thread.sleep(5) // to force order
         }
 
         when:
         Page<BroadcastMessage> after2 = repository.findAfter(channel, repository.getOne(2L).createdOn, new PageRequest(0, 2))
         Page<BroadcastMessage> after3 = repository.findAfter(channel, repository.getOne(3L).createdOn, new PageRequest(0, 2))
+
+        log.info("after2[0]" + after2.content[0])
+        log.info("after2[1]" + after2.content[1])
+
+        log.info("after3[0]" + after3.content[0])
 
         then:
         after2.content.size() == 2
