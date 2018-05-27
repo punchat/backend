@@ -9,13 +9,14 @@ job "email-sender-service" {
         image = "punchat/email-sender"
         network_mode = "punchat"
         volumes = [
-          "/var/log/punchat/:/logs"
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
         ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
         clientId = "emails"
         clientSecret = "pass"
+        appName = "emails"
       }
       resources {
         cpu = 300

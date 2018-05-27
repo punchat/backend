@@ -9,11 +9,12 @@ job "notifications-service" {
         image = "punchat/notifications"
         network_mode = "punchat"
         volumes = [
-          "/var/log/punchat/:/logs"
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
         ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
+        appName = "notifications"
       }
       resources {
         cpu = 300

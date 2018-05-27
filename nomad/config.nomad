@@ -10,11 +10,12 @@ job "config-service" {
         network_mode = "punchat"
         network_aliases = ["config"]
         volumes = [
-          "/var/log/punchat/:/logs"
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
         ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
+        appName = "config"
       }
       resources {
         cpu = 300

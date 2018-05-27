@@ -9,13 +9,14 @@ job "messaging-service" {
         image = "punchat/messaging"
         network_mode = "punchat"
         volumes = [
-          "/var/log/punchat/:/logs"
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
         ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
         clientId = "messaging"
         clientSecret = "pass"
+        appName = "messaging"
       }
       resources {
         cpu = 300
