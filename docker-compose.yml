@@ -100,3 +100,15 @@ services:
       - "${EMAIL_SENDER_PORT}"
     ports:
       - 8882:${EMAIL_SENDER_PORT}
+  topic-search:
+    image: punchat/topic-search
+    container_name: punchat_topic_search
+    restart: always
+    environment:
+      clientId: ${TOPIC_SEARCH_SERVICE_CLIENT_ID}
+      clientSecret: ${TOPIC_SEARCH_SERVICE_CLIENT_SECRET}
+      PORT: ${TOPIC_SEARCH_PORT}
+    expose:
+      - "${TOPIC_SEARCH_PORT}"
+    ports:
+      - 8484:${TOPIC_SEARCH_PORT}
