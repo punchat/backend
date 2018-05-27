@@ -9,13 +9,15 @@ job "am-service" {
         image = "punchat/account-management"
         network_mode = "punchat"
         volumes = [
-          "/var/log/punchat/:/logs"
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
         ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
         clientId = "am"
         clientSecret = "pass"
+        ADMIN_EMAIL = "A.S.Ivchenko@yandex.ru"
+        appName = "account-management"
       }
       resources {
         cpu = 300

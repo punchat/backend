@@ -9,13 +9,14 @@ job "id-service" {
         image = "punchat/id"
         network_mode = "punchat"
         volumes = [
-          "/var/log/punchat/:/logs"
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
         ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
         clientId = "id"
         clientSecret = "pass"
+        appName = "id"
       }
       resources {
         cpu = 300

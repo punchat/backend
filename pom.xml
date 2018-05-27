@@ -13,7 +13,6 @@
 
     <modules>
         <module>services/ms-parent</module>
-        <module>services/discovery</module>
         <module>services/config</module>
         <module>services/uaa</module>
         <module>services/id</module>
