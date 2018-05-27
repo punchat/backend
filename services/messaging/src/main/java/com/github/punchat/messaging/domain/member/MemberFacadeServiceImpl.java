@@ -35,6 +35,11 @@ public class MemberFacadeServiceImpl implements MemberFacadeService {
         return map(service.getAuthorizedUserAsChannelMembers(channel));
     }
 
+    @Override
+    public MemberDto join(Long channelId) {
+        return map(service.join(channelFinder.byId(channelId)));
+    }
+
     private MemberDto map(Member member) {
         return mapper.toResponse(member);
     }

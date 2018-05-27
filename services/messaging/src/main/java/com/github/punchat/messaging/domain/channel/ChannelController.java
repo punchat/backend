@@ -4,7 +4,7 @@ import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
 import com.github.punchat.dto.messaging.channel.BroadcastChannelResponse;
 import com.github.punchat.dto.messaging.invite.ChannelInvitationResponse;
 import com.github.punchat.dto.messaging.member.MemberDto;
-import com.github.punchat.dto.messaging.message.MessageDto;
+import com.github.punchat.dto.messaging.message.BroadcastMessageResponse;
 import com.github.punchat.dto.messaging.role.RoleDto;
 import com.github.punchat.messaging.domain.invite.ChannelInviteFacadeService;
 import com.github.punchat.messaging.domain.member.MemberFacadeService;
@@ -54,6 +54,12 @@ public class ChannelController {
         return mapper.toResponse(finder.byId(id));
     }
 
+    @ApiOperation("join to public channel")
+    @PostMapping("/channels/{id}/joining")
+    public MemberDto joinChannelById(@PathVariable("id") Long id) {
+        return membersFacade.join(id);
+    }
+
     @ApiOperation("update channel info by id")
     @PutMapping("/channels/{id}")
     public BroadcastChannelResponse updateChannelInfo(@PathVariable("id") Long id, @RequestBody BroadcastChannelRequest request) {
@@ -92,24 +98,24 @@ public class ChannelController {
 
     @ApiOperation("get last messages")
     @GetMapping("/channels/{id}/messages/last")
-    public List<MessageDto> getLastMessages(@PathVariable("id") Long id,
-                                            @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+    public List<BroadcastMessageResponse> getLastMessages(@PathVariable("id") Long id,
+                                                          @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
         return messagesService.getLast(id, limit);
     }
 
     @ApiOperation("get messages before specified message")
     @GetMapping("/channels/{channelId}/messages/before")
-    public List<MessageDto> getMessagesBeforeSpecifiedId(@PathVariable("channelId") Long id,
-                                           @RequestParam(value = "id") Long anchor,
-                                           @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+    public List<BroadcastMessageResponse> getMessagesBeforeSpecifiedId(@PathVariable("channelId") Long id,
+                                                                       @RequestParam(value = "id") Long anchor,
+                                                                       @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
         return messagesService.getBefore(id, anchor, limit);
     }
 
     @ApiOperation("get messages after specified message")
     @GetMapping("/channels/{channelId}/messages/after")
-    public List<MessageDto> getMessagesAfterSpecifiedId(@PathVariable("channelId") Long id,
-                                           @RequestParam(value = "id") Long anchor,
-                                           @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
+    public List<BroadcastMessageResponse> getMessagesAfterSpecifiedId(@PathVariable("channelId") Long id,
+                                                                      @RequestParam(value = "id") Long anchor,
+                                                                      @RequestParam(value = "limit", defaultValue = "10", required = false) Integer limit) {
         return messagesService.getAfter(id, anchor, limit);
     }
 }

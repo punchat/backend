@@ -16,4 +16,6 @@ public interface MemberService {
     void delete(Member member);
 
     Member getAuthorizedUserAsChannelMembers(BroadcastChannel channel);
+
+    Member join(BroadcastChannel channel);
 }

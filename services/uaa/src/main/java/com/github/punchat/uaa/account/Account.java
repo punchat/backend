@@ -23,10 +23,10 @@ import javax.validation.constraints.NotNull;
 @Table(name = "accounts")
 public class Account {
     @Id
-    @Column(name = "id")
+    @Column(name = "id", unique = true)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     @NotNull(message = "{User.username.required}")
     private String username;
 

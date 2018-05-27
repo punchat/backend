@@ -3,6 +3,7 @@ package com.github.punchat.messaging.domain.invite;
 import com.github.punchat.events.InviteToChannelEvent;
 import com.github.punchat.events.NewMemberInChannelEvent;
 import com.github.punchat.log.Trace;
+import com.github.punchat.messaging.domain.access.PermissionAssertService;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.member.Member;
 import com.github.punchat.messaging.domain.member.MemberFinder;
@@ -34,20 +35,26 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     private MemberService memberService;
     private MemberFinder memberFinder;
     private EventBus eventBus;
+    private PermissionAssertService permissions;
 
     @Autowired
-    public ChannelInviteServiceImpl(AuthService auth, IdService ids, ChannelInviteRepository repo, MemberService memberService, MemberFinder memberFinder, EventBus eventBus) {
+    public ChannelInviteServiceImpl(AuthService auth, IdService ids, ChannelInviteRepository repo, MemberService memberService, MemberFinder memberFinder, EventBus eventBus, PermissionAssertService permissions) {
         this.auth = auth;
         this.ids = ids;
         this.repo = repo;
         this.memberService = memberService;
         this.memberFinder = memberFinder;
         this.eventBus = eventBus;
+        this.permissions = permissions;
     }
 
     @Override
     @Transactional
     public ChannelInvite createChannelInvite(BroadcastChannel channel, User recipient, Role role) {
+        permissions.checkThat()
+                .authorizedUser()
+                .hasPermission(Permission.CAN_INVITE_USERS)
+                .in(channel);
         User authorized = auth.getAuthorizedUser();
         assertInvitationDoesNotExists(channel, recipient);
         Member sender = memberFinder.byUserAndChannel(authorized, channel);
@@ -57,9 +64,6 @@ public class ChannelInviteServiceImpl implements ChannelInviteService {
     }
 
     private void assertSenderHasPermissions(Member sender, Role role) {
-        if (!sender.getRole().getPermissions().contains(Permission.CAN_INVITE_USERS)) {
-            throw new AbsentPermissionException(sender.getUser().getId(), Permission.CAN_INVITE_USERS);
-        }
         for (Permission permission : role.getPermissions()) {
             if (!sender.getRole().getPermissions().contains(permission)) {
                 throw new AbsentPermissionException(sender.getUser().getId(), permission);

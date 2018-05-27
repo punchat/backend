@@ -1,7 +1,6 @@
 package com.github.punchat.dto.messaging.message;
 
 import com.github.punchat.dto.messaging.member.MemberDto;
-import com.github.punchat.dto.messaging.resource.ResourceDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class MessageDto {
+public class BroadcastMessageResponse {
     private Long id;
     private MemberDto sender;
-    private ResourceDto resource;
+    private String text;
 }
