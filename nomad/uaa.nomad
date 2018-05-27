@@ -8,6 +8,9 @@ job "uaa-service" {
       config {
         image = "punchat/uaa"
         network_mode = "punchat"
+        volumes = [
+          "/var/log/punchat/:/logs"
+        ]
       }
       env {
         port = "${NOMAD_HOST_PORT_http}"
