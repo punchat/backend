@@ -12,7 +12,7 @@ install:
   - mvn -B -V -q clean install -DskipTests=true -Dmaven.javadoc.skip=true
 script:
   - mvn -B -q test
-  - docker-compose up -d discovery config
+  - docker-compose up -d config
   - docker ps
   - docker-compose up -d
 after_success:
