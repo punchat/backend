@@ -8,6 +8,9 @@ job "messaging-service" {
       config {
         image = "punchat/messaging"
         network_mode = "punchat"
+        volumes = [
+          "/var/log/punchat/:/logs"
+        ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
