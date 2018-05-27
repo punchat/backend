@@ -9,6 +9,7 @@
     <property name="FILE_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger{36} - %msg%n"/>
 
+    <springProfile name="!test">
         <appender name="sout_info" class="ch.qos.logback.core.ConsoleAppender">
             <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
                 <level>INFO</level>
@@ -54,4 +55,5 @@
             <appender-ref ref="file_info"/>
             <appender-ref ref="sout_info"/>
         </root>
+    </springProfile>
 </configuration>
