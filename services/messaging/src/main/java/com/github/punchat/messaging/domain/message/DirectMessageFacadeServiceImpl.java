@@ -4,6 +4,8 @@ import com.github.punchat.dto.messaging.message.DirectMessageRequest;
 import com.github.punchat.dto.messaging.message.DirectMessageResponse;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.user.UserFinder;
+import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,11 +13,22 @@ import java.util.stream.Collectors;
 
 @Trace
 @Service
+@Slf4j
 public class DirectMessageFacadeServiceImpl implements DirectMessageFacadeService {
-    private DirectMessageFinder drMsgFinder;
-    private DirectMessageService drMsgService;
-    private DirectMessageMapper drMsgMapper;
-    private UserFinder userFinder;
+    private final DirectMessageFinder drMsgFinder;
+    private final DirectMessageService drMsgService;
+    private final DirectMessageMapper drMsgMapper;
+    private final UserFinder userFinder;
+
+    public DirectMessageFacadeServiceImpl(@NonNull DirectMessageFinder drMsgFinder,
+                                          @NonNull DirectMessageService drMsgService,
+                                          @NonNull DirectMessageMapper drMsgMapper,
+                                          @NonNull UserFinder userFinder) {
+        this.drMsgFinder = drMsgFinder;
+        this.drMsgService = drMsgService;
+        this.drMsgMapper = drMsgMapper;
+        this.userFinder = userFinder;
+    }
 
     @Override
     public DirectMessageResponse getById(Long id) {

@@ -15,13 +15,13 @@ public class DirectMessageController {
         this.drMsgFacade = drMsgFacade;
     }
 
-    @ApiOperation("send message to channel")
+    @ApiOperation("send direct message")
     @PostMapping("/messages/direct")
-    public DirectMessageResponse sendDirectMessage(DirectMessageRequest request) {
+    public DirectMessageResponse sendDirectMessage(@RequestBody DirectMessageRequest request) {
         return drMsgFacade.create(request);
     }
 
-    @ApiOperation("get channel message by id")
+    @ApiOperation("get direct message by id")
     @GetMapping("/messages/direct/{id}")
     public DirectMessageResponse getDirectById(@PathVariable("id") Long id) {
         return drMsgFacade.getById(id);
