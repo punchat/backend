@@ -1,8 +1,6 @@
 package com.github.punchat.messaging.domain.message;
 
 import com.github.punchat.messaging.domain.AbstractIdentifiableObject;
-import com.github.punchat.messaging.domain.resource.Resource;
-import com.github.punchat.messaging.domain.user.User;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,8 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 @ToString
 public class Message extends AbstractIdentifiableObject {
-    @Embedded
-    private Resource resource;
+    @Column(name = "text")
+    private String text;
 
     @Column(name = "created_on")
     private LocalDateTime createdOn;

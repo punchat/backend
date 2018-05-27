@@ -4,7 +4,6 @@ import com.github.punchat.messaging.MockIdService
 import com.github.punchat.messaging.domain.channel.BroadcastChannel
 import com.github.punchat.messaging.domain.channel.BroadcastChannelRepository
 import com.github.punchat.messaging.domain.channel.Privacy
-import com.github.punchat.messaging.domain.resource.Resource
 import com.github.punchat.messaging.id.IdService
 import groovy.util.logging.Slf4j
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,11 +32,8 @@ class BroadcastMessageRepositoryTest extends Specification {
         given:
         BroadcastMessage msg = new BroadcastMessage()
         LocalDateTime time = LocalDateTime.now(Clock.systemUTC())
-        Resource resource = new Resource()
-        resource.id = ids.next()
         msg.id = 1L
         msg.senderMember = null
-        msg.resource = resource
         msg.createdOn = time
         msg.channel = null
         msg.addressees = []
@@ -61,12 +57,9 @@ class BroadcastMessageRepositoryTest extends Specification {
         5.times {
             BroadcastMessage msg = new BroadcastMessage()
             LocalDateTime time = LocalDateTime.now(Clock.systemUTC())
-            Resource resource = new Resource()
-            resource.id = ids.next()
-            resource.text = "message #$it"
             msg.id = ids.next()
             msg.senderMember = null
-            msg.resource = resource
+            msg.text = "message #$it"
             msg.createdOn = time
             msg.channel = channel
             msg.addressees = []
@@ -82,8 +75,8 @@ class BroadcastMessageRepositoryTest extends Specification {
 
         then:
         last.size() == 2
-        last.content[0].resource.text == "message #4"
-        last.content[1].resource.text == "message #3"
+        last.content[0].text == "message #4"
+        last.content[1].text == "message #3"
     }
 
     def "get messages before specified id test"() {
@@ -97,12 +90,9 @@ class BroadcastMessageRepositoryTest extends Specification {
         5.times {
             BroadcastMessage msg = new BroadcastMessage()
             LocalDateTime time = LocalDateTime.now(Clock.systemUTC())
-            Resource resource = new Resource()
-            resource.id = it.longValue()
-            resource.text = "message #$it"
             msg.id = it.longValue()
             msg.senderMember = null
-            msg.resource = resource
+            msg.text = "message #$it"
             msg.createdOn = time
             msg.channel = channel
             msg.addressees = []
@@ -122,12 +112,12 @@ class BroadcastMessageRepositoryTest extends Specification {
 
         then:
         before4.content.size() == 2
-        before4.content[0].resource.text == "message #3"
-        before4.content[1].resource.text == "message #2"
+        before4.content[0].text == "message #3"
+        before4.content[1].text == "message #2"
 
         before3.content.size() == 2
-        before3.content[0].resource.text == "message #2"
-        before3.content[1].resource.text == "message #1"
+        before3.content[0].text == "message #2"
+        before3.content[1].text == "message #1"
     }
 
     def "get messages after specified id test"() {
@@ -141,12 +131,9 @@ class BroadcastMessageRepositoryTest extends Specification {
         5.times {
             BroadcastMessage msg = new BroadcastMessage()
             LocalDateTime time = LocalDateTime.now(Clock.systemUTC())
-            Resource resource = new Resource()
-            resource.id = it.longValue()
-            resource.text = "message #$it"
             msg.id = it.longValue()
             msg.senderMember = null
-            msg.resource = resource
+            msg.text = "message #$it"
             msg.createdOn = time
             msg.channel = channel
             msg.addressees = []
@@ -165,10 +152,10 @@ class BroadcastMessageRepositoryTest extends Specification {
 
         then:
         after2.content.size() == 2
-        after2.content[0].resource.text == "message #4"
-        after2.content[1].resource.text == "message #3"
+        after2.content[0].text == "message #4"
+        after2.content[1].text == "message #3"
 
         after3.content.size() == 1
-        after3.content[0].resource.text == "message #4"
+        after3.content[0].text == "message #4"
     }
 }

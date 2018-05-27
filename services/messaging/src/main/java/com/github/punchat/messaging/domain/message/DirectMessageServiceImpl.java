@@ -4,13 +4,15 @@ import com.github.punchat.dto.messaging.message.DirectMessageRequest;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.DirectChannel;
 import com.github.punchat.messaging.domain.channel.DirectChannelFinder;
-import com.github.punchat.messaging.domain.resource.Resource;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserFinder;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.messaging.security.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.Clock;
+import java.time.LocalDateTime;
 
 @Trace
 @Service
@@ -26,14 +28,13 @@ public class DirectMessageServiceImpl implements DirectMessageService {
     public DirectMessage create(DirectMessageRequest payload) {
         User sender = authService.getAuthorizedUser();
         User receiver = userFinder.byId(payload.getReceiverId());
-        Resource resource = new Resource();
-        resource.setId(idService.next());
         DirectChannel channel = drChannelFinder.byUser(receiver);
         DirectMessage msg = new DirectMessage();
         msg.setId(idService.next());
-        msg.setResource(resource);
+        msg.setText(payload.getText());
         msg.setSenderUser(sender);
         msg.setChannel(channel);
+        msg.setCreatedOn(LocalDateTime.now(Clock.systemUTC()));
         return repo.save(msg);
     }
 }
