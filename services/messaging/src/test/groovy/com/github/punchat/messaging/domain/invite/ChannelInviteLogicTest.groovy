@@ -5,6 +5,7 @@ import com.github.punchat.dto.messaging.channel.Privacy
 import com.github.punchat.dto.messaging.role.Permission
 import com.github.punchat.dto.messaging.role.RoleRequest
 import com.github.punchat.messaging.ComponentTestsConfiguration
+import com.github.punchat.messaging.domain.access.PermissionAssertServiceImpl
 import com.github.punchat.messaging.domain.channel.BroadcastChannel
 import com.github.punchat.messaging.domain.channel.ChannelServiceImpl
 import com.github.punchat.messaging.domain.role.Role
@@ -38,6 +39,8 @@ class ChannelInviteLogicTest extends Specification {
     RoleFinder roleFinder
     @Autowired
     IdService idService
+    @Autowired
+    PermissionAssertServiceImpl permissions
 
     User authorized
     BroadcastChannel channel
@@ -52,6 +55,7 @@ class ChannelInviteLogicTest extends Specification {
         request.privacy = Privacy.PUBLIC
         channelService.authService = authService
         channel = channelService.create(request)
+        permissions.authService = authService
     }
 
     def "should create invitations"() {

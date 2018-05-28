@@ -1,13 +1,18 @@
 package com.github.punchat.messaging.domain.message;
 
-import com.github.punchat.dto.messaging.message.MessageDto;
+import com.github.punchat.dto.messaging.message.BroadcastMessageRequest;
+import com.github.punchat.dto.messaging.message.BroadcastMessageResponse;
 
 import java.util.List;
 
 public interface BroadcastMessageFacadeService {
-    List<MessageDto> getLast(Long channelId, int limit);
+    BroadcastMessageResponse getById(Long id);
 
-    List<MessageDto> getBefore(Long channelId, Long anchor, int limit);
+    BroadcastMessageResponse create(BroadcastMessageRequest payload);
 
-    List<MessageDto> getAfter(Long channelId, Long anchor, int limit);
+    List<BroadcastMessageResponse> getLast(Long channelId, int limit);
+
+    List<BroadcastMessageResponse> getBefore(Long channelId, Long anchor, int limit);
+
+    List<BroadcastMessageResponse> getAfter(Long channelId, Long anchor, int limit);
 }

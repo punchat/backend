@@ -10,4 +10,6 @@ public interface MemberFacadeService {
     void delete(Long id);
 
     MemberDto getAuthorizedUserAsChannelMembers(Long channelId);
+
+    MemberDto join(Long channelId);
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Trace
 @Service
 public class AuthServiceImpl implements AuthService {
+    private final static String TRUSTED_SCOPE = "server";
     private final AuthContext authContext;
     private final UserRepository userRepository;
 
@@ -20,8 +21,13 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    public boolean isTrusted() {
+        return authContext.get().getScope().contains(TRUSTED_SCOPE);
+    }
+
+    @Override
     public User getAuthorizedUser() throws UserInfoIsNotProvidedException {
         UserInfo userInfo = authContext.get().getUserInfo().orElseThrow(UserInfoIsNotProvidedException::new);
-        return userRepository.findById(userInfo.getUserId()).get();
+        return userRepository.findById(userInfo.getUserId()).orElseThrow(() -> new RuntimeException("authorized user is not stored"));
     }
 }

@@ -8,11 +8,15 @@ job "uaa-service" {
       config {
         image = "punchat/uaa"
         network_mode = "punchat"
+        volumes = [
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
+        ]
       }
       env {
         port = "${NOMAD_HOST_PORT_http}"
         clientId = "uaa"
         clientSecret = "secret"
+        appName = "auth"
       }
       resources {
         cpu = 300

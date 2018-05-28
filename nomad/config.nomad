@@ -9,9 +9,13 @@ job "config-service" {
         image = "punchat/config"
         network_mode = "punchat"
         network_aliases = ["config"]
+        volumes = [
+          "/var/log/punchat/${appName}/:/logs/${appName}/"
+        ]
       }
       env {
         PORT = "${NOMAD_HOST_PORT_http}"
+        appName = "config"
       }
       resources {
         cpu = 300

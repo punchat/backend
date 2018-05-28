@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: id
   cloud:
     config:
       enabled: false
