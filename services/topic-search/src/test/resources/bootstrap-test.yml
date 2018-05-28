@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: topic-search
+  cloud:
+    config:
+      enabled: false
