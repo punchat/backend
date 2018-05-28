@@ -1,5 +1,6 @@
 package com.github.punchat.ts.domain.message;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,9 +19,11 @@ public class TopicMessage {
     @Column(name = "id")
     private Long messageId;
 
+    @JsonIgnore
     @Column(name = "channel_id")
     private Long channelId;
 
+    @JsonIgnore
     @ElementCollection(targetClass = Topic.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "topics")
