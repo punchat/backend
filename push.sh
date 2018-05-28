@@ -7,3 +7,4 @@ docker push punchat/gateway
 docker push punchat/id
 docker push punchat/messaging
 docker push punchat/notifications
+docker push punchat/topic-search
