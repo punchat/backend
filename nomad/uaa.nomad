@@ -17,6 +17,7 @@ job "uaa-service" {
         clientId = "uaa"
         clientSecret = "secret"
         appName = "auth"
+        DATABASE = "uaa"
       }
       resources {
         cpu = 300
