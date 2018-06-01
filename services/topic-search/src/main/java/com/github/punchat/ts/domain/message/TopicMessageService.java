@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface TopicMessageService {
     List<TopicMessage> search(TopicSearchRequest request);
+
+    void saveMessage(Long messageId, Long channelId);
 }
