@@ -6,6 +6,7 @@ import com.github.punchat.messaging.domain.channel.BroadcastChannelRepository
 import com.github.punchat.messaging.domain.channel.DefaultChannels
 import com.github.punchat.messaging.domain.channel.DirectChannelRepository
 import com.github.punchat.messaging.domain.member.MemberRepository
+import com.github.punchat.messaging.domain.role.DefaultRoles
 import com.github.punchat.messaging.domain.role.RoleRepository
 import com.github.punchat.messaging.domain.user.User
 import com.github.punchat.messaging.domain.user.UserRepository
@@ -19,11 +20,10 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
 import spock.lang.Specification
 
-@ActiveProfiles("test")
+@ActiveProfiles(profiles = ["test", "unsecured"])
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @SpringBootTest(classes = ComponentTestsConfiguration)
 class EventsTest extends Specification {
-    private final static Logger LOG = LoggerFactory.getLogger(EventsTest)
     @Autowired
     private Channels channels
 
@@ -72,8 +72,9 @@ class EventsTest extends Specification {
 
         then:
         bRepository.count() == 2
-        bRepository.findByName(DefaultChannels.GENERAL) != null
-        bRepository.findByName(DefaultChannels.RANDOM) != null
+        bRepository.findByName(DefaultChannels.GENERAL).get() != null
+        bRepository.findByName(DefaultChannels.RANDOM).get() != null
+        bRepository.findByName(DefaultChannels.RANDOM).get().defaultRole.name == DefaultRoles.DEFAULT
     }
 
     def "general and random channels will be created once"() {

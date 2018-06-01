@@ -4,38 +4,28 @@ import com.github.punchat.dto.messaging.role.RoleRequest;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannel;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
-import com.github.punchat.messaging.domain.member.Member;
-import com.github.punchat.messaging.domain.member.MemberFinder;
-import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.id.IdService;
-import com.github.punchat.messaging.security.AuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 @Trace
-@Service
 @AllArgsConstructor
 public class RoleServiceImpl implements RoleService {
-    private final AuthService auth;
     private final IdService idService;
     private final RoleMapper mapper;
     private final RoleRepository roleRepository;
-    private final BroadcastChannelFinder bFinder;
-    private final MemberFinder memberFinder;
+    private final BroadcastChannelFinder bcFinder;
 
     @Override
     public Role create(RoleRequest request) {
-        User authorized = auth.getAuthorizedUser();
-        BroadcastChannel channel = bFinder.byId(request.getChannelId());
-        Member member = memberFinder.byUserAndChannel(authorized, channel);
-        if (!member.getRole().getPermissions().contains(Permission.CAN_CREATE_ROLES)) {
-            throw new AbsentPermissionException(authorized.getId(), Permission.CAN_CREATE_ROLES);
-        }
+        BroadcastChannel channel = bcFinder.byId(request.getChannelId());
         if (!roleRepository.existsByName(request.getName())) {
             Role role = mapper.toRole(request);
-            checkPermissions(member, role.getPermissions());
             role.setId(idService.next());
             role.setChannel(channel);
             return roleRepository.save(role);
@@ -46,22 +36,19 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Role edit(Role role, RoleRequest request) {
-        User authorized = auth.getAuthorizedUser();
-        BroadcastChannel channel = bFinder.byId(request.getChannelId());
-        Member member = memberFinder.byUserAndChannel(authorized, channel);
         if (nameChanged(role, request)) {
             checkName(request.getName());
             role.setName(request.getName());
         }
         if (request.getPermissions() != null && !request.getPermissions().isEmpty()) {
             Set<Permission> granted = permissions(request);
-            checkPermissions(member, granted);
             role.setPermissions(granted);
         }
         return roleRepository.save(role);
     }
 
     @Override
+    @Transactional
     public Set<Role> createDefaultRoles(BroadcastChannel channel) {
         Role owner = createOwnerRole(channel);
         Role def = createDefaultUserRole(channel);
@@ -94,14 +81,6 @@ public class RoleServiceImpl implements RoleService {
 
     private boolean nameChanged(Role role, RoleRequest request) {
         return !role.getName().equals(request.getName());
-    }
-
-    private void checkPermissions(Member initiator, Collection<Permission> granted) {
-        for (Permission permission : granted) {
-            if (!initiator.hasPermission(permission)) {
-                throw new AbsentPermissionException(initiator.getId(), permission);
-            }
-        }
     }
 
     private Set<Permission> permissions(RoleRequest request) {
