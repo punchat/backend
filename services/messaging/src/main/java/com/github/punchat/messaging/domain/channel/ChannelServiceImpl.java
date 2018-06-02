@@ -65,12 +65,14 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     @Override
+    @Transactional
     public BroadcastChannel createFor(User user, BroadcastChannelRequest payload) {
         BroadcastChannel channel = channelMapper.fromRequest(payload);
         channel.setId(idService.next());
         channel = broadcastChannelRepository.save(channel);
         roleService.createDefaultRoles(channel);
         channel.setDefaultRole(roleFinder.defaultRole(channel));
+        channel = broadcastChannelRepository.save(channel);
         memberService.createAdmin(channel, user);
         return channel;
     }
