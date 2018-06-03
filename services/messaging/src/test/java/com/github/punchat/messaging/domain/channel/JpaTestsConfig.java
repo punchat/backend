@@ -69,7 +69,7 @@ public class JpaTestsConfig {
 
     @Bean
     public RoleService roleService() {
-        return new RoleServiceImpl(authService(), idService(), roleMapper(), roleRepository, broadcastChannelFinder(), memberFinder());
+        return new RoleServiceImpl(idService(), roleMapper(), roleRepository, broadcastChannelFinder());
     }
 
     @Bean

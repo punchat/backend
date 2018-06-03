@@ -21,7 +21,7 @@ import org.springframework.test.annotation.DirtiesContext
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
-@ActiveProfiles("test")
+@ActiveProfiles(["test", "unsecured"])
 @SpringBootTest(classes = ComponentTestsConfiguration)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class ChannelInviteLogicTest extends Specification {

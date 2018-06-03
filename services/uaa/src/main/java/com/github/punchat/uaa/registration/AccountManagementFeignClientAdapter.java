@@ -6,9 +6,11 @@ import com.github.punchat.dto.am.access.WorkspaceAccessCodeValidationResult;
 import com.github.punchat.dto.am.invite.EmailValidationResult;
 import com.github.punchat.dto.am.invite.WorkspaceEmailValidation;
 import com.github.punchat.dto.am.invite.WorkspaceEmailValidationResult;
+import com.github.punchat.log.Trace;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Trace
 @Service
 @Profile("feign")
 public class AccountManagementFeignClientAdapter implements AccountManagementService {
