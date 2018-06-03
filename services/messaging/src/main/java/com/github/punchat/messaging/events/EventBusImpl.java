@@ -2,6 +2,7 @@ package com.github.punchat.messaging.events;
 
 import com.github.punchat.events.InviteToChannelEvent;
 import com.github.punchat.events.NewBroadcastMessageEvent;
+import com.github.punchat.events.NewDirectMessageEvent;
 import com.github.punchat.events.NewMemberInChannelEvent;
 import com.github.punchat.log.Trace;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -16,11 +17,13 @@ public class EventBusImpl implements EventBus {
     private final MessageChannel inviteToChannelEvents;
     private final MessageChannel newMemberInChannelEvents;
     private final MessageChannel newBroadcastMessageEvents;
+    private final MessageChannel newDirectMessageEvents;
 
     public EventBusImpl(Channels channels) {
         this.inviteToChannelEvents = channels.inviteToChannelEvents();
         this.newMemberInChannelEvents = channels.newMemberInChannel();
         this.newBroadcastMessageEvents = channels.newBroadcastMessageEvents();
+        this.newDirectMessageEvents = channels.newDirectMessageEvents();
     }
 
     @Override
@@ -36,5 +39,10 @@ public class EventBusImpl implements EventBus {
     @Override
     public void publish(NewBroadcastMessageEvent event) {
         newBroadcastMessageEvents.send(MessageBuilder.withPayload(event).build());
+    }
+
+    @Override
+    public void publish(NewDirectMessageEvent event) {
+        newDirectMessageEvents.send(MessageBuilder.withPayload(event).build());
     }
 }
