@@ -1,6 +1,6 @@
 package com.github.punchat.messaging.domain.member;
 
-import com.github.punchat.dto.messaging.member.MemberDto;
+import com.github.punchat.dto.messaging.member.MemberResponse;
 import com.github.punchat.dto.messaging.member.MemberRequest;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ public class MemberController {
 
     @ApiOperation(value = "update member info")
     @PutMapping("/members/{id}")
-    public MemberDto update(@PathVariable("id") Long id, @RequestBody MemberRequest payload) {
+    public MemberResponse update(@PathVariable("id") Long id, @RequestBody MemberRequest payload) {
         throw new UnsupportedOperationException();
     }
 

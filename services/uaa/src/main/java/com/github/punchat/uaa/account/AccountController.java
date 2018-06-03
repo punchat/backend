@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 /**
  * @author Alex Ivchenko
@@ -15,6 +16,11 @@ public class AccountController {
 
     public AccountController(AccountService accountService) {
         this.accountService = accountService;
+    }
+
+    @GetMapping("/accounts")
+    public Set<Account> accounts() {
+        return accountService.getAll();
     }
 
     @PutMapping("/accounts/@me/password")

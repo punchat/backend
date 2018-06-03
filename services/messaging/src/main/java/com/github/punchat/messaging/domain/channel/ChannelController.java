@@ -3,9 +3,9 @@ package com.github.punchat.messaging.domain.channel;
 import com.github.punchat.dto.messaging.channel.BroadcastChannelRequest;
 import com.github.punchat.dto.messaging.channel.BroadcastChannelResponse;
 import com.github.punchat.dto.messaging.invite.ChannelInvitationResponse;
-import com.github.punchat.dto.messaging.member.MemberDto;
+import com.github.punchat.dto.messaging.member.MemberResponse;
 import com.github.punchat.dto.messaging.message.BroadcastMessageResponse;
-import com.github.punchat.dto.messaging.role.RoleDto;
+import com.github.punchat.dto.messaging.role.RoleResponse;
 import com.github.punchat.messaging.domain.invite.ChannelInviteFacadeService;
 import com.github.punchat.messaging.domain.member.MemberFacadeService;
 import com.github.punchat.messaging.domain.message.BroadcastMessageFacadeService;
@@ -56,7 +56,7 @@ public class ChannelController {
 
     @ApiOperation("join to public channel")
     @PostMapping("/channels/{id}/joining")
-    public MemberDto joinChannelById(@PathVariable("id") Long id) {
+    public MemberResponse joinChannelById(@PathVariable("id") Long id) {
         return membersFacade.join(id);
     }
 
@@ -74,13 +74,13 @@ public class ChannelController {
 
     @ApiOperation("get all members of the channel")
     @GetMapping("/channels/{id}/members")
-    public Set<MemberDto> getAllMembers(@PathVariable("id") Long id) {
+    public Set<MemberResponse> getAllMembers(@PathVariable("id") Long id) {
         return membersFacade.getMembers(id);
     }
 
     @ApiOperation("get current user as a member of the channel")
     @GetMapping("/channels/{id}/members/@me")
-    public MemberDto getCurrentUserAsMember(@PathVariable("id") Long id) {
+    public MemberResponse getCurrentUserAsMember(@PathVariable("id") Long id) {
         return membersFacade.getAuthorizedUserAsChannelMembers(id);
     }
 
@@ -92,7 +92,7 @@ public class ChannelController {
 
     @ApiOperation("get available roles of the channel")
     @GetMapping("/channels/{id}/roles")
-    public Set<RoleDto> getChannelRoles(@PathVariable("id") Long id) {
+    public Set<RoleResponse> getChannelRoles(@PathVariable("id") Long id) {
         return rolesFacade.getChannelRoles(id);
     }
 

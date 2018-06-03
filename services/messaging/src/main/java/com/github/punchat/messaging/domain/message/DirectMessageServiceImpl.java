@@ -1,11 +1,13 @@
 package com.github.punchat.messaging.domain.message;
 
 import com.github.punchat.dto.messaging.message.DirectMessageRequest;
+import com.github.punchat.events.NewDirectMessageEvent;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.DirectChannel;
 import com.github.punchat.messaging.domain.channel.DirectChannelFinder;
 import com.github.punchat.messaging.domain.user.User;
 import com.github.punchat.messaging.domain.user.UserFinder;
+import com.github.punchat.messaging.events.EventBus;
 import com.github.punchat.messaging.id.IdService;
 import com.github.punchat.messaging.security.AuthService;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class DirectMessageServiceImpl implements DirectMessageService {
     private final DirectMessageRepository repo;
     private final UserFinder userFinder;
     private final DirectChannelFinder drChannelFinder;
+    private final EventBus eventBus;
 
     @Override
     public DirectMessage create(DirectMessageRequest payload) {
@@ -35,6 +38,8 @@ public class DirectMessageServiceImpl implements DirectMessageService {
         msg.setSenderUser(sender);
         msg.setChannel(channel);
         msg.setCreatedOn(LocalDateTime.now(Clock.systemUTC()));
-        return repo.save(msg);
+        msg = repo.save(msg);
+        eventBus.publish(new NewDirectMessageEvent(msg.getId()));
+        return msg;
     }
 }
