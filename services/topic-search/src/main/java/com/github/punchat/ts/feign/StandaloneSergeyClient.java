@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "Sergey", url = "http://206.189.50.160:7777")
+@FeignClient(name = "Sergey", url = "http://localhost:7777")
 public interface StandaloneSergeyClient {
 
     @PostMapping("/TopicClassifier")
