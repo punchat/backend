@@ -3,7 +3,7 @@ package com.github.punchat.messaging.domain.channel
 import com.github.punchat.dto.messaging.message.BroadcastMessageResponse
 import com.github.punchat.messaging.domain.member.Member
 import com.github.punchat.messaging.domain.message.BroadcastMessage
-import com.github.punchat.messaging.domain.message.MessageMapper
+import com.github.punchat.messaging.domain.message.BroadcastMessageMapper
 import org.mapstruct.factory.Mappers
 import spock.lang.Specification
 
@@ -11,7 +11,7 @@ import spock.lang.Specification
 class ChannelMapperTest extends Specification {
     def "sender should be mapped correctly"() {
         given:
-        MessageMapper mapper = Mappers.getMapper(MessageMapper)
+        BroadcastMessageMapper mapper = Mappers.getMapper(BroadcastMessageMapper)
         BroadcastMessage msg = new BroadcastMessage()
         Member member = new Member()
         member.id = 54L

@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class RoleDto {
+public class RoleResponse {
     private Long id;
     private String name;
     private List<Permission> permissions;
