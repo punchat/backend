@@ -14,7 +14,7 @@ class BroadcastMessageMapperTest extends Specification {
         given:
         BroadcastMessage msg = new BroadcastMessage(
                 id: 1L,
-                channel: new BroadcastChannel(),
+                channel: new BroadcastChannel(id: 4L),
                 senderMember: new Member(id: 2L),
                 addressees: [new Member(id: 3L), new Member(id: 4L)]
         )
@@ -26,5 +26,6 @@ class BroadcastMessageMapperTest extends Specification {
         response.id == 1L
         response.sender.id == 2L
         response.addressees.size() == 2
+        response.channel.id == 4L
     }
 }
