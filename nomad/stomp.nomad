@@ -6,7 +6,7 @@ job "stomp-notification-delivery-service" {
     task "stomp-notification-delivery-service" {
       driver = "docker"
       config {
-        image = "punchat/stomp-notification-delivery"
+        image = "punchat/stomp-notifications-delivery"
         network_mode = "punchat"
         volumes = [
           "/var/log/punchat/${appName}/:/logs/${appName}/"
