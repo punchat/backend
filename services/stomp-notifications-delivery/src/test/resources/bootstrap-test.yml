@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: messaging
+  cloud:
+    config:
+      enabled: false
+    consul:
+      enabled: false

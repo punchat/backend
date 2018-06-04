@@ -74,7 +74,7 @@ public class ChannelController {
 
     @ApiOperation("get all members of the channel")
     @GetMapping("/channels/{id}/members")
-    public Set<MemberResponse> getAllMembers(@PathVariable("id") Long id) {
+    public List<MemberResponse> getAllMembers(@PathVariable("id") Long id) {
         return membersFacade.getMembers(id);
     }
 
@@ -86,13 +86,13 @@ public class ChannelController {
 
     @ApiOperation("get invitations list of the channel")
     @GetMapping("/channels/{id}/invitations")
-    public Set<ChannelInvitationResponse> getAllInvitations(@PathVariable("id") Long id) {
+    public List<ChannelInvitationResponse> getAllInvitations(@PathVariable("id") Long id) {
         return invitesFacade.getChannelInvites(id);
     }
 
     @ApiOperation("get available roles of the channel")
     @GetMapping("/channels/{id}/roles")
-    public Set<RoleResponse> getChannelRoles(@PathVariable("id") Long id) {
+    public List<RoleResponse> getChannelRoles(@PathVariable("id") Long id) {
         return rolesFacade.getChannelRoles(id);
     }
 

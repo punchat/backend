@@ -7,6 +7,7 @@ import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ public class MemberFacadeServiceImpl implements MemberFacadeService {
     private final MemberMapper mapper;
 
     @Override
-    public Set<MemberResponse> getMembers(Long channelId) {
+    public List<MemberResponse> getMembers(Long channelId) {
         return map(service.getMembers(channelFinder.byId(channelId)));
     }
 
@@ -44,9 +45,9 @@ public class MemberFacadeServiceImpl implements MemberFacadeService {
         return mapper.toResponse(member);
     }
 
-    private Set<MemberResponse> map(Set<Member> members) {
+    private List<MemberResponse> map(Set<Member> members) {
         return members.stream()
                 .map(this::map)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }
