@@ -4,7 +4,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
-@SpringBootTest
+@SpringBootTest(classes = ComponentTestConfig.class)
 @ActiveProfiles("test")
 class StompNotificationDeliveryApplicationTest extends Specification {
     def 'context loads'() {
