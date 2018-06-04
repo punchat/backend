@@ -1,3 +1,6 @@
 uaa:
   client:
     enabled: false
+spring:
+  zipkin:
+    enabled: false
