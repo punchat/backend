@@ -17,7 +17,7 @@ public class BroadcastMessageFacadeServiceImpl implements BroadcastMessageFacade
     private final BroadcastMessageService msgService;
     private final BroadcastMessageFinder msgFinder;
     private final BroadcastChannelFinder chnFinder;
-    private final MessageMapper mapper;
+    private final BroadcastMessageMapper mapper;
 
     @Override
     public BroadcastMessageResponse getById(Long id) {

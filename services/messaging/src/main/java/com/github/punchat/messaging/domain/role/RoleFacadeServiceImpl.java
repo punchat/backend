@@ -1,6 +1,6 @@
 package com.github.punchat.messaging.domain.role;
 
-import com.github.punchat.dto.messaging.role.RoleDto;
+import com.github.punchat.dto.messaging.role.RoleResponse;
 import com.github.punchat.dto.messaging.role.RoleRequest;
 import com.github.punchat.log.Trace;
 import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
@@ -20,30 +20,30 @@ public class RoleFacadeServiceImpl implements RoleFacadeService {
     private final RoleMapper mapper;
 
     @Override
-    public RoleDto getById(Long id) {
+    public RoleResponse getById(Long id) {
         return map(finder.byId(id));
     }
 
     @Override
-    public RoleDto create(RoleRequest request) {
+    public RoleResponse create(RoleRequest request) {
         return map(service.create(request));
     }
 
     @Override
-    public Set<RoleDto> getChannelRoles(Long channelId) {
+    public Set<RoleResponse> getChannelRoles(Long channelId) {
         return map(finder.byChannel(bFinder.byId(channelId)));
     }
 
     @Override
-    public RoleDto edit(Long roleId, RoleRequest request) {
+    public RoleResponse edit(Long roleId, RoleRequest request) {
         return map(service.edit(finder.byId(roleId), request));
     }
 
-    private RoleDto map(Role role) {
-        return mapper.roleToRoleDto(role);
+    private RoleResponse map(Role role) {
+        return mapper.toResponse(role);
     }
 
-    private Set<RoleDto> map(Set<Role> roles) {
+    private Set<RoleResponse> map(Set<Role> roles) {
         return roles.stream()
                 .map(this::map)
                 .collect(Collectors.toSet());

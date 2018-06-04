@@ -9,6 +9,7 @@ import com.github.punchat.messaging.domain.user.User
 import com.github.punchat.messaging.domain.user.UserFinderImpl
 import com.github.punchat.messaging.domain.user.UserRepository
 import com.github.punchat.messaging.domain.user.UserService
+import com.github.punchat.messaging.events.EventBus
 import com.github.punchat.messaging.security.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -42,7 +43,8 @@ class DirectMessageServiceImplTest extends Specification {
                 new MockIdService(),
                 directMessageRepository,
                 new UserFinderImpl(userRepository),
-                new DirectChannelFinderImpl(directChannelRepository)
+                new DirectChannelFinderImpl(directChannelRepository),
+                Mock(EventBus)
         )
     }
 

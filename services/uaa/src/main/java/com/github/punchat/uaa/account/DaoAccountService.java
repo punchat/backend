@@ -2,12 +2,15 @@ package com.github.punchat.uaa.account;
 
 import com.github.punchat.log.Trace;
 import com.github.punchat.uaa.id.IdService;
+import com.google.common.collect.Sets;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 /**
  * @author Alex Ivchenko
@@ -50,5 +53,10 @@ public class DaoAccountService implements AccountService {
         } else {
             throw new PasswordsDoNotMatchException();
         }
+    }
+
+    @Override
+    public Set<Account> getAll() {
+        return Sets.newHashSet(repository.findAll());
     }
 }

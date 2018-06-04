@@ -10,6 +10,7 @@ public interface Channels {
     String INVITE_TO_CHANNEL_EVENTS = "inviteToChannelEvents";
     String NEW_MEMBER_IN_CHANNEL = "newMemberInChannel";
     String NEW_BROADCAST_MESSAGE_EVENTS = "newBroadcastMessageEvents";
+    String NEW_DIRECT_MESSAGE_EVENTS = "newDirectMessageEvents";
 
     @Input(ACCOUNT_CREATED_EVENTS)
     SubscribableChannel accountCreatedEvents();
@@ -22,4 +23,7 @@ public interface Channels {
 
     @Output(NEW_BROADCAST_MESSAGE_EVENTS)
     MessageChannel newBroadcastMessageEvents();
+
+    @Output(NEW_DIRECT_MESSAGE_EVENTS)
+    MessageChannel newDirectMessageEvents();
 }
