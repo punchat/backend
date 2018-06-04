@@ -1,9 +1,9 @@
-job "stomp-notification-delivery-service" {
+job "stomp-notifications-delivery-service" {
   datacenters = ["dc1"]
   type = "service"
-  group "stomp-notification-delivery-service" {
+  group "stomp-notifications-delivery-service" {
     count = 1
-    task "stomp-notification-delivery-service" {
+    task "stomp-notifications-delivery-service" {
       driver = "docker"
       config {
         image = "punchat/stomp-notifications-delivery"
