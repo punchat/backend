@@ -13,7 +13,9 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
+@DiscriminatorColumn(name = "type")
+@Table(name = "messages")
+@Entity
 public class TopicMessage {
 
     @Id
@@ -23,8 +25,7 @@ public class TopicMessage {
     @JsonIgnore
     @ElementCollection(targetClass = Topic.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "topics")
-    @Column(name = "topic")
+    @CollectionTable(name = "topics", joinColumns = @JoinColumn(name = "message_id"))
     private List<Topic> topics;
 
 }
