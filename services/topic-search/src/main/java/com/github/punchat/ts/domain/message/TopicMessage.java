@@ -1,6 +1,7 @@
 package com.github.punchat.ts.domain.message;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,17 +12,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-@Table(name = "messages")
+@AllArgsConstructor
+@MappedSuperclass
 public class TopicMessage {
 
     @Id
     @Column(name = "id")
     private Long messageId;
-
-    @JsonIgnore
-    @Column(name = "channel_id")
-    private Long channelId;
 
     @JsonIgnore
     @ElementCollection(targetClass = Topic.class, fetch = FetchType.EAGER)

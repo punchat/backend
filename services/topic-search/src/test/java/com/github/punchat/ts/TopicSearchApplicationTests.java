@@ -1,12 +1,12 @@
 package com.github.punchat.ts;
 
-import com.github.punchat.dto.ts.message.TopicSearchRequest;
+import com.github.punchat.dto.ts.message.TopicBroadcastSearchRequest;
+import com.github.punchat.dto.ts.message.TopicDirectSearchRequest;
 import com.github.punchat.events.NewBroadcastMessageEvent;
-import com.github.punchat.ts.domain.message.Topic;
-import com.github.punchat.ts.domain.message.TopicMessage;
-import com.github.punchat.ts.domain.message.TopicMessageController;
-import com.github.punchat.ts.domain.message.TopicMessageRepository;
+import com.github.punchat.events.NewDirectMessageEvent;
+import com.github.punchat.ts.domain.message.*;
 import com.github.punchat.ts.events.Channels;
+import com.github.punchat.ts.events.Events;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -30,64 +30,88 @@ public class TopicSearchApplicationTests {
     private TopicMessageController controller;
 
     @Autowired
-    private TopicMessageRepository repository;
+    private TopicBroadcastMessageRepository broadcastRepository;
+
+    @Autowired
+    private TopicDirectMessageRepository directRepository;
 
     @Autowired
     private Channels channels;
 
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
         assertThat(controller).isNotNull();
-        assertThat(repository).isNotNull();
+        assertThat(broadcastRepository).isNotNull();
+        assertThat(directRepository).isNotNull();
         assertThat(channels).isNotNull();
     }
 
     @Test
-    public void controllerSearch() {
-        //filling with data
-        TopicMessage[] messages = new TopicMessage[3];
-        messages[0] = new TopicMessage();
-        messages[1] = new TopicMessage();
-        messages[2] = new TopicMessage();
-        messages[0].setChannelId(1L);
-        messages[1].setChannelId(1L);
-        messages[2].setChannelId(2L);
-        List<Topic> animal = new ArrayList<>();
-        animal.add(Topic.animal);
-        List<Topic> family = new ArrayList<>();
-        family.add(Topic.family);
-        List<Topic> food = new ArrayList<>();
-        food.add(Topic.food);
-        messages[0].setTopics(animal);
-        messages[1].setTopics(family);
-        messages[2].setTopics(food);
-        for (int i = 0; i < 3; i++){
-            messages[i].setMessageId((long)i);
-            repository.save(messages[i]);
-        }
+    @Transactional
+    public void handlingNewBroadcastMessageEvent() {
+        NewBroadcastMessageEvent newMessage = new NewBroadcastMessageEvent(1L, 1L);
+        channels.newBroadcastMessageEvents().send(MessageBuilder.withPayload(newMessage).build());
 
-        //controller test
-        TopicSearchRequest request = new TopicSearchRequest();
-        request.setText("animal food");
-        request.setChannelId(1L);
-        List<TopicMessage> response = controller.search(request);
-        for (TopicMessage message : response) {
-            assertThat(message.getMessageId()).isEqualTo(0L);
-        }
+        TopicBroadcastMessage savedMessage = broadcastRepository.getOne(1L);
+
+        assertThat(savedMessage.getChannelId()).isEqualTo(1L);
+        assertThat(savedMessage.getTopics().contains(Topic.animal)).isEqualTo(true);
+        assertThat(savedMessage.getTopics().contains(Topic.food)).isEqualTo(true);
     }
 
     @Test
     @Transactional
-    public void handlingNewMessageEvent() {
-        NewBroadcastMessageEvent newMessage = new NewBroadcastMessageEvent();
-        newMessage.setMessageId(3L);
-        newMessage.setChannelId(3L);
-        channels.newBroadcastMessageEvents().send(MessageBuilder.withPayload(newMessage).build());
+    public void handlingNewDirectMessageEvent() {
+        NewDirectMessageEvent newMessage = new NewDirectMessageEvent(2L);
+        channels.newDirectMessageEvents().send(MessageBuilder.withPayload(newMessage).build());
 
-        TopicMessage savedMessage = repository.getOne(3L);
+        TopicDirectMessage savedMessage = directRepository.getOne(2L);
 
-        assertThat(savedMessage.getChannelId()).isEqualTo(3L);
+        assertThat(savedMessage.getSenderId()).isEqualTo(1L);
+        assertThat(savedMessage.getReceiverId()).isEqualTo(2L);
         assertThat(savedMessage.getTopics().contains(Topic.animal)).isEqualTo(true);
         assertThat(savedMessage.getTopics().contains(Topic.food)).isEqualTo(true);
+    }
+
+    //todo: Почему не работаем мразина?
+    @Test
+    @Transactional
+    public void broadcastMessageSearch(){
+        //filling with data
+        List<Topic> food = new LinkedList<>();
+        food.add(Topic.food);
+        List<Topic> family = new LinkedList<>();
+        family.add(Topic.family);
+
+        broadcastRepository.save(new TopicBroadcastMessage(1L, food, 1L)); //correct
+        broadcastRepository.save(new TopicBroadcastMessage(2L, family, 1L)); //wrong topic
+        broadcastRepository.save(new TopicBroadcastMessage(3L, food, 2L)); //wrong channel
+
+        //search test
+        List<TopicMessage> result = controller.search(new TopicBroadcastSearchRequest(
+                1L, "Hi"));
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getMessageId()).isEqualTo(1L);
+    }
+
+    @Test
+    public void directMessageSearch(){
+        //filling with data
+        List<Topic> food = new LinkedList<>();
+        food.add(Topic.food);
+        List<Topic> family = new LinkedList<>();
+        family.add(Topic.family);
+        directRepository.save(new TopicDirectMessage(1L, food, 1L, 2L)); //correct
+        directRepository.save(new TopicDirectMessage(2L, food, 2L, 1L)); //also correct
+        directRepository.save(new TopicDirectMessage(3L, food, 1L, 3L)); //wrong receiver
+        directRepository.save(new TopicDirectMessage(4L, food, 3L, 2L)); //wrong sender
+        directRepository.save(new TopicDirectMessage(1L, family, 1L, 2L)); //wrong topic
+
+        //search test
+        List<TopicMessage> result = controller.search(new TopicDirectSearchRequest(
+                1L, 2L, "Hello"));
+        assertThat(result.size()).isEqualTo(2);
+        for (TopicMessage message : result)
+            assertThat(message.getMessageId()).isStrictlyBetween(0L, 3L);
     }
 }

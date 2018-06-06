@@ -1,6 +1,7 @@
 package com.github.punchat.ts.domain.message;
 
-import com.github.punchat.dto.ts.message.TopicSearchRequest;
+import com.github.punchat.dto.ts.message.TopicBroadcastSearchRequest;
+import com.github.punchat.dto.ts.message.TopicDirectSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,9 +19,14 @@ public class TopicMessageController {
         this.service = service;
     }
 
-    @PostMapping("/topicSearch")
-    public @ResponseBody List<TopicMessage> search(@RequestBody TopicSearchRequest request){
-        return service.search(request);
+    @PostMapping("/topicSearch/broadcast")
+    public @ResponseBody List<TopicMessage> search(@RequestBody TopicBroadcastSearchRequest request){
+        return service.searchBroadcast(request);
+    }
+
+    @PostMapping("/topicSearch/direct")
+    public @ResponseBody List<TopicMessage> search(@RequestBody TopicDirectSearchRequest request){
+        return service.searchDirect(request);
     }
 
 }
