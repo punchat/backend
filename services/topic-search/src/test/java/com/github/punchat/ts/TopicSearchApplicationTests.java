@@ -95,17 +95,19 @@ public class TopicSearchApplicationTests {
     }
 
     @Test
+    @Transactional
     public void directMessageSearch(){
         //filling with data
         List<Topic> food = new LinkedList<>();
         food.add(Topic.food);
         List<Topic> family = new LinkedList<>();
         family.add(Topic.family);
+
         directRepository.save(new TopicDirectMessage(1L, food, 1L, 2L)); //correct
         directRepository.save(new TopicDirectMessage(2L, food, 2L, 1L)); //also correct
         directRepository.save(new TopicDirectMessage(3L, food, 1L, 3L)); //wrong receiver
         directRepository.save(new TopicDirectMessage(4L, food, 3L, 2L)); //wrong sender
-        directRepository.save(new TopicDirectMessage(1L, family, 1L, 2L)); //wrong topic
+        directRepository.save(new TopicDirectMessage(5L, family, 1L, 2L)); //wrong topic
 
         //search test
         List<TopicMessage> result = controller.search(new TopicDirectSearchRequest(
