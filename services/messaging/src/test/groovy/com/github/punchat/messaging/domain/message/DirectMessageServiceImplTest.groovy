@@ -16,11 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import spock.lang.Specification
 
-<<<<<<< HEAD
-@ActiveProfiles("test")
-=======
 @ActiveProfiles(["test", "unsecured"])
->>>>>>> dev
 @SpringBootTest(classes = ComponentTestsConfiguration)
 class DirectMessageServiceImplTest extends Specification {
 

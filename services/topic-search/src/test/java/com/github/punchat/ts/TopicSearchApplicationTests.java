@@ -73,7 +73,6 @@ public class TopicSearchApplicationTests {
         assertThat(savedMessage.getTopics().contains(Topic.food)).isEqualTo(true);
     }
 
-    //todo: Почему не работаем мразина?
     @Test
     @Transactional
     public void broadcastMessageSearch(){

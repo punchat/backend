@@ -2,13 +2,6 @@ package com.github.punchat.messaging.domain.message;
 
 import com.github.punchat.messaging.domain.member.MemberRepository;
 import com.github.punchat.messaging.security.AuthService;
-<<<<<<< HEAD
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class MessageConfiguration {
-=======
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +13,6 @@ public class MessageConfiguration {
         log.info("creating message configuration");
     }
 
->>>>>>> dev
     @Bean
     public BroadcastMessageFinder broadcastMessageFinder(AuthService authService, MemberRepository memberRepository, BroadcastMessageRepository repo) {
         return new SecuredBroadcastMessageFinder(
