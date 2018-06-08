@@ -22,7 +22,9 @@ job "stomp-notifications-delivery-service" {
         cpu = 300
         memory = 500
         network {
-          port "http" {}
+          port "http" {
+            static = 9000
+          }
         }
       }
     }

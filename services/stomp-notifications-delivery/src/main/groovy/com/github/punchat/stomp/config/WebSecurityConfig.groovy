@@ -13,5 +13,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic().disable()
                 .csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/ws")
+                .permitAll()
     }
 }

@@ -13,6 +13,7 @@ class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/actuator/health**").permitAll()
+                .antMatchers("/ws").permitAll()
                 .anyRequest().authenticated()
     }
 }
