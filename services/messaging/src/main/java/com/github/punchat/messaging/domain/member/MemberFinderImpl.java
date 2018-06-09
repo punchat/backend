@@ -7,6 +7,7 @@ import com.github.punchat.messaging.domain.user.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Trace
@@ -22,6 +23,9 @@ public class MemberFinderImpl implements MemberFinder {
 
     @Override
     public Set<Member> byIds(Set<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new HashSet<>();
+        }
         return repository.findByIds(ids);
     }
 
