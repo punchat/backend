@@ -38,8 +38,8 @@ class Events {
     @StreamListener(Channels.NEW_BROADCAST_MESSAGE_EVENTS)
     void sendNewBroadcastMessageEvent(NewBroadcastMessageEvent event) {
         Long broadcastMessageId = event.messageId
-        List<MemberResponse> members = service.getAllMembers(broadcastMessageId)
-        members.each { member ->
+        List<MemberResponse> members = service.getAllMembers(event.channelId)
+        for (MemberResponse member : members) {
             notifier.awareUserReceivedMessage(member.user.id,
                     new MessageReceivedEvent(
                             type: MessageReceivedEvent.MessageType.BROADCAST,

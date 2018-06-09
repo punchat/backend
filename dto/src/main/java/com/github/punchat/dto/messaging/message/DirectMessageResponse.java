@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @ToString
@@ -13,4 +15,5 @@ public class DirectMessageResponse {
     private UserDto sender;
     private UserDto receiver;
     private String text;
+    private LocalDateTime createdOn;
 }

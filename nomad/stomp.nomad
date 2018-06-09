@@ -15,7 +15,7 @@ job "stomp-notifications-delivery-service" {
       env {
         port = "${NOMAD_HOST_PORT_http}"
         clientId = "stomp"
-        clientSecret = "secret"
+        clientSecret = "pass"
         appName = "stomp"
       }
       resources {
