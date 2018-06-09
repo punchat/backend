@@ -25,9 +25,12 @@ class MemberRepositoryTest extends Specification {
 
     def "find by list of ids test"() {
         given:
-        User user = new User()
-        user.setId(4654L)
-        userRepository.save(user)
+        User user1 = new User()
+        user1.setId(4654L)
+        userRepository.save(user1)
+        User user2 = new User()
+        user2.setId(4656L)
+        userRepository.save(user2)
 
         BroadcastChannel channel = new BroadcastChannel()
         channel.id = 32L
@@ -42,12 +45,12 @@ class MemberRepositoryTest extends Specification {
         member1.id = 1L
         member1.channel = channel
         member1.role = role
-        member1.user = user
+        member1.user = user1
         Member member2 = new Member()
         member2.id = 2L
         member2.channel = channel
         member2.role = role
-        member2.user = user
+        member2.user = user2
 
         when:
         repository.saveAll([member1, member2])
