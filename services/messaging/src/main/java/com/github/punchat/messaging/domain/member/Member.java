@@ -17,7 +17,11 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "members")
+@Table(name = "members",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "channel_id"})
+    }
+)
 @NoArgsConstructor
 public class Member extends AbstractIdentifiableObject {
     @ManyToOne(optional = false)
