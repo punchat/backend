@@ -6,7 +6,6 @@ import com.github.punchat.events.NewBroadcastMessageEvent;
 import com.github.punchat.events.NewDirectMessageEvent;
 import com.github.punchat.ts.domain.message.*;
 import com.github.punchat.ts.events.Channels;
-import com.github.punchat.ts.events.Events;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +54,8 @@ public class TopicSearchApplicationTests {
         TopicBroadcastMessage savedMessage = broadcastRepository.getOne(1L);
 
         assertThat(savedMessage.getChannelId()).isEqualTo(1L);
-        assertThat(savedMessage.getTopics().contains(Topic.animal)).isEqualTo(true);
-        assertThat(savedMessage.getTopics().contains(Topic.food)).isEqualTo(true);
+        assertThat(savedMessage.getTopics().contains(Topic.ANIMAL)).isEqualTo(true);
+        assertThat(savedMessage.getTopics().contains(Topic.FOOD)).isEqualTo(true);
     }
 
     @Test
@@ -69,8 +68,8 @@ public class TopicSearchApplicationTests {
 
         assertThat(savedMessage.getSenderId()).isEqualTo(1L);
         assertThat(savedMessage.getReceiverId()).isEqualTo(2L);
-        assertThat(savedMessage.getTopics().contains(Topic.animal)).isEqualTo(true);
-        assertThat(savedMessage.getTopics().contains(Topic.food)).isEqualTo(true);
+        assertThat(savedMessage.getTopics().contains(Topic.ANIMAL)).isEqualTo(true);
+        assertThat(savedMessage.getTopics().contains(Topic.FOOD)).isEqualTo(true);
     }
 
     @Test
@@ -78,9 +77,9 @@ public class TopicSearchApplicationTests {
     public void broadcastMessageSearch(){
         //filling with data
         List<Topic> food = new LinkedList<>();
-        food.add(Topic.food);
+        food.add(Topic.FOOD);
         List<Topic> family = new LinkedList<>();
-        family.add(Topic.family);
+        family.add(Topic.FAMILY);
 
         broadcastRepository.save(new TopicBroadcastMessage(1L, food, 1L)); //correct
         broadcastRepository.save(new TopicBroadcastMessage(2L, family, 1L)); //wrong topic
@@ -98,9 +97,9 @@ public class TopicSearchApplicationTests {
     public void directMessageSearch(){
         //filling with data
         List<Topic> food = new LinkedList<>();
-        food.add(Topic.food);
+        food.add(Topic.FOOD);
         List<Topic> family = new LinkedList<>();
-        family.add(Topic.family);
+        family.add(Topic.FAMILY);
 
         directRepository.save(new TopicDirectMessage(1L, food, 1L, 2L)); //correct
         directRepository.save(new TopicDirectMessage(2L, food, 2L, 1L)); //also correct

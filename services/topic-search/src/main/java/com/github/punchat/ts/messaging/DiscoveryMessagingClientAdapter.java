@@ -25,18 +25,3 @@ public class DiscoveryMessagingClientAdapter implements MessagingService {
         return messagingClient.getDirectMessageById(messageId);
     }
 }
-//@Service
-//@Profile("!test")
-//public class DiscoveryIdClientAdapter implements IdService {
-//    private final DiscoveryIdClient idClient;
-//
-//    public DiscoveryIdClientAdapter(DiscoveryIdClient idClient) {
-//        log.info("creating discovery id client adapter {}", idClient);
-//        this.idClient = idClient;
-//    }
-//
-//    @Override
-//    public long next() {
-//        return idClient.next();
-//    }
-//}

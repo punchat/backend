@@ -31,7 +31,7 @@ public class TopicMessageServiceImpl implements TopicMessageService {
     @Override
     public List<TopicMessage> searchBroadcast(TopicBroadcastSearchRequest request) {
         List<Topic> topics = sergeyService.getTopics(new TopicClassifierRequest(request.getText()));
-        if (topics.contains(Topic.nothing)) return null;
+        if (topics.contains(Topic.NOTHING)) return null;
         List<TopicBroadcastMessage> messages = broadcastRepository.findByChannelId(request.getChannelId());
         List<TopicMessage> response = new LinkedList<>();
         sortMessagesByTopics(messages, topics, response);
@@ -41,7 +41,7 @@ public class TopicMessageServiceImpl implements TopicMessageService {
     @Override
     public List<TopicMessage> searchDirect(TopicDirectSearchRequest request) {
         List<Topic> topics = sergeyService.getTopics(new TopicClassifierRequest(request.getText()));
-        if (topics.contains(Topic.nothing)) return null;
+        if (topics.contains(Topic.NOTHING)) return null;
         List<TopicDirectMessage> forwardMessages = directRepository.findBySenderIdAndReceiverId(
                 request.getSenderId(), request.getReceiverId());
         List<TopicDirectMessage> backwardMessages = directRepository.findBySenderIdAndReceiverId(

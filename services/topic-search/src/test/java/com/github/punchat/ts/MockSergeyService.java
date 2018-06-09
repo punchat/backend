@@ -12,8 +12,8 @@ public class MockSergeyService implements SergeyService {
     @Override
     public List<Topic> getTopics(TopicClassifierRequest message) {
         List<Topic> response = new ArrayList<>();
-        response.add(Topic.animal);
-        response.add(Topic.food);
+        response.add(Topic.ANIMAL);
+        response.add(Topic.FOOD);
         return response;
     }
 }
