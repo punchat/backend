@@ -6,4 +6,5 @@ docker push punchat/config
 docker push punchat/gateway
 docker push punchat/messaging
 docker push punchat/notifications
+docker push punchat/topic-search
 docker push punchat/account-management

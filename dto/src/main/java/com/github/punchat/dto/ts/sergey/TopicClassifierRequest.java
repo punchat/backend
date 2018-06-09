@@ -1,14 +1,12 @@
-package com.github.punchat.dto.messaging.user;
+package com.github.punchat.dto.ts.sergey;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Data
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
-    private Long id;
+public class TopicClassifierRequest {
+    private String message;
 }
