@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -17,4 +18,5 @@ public class BroadcastMessageResponse {
     private String text;
     private List<MemberResponse> addressees;
     private BroadcastChannelResponse channel;
+    private LocalDateTime createdOn;
 }

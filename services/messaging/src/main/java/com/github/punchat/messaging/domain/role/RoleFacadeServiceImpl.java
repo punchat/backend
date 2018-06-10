@@ -7,6 +7,7 @@ import com.github.punchat.messaging.domain.channel.BroadcastChannelFinder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public class RoleFacadeServiceImpl implements RoleFacadeService {
     }
 
     @Override
-    public Set<RoleResponse> getChannelRoles(Long channelId) {
+    public List<RoleResponse> getChannelRoles(Long channelId) {
         return map(finder.byChannel(bFinder.byId(channelId)));
     }
 
@@ -43,9 +44,9 @@ public class RoleFacadeServiceImpl implements RoleFacadeService {
         return mapper.toResponse(role);
     }
 
-    private Set<RoleResponse> map(Set<Role> roles) {
+    private List<RoleResponse> map(Set<Role> roles) {
         return roles.stream()
                 .map(this::map)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }

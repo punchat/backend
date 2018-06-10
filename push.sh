@@ -7,3 +7,4 @@ docker push punchat/gateway
 docker push punchat/messaging
 docker push punchat/notifications
 docker push punchat/account-management
+docker push punchat/stomp-notifications-delivery

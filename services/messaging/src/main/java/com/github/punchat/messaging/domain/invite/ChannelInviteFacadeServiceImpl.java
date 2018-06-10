@@ -11,6 +11,7 @@ import com.github.punchat.messaging.domain.user.UserFinder;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -31,12 +32,12 @@ public class ChannelInviteFacadeServiceImpl implements ChannelInviteFacadeServic
     }
 
     @Override
-    public Set<ChannelInvitationResponse> getAuthorizedUserInvites() {
+    public List<ChannelInvitationResponse> getAuthorizedUserInvites() {
         return map(service.getAuthorizedUserInvites());
     }
 
     @Override
-    public Set<ChannelInvitationResponse> getChannelInvites(Long id) {
+    public List<ChannelInvitationResponse> getChannelInvites(Long id) {
         return map(finder.byChannel(channelFinder.byId(id)));
     }
 
@@ -62,9 +63,9 @@ public class ChannelInviteFacadeServiceImpl implements ChannelInviteFacadeServic
         return mapper.toResponse(invite);
     }
 
-    private Set<ChannelInvitationResponse> map(Set<ChannelInvite> invites) {
+    private List<ChannelInvitationResponse> map(Set<ChannelInvite> invites) {
         return invites.stream()
                 .map(this::map)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 }

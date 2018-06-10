@@ -10,7 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,15 +23,15 @@ public class UserController {
 
     @ApiOperation("get all channels of current user")
     @GetMapping("/users/@me/channels")
-    public Set<BroadcastChannelResponse> getCurrentUserChannels() {
+    public List<BroadcastChannelResponse> getCurrentUserChannels() {
         return service.getAuthorizedUserChannels()
                 .stream().map(channelMapper::toResponse)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     @ApiOperation("get all invitations for current user")
     @GetMapping("/users/@me/invitations")
-    public Set<ChannelInvitationResponse> getCurrentUserInvitations() {
+    public List<ChannelInvitationResponse> getCurrentUserInvitations() {
         return invitations.getAuthorizedUserInvites();
     }
 }
